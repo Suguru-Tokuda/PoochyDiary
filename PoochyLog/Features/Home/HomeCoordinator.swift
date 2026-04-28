@@ -8,6 +8,15 @@
 import UIKit
 
 class HomeCoordinator: BaseCoordinator {
+    private let dependencies: AppDependency
+
+    init(
+        _ navigationController: UINavigationController,
+        dependencies: AppDependency
+    ) {
+        self.dependencies = dependencies
+        super.init(navigationController)
+    }
     
     override func start() {
         let viewModel = HomeViewModel()

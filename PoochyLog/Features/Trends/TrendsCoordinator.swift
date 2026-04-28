@@ -8,6 +8,15 @@
 import UIKit
 
 final class TrendsCoordinator: BaseCoordinator {
+    private let dependencies: AppDependency
+
+    init(
+        _ navigationController: UINavigationController,
+        dependencies: AppDependency
+    ) {
+        self.dependencies = dependencies
+        super.init(navigationController)
+    }
 
     override func start() {
         let viewModel = TrendsViewModel()

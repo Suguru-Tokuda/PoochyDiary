@@ -69,9 +69,14 @@ enum TabBarPage {
 class TabCoordinator: BaseCoordinator {
     private var tabBarController: UITabBarController
     private var tabCoordinators: [TabBarPage: Coordinator] = [:]
+    private let dependencies: AppDependency
 
-    override init(_ navigationController: UINavigationController = BaseNavigationController()) {
-        self.tabBarController = UITabBarController()
+    init(
+        _ navigationController: UINavigationController,
+        dependencies: AppDependency
+    ) {
+        tabBarController = UITabBarController()
+        self.dependencies = dependencies
         super.init(navigationController)
     }
 
@@ -116,13 +121,13 @@ class TabCoordinator: BaseCoordinator {
         let coordinator: Coordinator
         switch page {
         case .home:
-            coordinator = HomeCoordinator(navController)
+            coordinator = HomeCoordinator(navController, dependencies: dependencies)
         case .history:
-            coordinator = HistoryCoordinator(navController)
+            coordinator = HistoryCoordinator(navController, dependencies: dependencies)
         case .trends:
-            coordinator = TrendsCoordinator(navController)
+            coordinator = TrendsCoordinator(navController, dependencies: dependencies)
         case .profile:
-            coordinator = ProfileCoordinator(navController)
+            coordinator = ProfileCoordinator(navController, dependencies: dependencies)
         }
 
         coordinator.start()
