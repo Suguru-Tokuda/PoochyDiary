@@ -55,7 +55,7 @@ enum TabBarPage {
         case .home:
             systemName = "house.fill"
         case .history:
-            systemName = "book"
+            systemName = "clock"
         case .trends:
             systemName = "chart.xyaxis.line"
         case .profile:
