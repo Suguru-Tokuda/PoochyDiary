@@ -16,6 +16,7 @@
         <attribute name="petId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="stoolType" optional="YES" attributeType="String"/>
         <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PoopLogImageEntity" inverseName="poopLog" inverseEntity="PoopLogImageEntity"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="poopLogs" inverseEntity="TagEntity"/>
     </entity>
     <entity name="PoopLogImageEntity" representedClassName="PoopLogImageEntity" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -23,5 +24,15 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="poopLog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PoopLogEntity" inverseName="images" inverseEntity="PoopLogEntity"/>
+    </entity>
+    <entity name="TagEntity" representedClassName="TagEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="poopLogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PoopLogEntity" inverseName="tags" inverseEntity="PoopLogEntity"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
 </model>

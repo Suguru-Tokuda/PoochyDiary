@@ -16,6 +16,7 @@ struct PoopLog: Identifiable, Equatable, Codable {
     var bloodAmount: BloodAmount
     var note: String?
     var imageFileNames: [String]
+    var tags: [Tag]
 
     init(id: UUID,
          petId: UUID,
@@ -24,7 +25,8 @@ struct PoopLog: Identifiable, Equatable, Codable {
          mucusLevel: MucusLevel,
          bloodAmount: BloodAmount,
          note: String? = nil,
-         imageFileNames: [String]
+         imageFileNames: [String],
+         tags: [Tag]
     ) {
         self.id = id
         self.petId = petId
@@ -34,9 +36,14 @@ struct PoopLog: Identifiable, Equatable, Codable {
         self.bloodAmount = bloodAmount
         self.note = note
         self.imageFileNames = imageFileNames
+        self.tags = tags
     }
 
-    init?(_ entity: PoopLogEntity, imageFileNames: [String]) {
+    init?(
+        _ entity: PoopLogEntity,
+        imageFileNames: [String],
+        tags: [Tag]
+    ) {
         guard let id = entity.id,
               let petId = entity.petId,
               let date = entity.date,
@@ -54,5 +61,6 @@ struct PoopLog: Identifiable, Equatable, Codable {
         self.bloodAmount = bloodAmount
         self.mucusLevel = mucusLevel
         self.imageFileNames = imageFileNames
+        self.tags = tags
     }
 }

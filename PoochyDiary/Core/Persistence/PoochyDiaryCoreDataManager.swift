@@ -13,6 +13,8 @@ protocol PoochyDiaryCoreDataManaging {
     func getPoopLogImages(poopLogId: UUID) throws -> [String]
     func savePet(pet: Pet) throws
     func savePoopLog(poopLog: PoopLog) throws
+    func getAllTags() throws -> [Tag]
+    func removeTag(tag: Tag) throws
 }
 
 enum PoochyDiaryCoreDataError: Error {
@@ -74,12 +76,16 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                 let results = try context.fetch(request)
                 logs = results.compactMap { (entity: PoopLogEntity) -> PoopLog? in
                     let existingImages = entity.images as? Set<PoopLogImageEntity> ?? []
+                    let existingTags = entity.tags as? Set<TagEntity> ?? []
 
                     return PoopLog(
                         entity,
                         imageFileNames: Array(existingImages)
                             .sorted(by: { $0.sortOrder < $1.sortOrder })
-                            .compactMap { $0.fileName }
+                            .compactMap { $0.fileName },
+                        tags: Array(existingTags)
+                            .compactMap { Tag($0) }
+                            .sorted { $0.name < $1.name }
                     )
                 }
             } catch {
@@ -152,6 +158,10 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                 entity.note = poopLog.note
                 entity.date = poopLog.date
                 entity.stoolType = poopLog.stoolType.rawValue
+                let tagEntities = try poopLog.tags.map {
+                    try fetchOrCreateTag(tag: $0)
+                }
+                entity.tags = NSSet(array: tagEntities)
 
                 if let existingImages = entity.images as? Set<PoopLogImageEntity> {
                     existingImages.forEach { context.delete($0) }
@@ -172,5 +182,62 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                 throw PoochyDiaryCoreDataError.entitySaveError(error)
             }
         }
+    }
+
+    func getAllTags() throws -> [Tag] {
+        var tags: [Tag] = []
+
+        try context.performAndWait {
+            let request: NSFetchRequest<TagEntity> = TagEntity.fetchRequest()
+            request.sortDescriptors = [
+                NSSortDescriptor(key: "name", ascending: true)
+            ]
+            
+            do {
+                let results = try context.fetch(request)
+                tags = results.compactMap { Tag($0) }
+            } catch {
+                throw PoochyDiaryCoreDataError.entityFetchError(error)
+            }
+        }
+
+        return tags
+    }
+
+    func removeTag(tag: Tag) throws {
+        try context.performAndWait {
+            do {
+                let request: NSFetchRequest<TagEntity> = TagEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "id = %@", tag.id as CVarArg)
+                request.fetchLimit = 1
+
+                let results = try context.fetch(request)
+                results.forEach { context.delete($0) }
+
+                try saveContext()
+            } catch {
+                throw PoochyDiaryCoreDataError.entitySaveError(error)
+            }
+        }
+    }
+
+    private func fetchOrCreateTag(tag: Tag) throws -> TagEntity {
+        let normalizedName = tag.name
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
+        let request: NSFetchRequest<TagEntity> = TagEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "name == %@", normalizedName)
+        request.fetchLimit = 1
+    
+        if let existing = try context.fetch(request).first {
+            return existing
+        }
+    
+        let entity = TagEntity(context: context)
+        entity.id = tag.id
+        entity.name = normalizedName
+
+        return entity
     }
 }
