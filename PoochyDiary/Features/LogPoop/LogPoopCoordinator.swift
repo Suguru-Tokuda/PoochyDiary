@@ -21,6 +21,14 @@ final class LogPoopCoordinator: BaseCoordinator {
     override func start() {
         let viewModel = LogPoopViewModel()
         let viewController = LogPoopViewController(viewModel: viewModel)
-        navigationController.setViewControllers([viewController], animated: false)
+        viewController.delegate = self
+        navigationController.pushViewController(viewController, animated: true)
+    }
+}
+
+extension LogPoopCoordinator: LogPoopViewControllerDelegate {
+    func onCancelButtonTap() {
+        navigationController.popViewController(animated: true)
+        finish()
     }
 }

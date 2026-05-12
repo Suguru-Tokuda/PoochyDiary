@@ -31,6 +31,10 @@ class BaseCoordinator: NSObject, Coordinator {
         children.append(coordinator)
     }
 
+    func removeChild(_ coordinator: Coordinator) {
+        children.removeAll { $0 === coordinator }
+    }
+
     func finish() {
         onFinish?()
     }

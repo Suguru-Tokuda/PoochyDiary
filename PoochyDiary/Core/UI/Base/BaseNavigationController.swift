@@ -31,4 +31,21 @@ extension BaseNavigationController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         isNewViewControllerBeingAdded = false
     }
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        updateNavigationBarVisibility(for: viewController, animated: animated)
+    }
+}
+
+extension BaseNavigationController {
+    func updateNavigationBarVisibility(
+        for viewController: UIViewController,
+        animated: Bool
+    ) {
+        guard !(viewController is UITabBarController) else { return }
+        let hidden = (viewController as? NavigationBarConfigurable)?
+            .prefersNavigationBarHidden ?? false
+
+        setNavigationBarHidden(hidden, animated: animated)
+    }
 }

@@ -93,6 +93,9 @@ class TabCoordinator: BaseCoordinator {
 
         navigationController.setViewControllers([tabBarController], animated: false)
         
+        navigationController.isNavigationBarHidden = true
+//        navigationController.setNavigationBarHidden(true, animated: false)
+        
         startTab(.home)
     }
 
@@ -104,7 +107,7 @@ class TabCoordinator: BaseCoordinator {
 
     private func makeTab(for page: TabBarPage) -> UINavigationController {
         let navController = BaseNavigationController()
-        navController.setNavigationBarHidden(false, animated: false)
+        navController.setNavigationBarHidden(true, animated: false)
         navController.tabBarItem = UITabBarItem(
             title: page.tabTitle,
             image: page.tabImage,
