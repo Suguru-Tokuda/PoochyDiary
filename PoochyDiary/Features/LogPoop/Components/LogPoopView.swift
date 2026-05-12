@@ -32,9 +32,9 @@ final class LogPoopView: BaseView {
     )
 
     private let dateTimeView = DateTimeView()
-    private let stoolTypeView = StoolTypeView()
-    private let mucusLevelView = MucusLevelView()
-    private let bloodAmountView = BloodAmountView()
+    private let stoolTypeView = LogPoopSelectionView()
+    private let mucusLevelView = LogPoopSelectionView()
+    private let bloodAmountView = LogPoopSelectionView()
     private let photoSelectionView = PhotoSelectionView()
     private let notesView = NotesView()
     private let tagView = TagView()
@@ -53,6 +53,25 @@ final class LogPoopView: BaseView {
         ])
 
         addAutolayoutSubview(scrollView)
+
+        stoolTypeView.model = LogPoopSelectionView.Model(
+            title: "Stool Type",
+            isOptional: false,
+            selectionItems: StoolType.allCases.map {
+            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName)
+        })
+        mucusLevelView.model = LogPoopSelectionView.Model(
+            title: "Stool Type",
+            isOptional: false,
+            selectionItems: MucusLevel.allCases.map {
+            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName)
+        })
+        bloodAmountView.model = LogPoopSelectionView.Model(
+            title: "Blood Amount",
+            isOptional: false,
+            selectionItems: BloodAmount.allCases.map {
+            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName)
+        })
     }
 
     override func constructSubviewLayoutConstraints() {

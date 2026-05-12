@@ -10,13 +10,17 @@ import UIKit
 class BaseView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        constructView()
-        constructSubviews()
-        constructSubviewLayoutConstraints()
+        construct()
     }
     
     required init?(coder: NSCoder) {
         nil
+    }
+
+    private func construct() {
+        constructView()
+        constructSubviews()
+        constructSubviewLayoutConstraints()
     }
 
     func constructView() {}
