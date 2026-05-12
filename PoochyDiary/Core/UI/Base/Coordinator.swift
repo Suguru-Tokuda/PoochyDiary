@@ -20,6 +20,7 @@ class BaseCoordinator: NSObject, Coordinator {
     var children: [Coordinator] = []
     var navigationController: UINavigationController
     var onFinish: (() -> Void)?
+    private var onLifeCycleFinish: (() -> Void)?
 
     init(_ navigationController: UINavigationController = BaseNavigationController()) {
         self.navigationController = navigationController
@@ -28,10 +29,16 @@ class BaseCoordinator: NSObject, Coordinator {
     func start() {}
 
     func addChild(_ coordinator: Coordinator) {
+        if let baseCoordinator = coordinator as? BaseCoordinator {
+            baseCoordinator.onLifeCycleFinish = { [weak self, weak baseCoordinator] in
+                guard let self, let baseCoordinator else { return }
+                removeChild(baseCoordinator)
+            }
+        }
         children.append(coordinator)
     }
 
-    func removeChild(_ coordinator: Coordinator) {
+    private func removeChild(_ coordinator: Coordinator) {
         children.removeAll { $0 === coordinator }
     }
 

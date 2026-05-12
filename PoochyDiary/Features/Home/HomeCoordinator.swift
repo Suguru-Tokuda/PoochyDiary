@@ -36,12 +36,6 @@ extension HomeCoordinator {
     private func navigateToAddLogPoop() {
         let logPoopCoordinator = LogPoopCoordinator(navigationController, dependencies: dependencies)
         logPoopCoordinator.start()
-
-        logPoopCoordinator.onFinish = { [weak self, weak logPoopCoordinator] in
-            guard let self, let logPoopCoordinator else { return }
-            removeChild(logPoopCoordinator)
-        }
-
         addChild(logPoopCoordinator)
     }
 }
