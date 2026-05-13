@@ -17,7 +17,7 @@ nonisolated struct PDSelectionItem: Hashable {
     let imageName: String
 }
 
-class PDSelectionCollectionViewCell: UICollectionViewCell {
+class PDSelectionCollectionViewCell: BaseCollectionViewCell {
 
     static var reuseIdentifier: String {
         "PDSelectionCollectionViewCell"
@@ -57,23 +57,16 @@ class PDSelectionCollectionViewCell: UICollectionViewCell {
        return label
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        setupUI()
-        setupConstraints()
-    }
-    
-    required init?(coder: NSCoder) {
-        nil
-    }
-
-    private func setupUI() {
+    override func constructView() {
+        super.constructView()
         contentView.layer.cornerRadius = Constants.borderRadius
         contentView.layer.borderColor = UIColor.systemGray5.cgColor
         contentView.layer.borderWidth = Constants.borderWidth
         contentView.backgroundColor = .systemBackground
         contentView.layer.masksToBounds = true
+    }
+
+    override func constructSubviews() {
         stackView.addArrangedSubviews([
             imageView,
             label
@@ -81,7 +74,8 @@ class PDSelectionCollectionViewCell: UICollectionViewCell {
         contentView.addAutolayoutSubview(stackView)
     }
 
-    private func setupConstraints() {
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding),

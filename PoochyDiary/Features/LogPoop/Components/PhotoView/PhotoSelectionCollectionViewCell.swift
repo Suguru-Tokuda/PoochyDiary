@@ -7,6 +7,6 @@
 
 import UIKit
 
-class PhotoSelectionCollectionViewCell: UICollectionViewCell {
+class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
     
 }

@@ -44,5 +44,6 @@ class BaseCoordinator: NSObject, Coordinator {
 
     func finish() {
         onFinish?()
+        onLifeCycleFinish?()
     }
 }
