@@ -25,7 +25,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
 
     private enum Constants {
         static let borderRadius: CGFloat = 8
-        static let padding: CGFloat = 8
+        static let padding: CGFloat = 4
         static let borderWidth: CGFloat = 1
         static let selectedBorderWidth: CGFloat = 2
         static let fontSize: CGFloat = 14
@@ -41,7 +41,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
 
     // MARK: - UI Elements
 
-    private let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 4)
+    private let stackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fill, spacing: 0)
     private let imageView: UIImageView = {
        let imageView = UIImageView()
        imageView.contentMode = .scaleAspectFit
@@ -82,8 +82,8 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.padding),
 
-            imageView.widthAnchor.constraint(equalToConstant: 48),
-            imageView.heightAnchor.constraint(equalToConstant: 48)
+            imageView.widthAnchor.constraint(equalToConstant: 84),
+            imageView.heightAnchor.constraint(equalToConstant: 84)
         ])
     }
 

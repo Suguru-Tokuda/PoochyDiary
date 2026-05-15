@@ -18,19 +18,18 @@ enum MucusLevel: String, CaseIterable, Codable {
         rawValue.firstLetterUppercased()
     }
 
-
-    var imageName: String {
+    var imageName: PDIcons {
         switch self {
         case .none:
-            return ""
+            return .stoolNormal
         case .trace:
-            return ""
+            return .mucusTrace
         case .mild:
-            return ""
+            return .mucusMild
         case .moderate:
-            return ""
+            return .mucusModerate
         case .heavy:
-            return ""
+            return .mucusHeavy
         }
     }
 }

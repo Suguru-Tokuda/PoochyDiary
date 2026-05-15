@@ -11,31 +11,25 @@ enum BloodAmount: String, CaseIterable, Codable {
     case none
     case speck
     case streak
-    case small
     case moderate
     case large
-    case urgent
 
     var name: String {
         rawValue.firstLetterUppercased()
     }
 
-    var imageName: String {
+    var imageName: PDIcons {
         switch self {
         case .none:
-            return ""
+            return .bloodNone
         case .speck:
-            return ""
+            return .bloodSpeck
         case .streak:
-            return ""
-        case .small:
-            return ""
+            return .bloodStreak
         case .moderate:
-            return ""
+            return .bloodModerate
         case .large:
-            return ""
-        case .urgent:
-            return ""
+            return .bloodLarge
         }
     }
 }

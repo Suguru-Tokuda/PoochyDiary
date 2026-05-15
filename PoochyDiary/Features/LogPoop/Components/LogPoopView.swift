@@ -32,9 +32,9 @@ final class LogPoopView: BaseView {
     )
 
     private let dateTimeView = DateTimeView()
-    private let stoolTypeView = LogPoopSelectionView()
-    private let mucusLevelView = LogPoopSelectionView()
-    private let bloodAmountView = LogPoopSelectionView()
+    private let stoolTypeView = LogPoopSelectionView(style: PDSelectionCellStyle(selectedColor: .systemBrown))
+    private let mucusLevelView = LogPoopSelectionView(style: PDSelectionCellStyle(selectedColor: .systemGreen))
+    private let bloodAmountView = LogPoopSelectionView(style: PDSelectionCellStyle(selectedColor: .systemRed))
     private let photoSelectionView = PhotoSelectionView()
     private let notesView = NotesView()
     private let tagView = TagView()
@@ -58,19 +58,19 @@ final class LogPoopView: BaseView {
             title: "Stool Type",
             isOptional: false,
             selectionItems: StoolType.allCases.map {
-            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName)
+                PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
         })
         mucusLevelView.model = LogPoopSelectionView.Model(
-            title: "Stool Type",
+            title: "Mucus Level",
             isOptional: false,
             selectionItems: MucusLevel.allCases.map {
-            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName)
+            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
         })
         bloodAmountView.model = LogPoopSelectionView.Model(
             title: "Blood Amount",
             isOptional: false,
             selectionItems: BloodAmount.allCases.map {
-            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName)
+            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
         })
     }
 

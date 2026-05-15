@@ -8,34 +8,36 @@
 import UIKit
 
 enum StoolType: String, CaseIterable, Codable {
-    case veryHard
+    case extraFirm
     case firm
     case normal
     case soft
     case mushy
     case watery
-    case mixed
 
     var name: String {
-        rawValue.firstLetterUppercased()
+        switch self {
+        case .extraFirm:
+            return "Extra Firm"
+        default:
+            return rawValue.firstLetterUppercased()
+        }
     }
 
-    var imageName: String {
+    var imageName: PDIcons {
         switch self {
-        case .veryHard:
-            return ""
+        case .extraFirm:
+            return .stoolExtraFirm
         case .firm:
-            return ""
+            return .stoolFirm
         case .normal:
-            return ""
+            return .stoolNormal
         case .soft:
-            return ""
+            return .stoolSoft
         case .mushy:
-            return ""
+            return .stoolMushy
         case .watery:
-            return ""
-        case .mixed:
-            return ""
+            return .stoolWatery
         }
     }
 }

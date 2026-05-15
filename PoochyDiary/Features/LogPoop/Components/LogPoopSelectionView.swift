@@ -22,8 +22,17 @@ class LogPoopSelectionView: BaseView {
     // MARK: - UI Components
 
     private let label = PDLabel()
-    private let selectionView = PDSelectionCollectionView()
+    private let selectionView: PDSelectionCollectionView
 
+    init(frame: CGRect = .zero, style: PDSelectionCellStyle = .init(selectedColor: .systemPurple)) {
+        selectionView = PDSelectionCollectionView(cellStyle: style)
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        nil
+    }
+    
     override func constructSubviews() {
         super.constructSubviews()
         addAutolayoutSubviews([
