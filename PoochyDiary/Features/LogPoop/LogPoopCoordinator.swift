@@ -31,4 +31,23 @@ extension LogPoopCoordinator: LogPoopViewControllerDelegate {
         navigationController.popViewController(animated: true)
         finish()
     }
+
+    func onDateTimeLabelTap() {
+        let viewModel = DateTimePickerViewModel()
+        let viewController = DateTimePickerViewController(viewModel: viewModel)
+        viewController.onCancelButtonTap = { [weak self] in
+            self?.navigationController.dismiss(animated: true)
+        }
+
+        viewController.onDoneButtonTap = { [weak self] selectedDate in
+            self?.navigationController.dismiss(animated: true)
+        }
+
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = true
+        }
+
+        navigationController.present(viewController, animated: true)
+    }
 }

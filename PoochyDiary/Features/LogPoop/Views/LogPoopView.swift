@@ -8,6 +8,7 @@
 import UIKit
 
 protocol LogPoopViewDelegate: AnyObject {
+    func onDateTimeTap()
     func onDateTimeChanged(dateTime: Date)
     func onStoolTypeChanged(stoolType: StoolType)
     func onMucusLevelChanged(mucusLevel: MucusLevel)
@@ -23,7 +24,11 @@ final class LogPoopView: BaseView {
 
     // UI Components
 
-    private let scrollView = UIScrollView()
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.keyboardDismissMode = .interactive
+        return scrollView
+    }()
     private let stackView = UIStackView(
         axis: .vertical,
         alignment: .fill,
@@ -72,6 +77,10 @@ final class LogPoopView: BaseView {
             selectionItems: BloodAmount.allCases.map {
             PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
         })
+
+        dateTimeView.onDateSelectionLabelTapped = { [weak self] in
+            self?.delegate?.onDateTimeTap()
+        }
     }
 
     override func constructSubviewLayoutConstraints() {

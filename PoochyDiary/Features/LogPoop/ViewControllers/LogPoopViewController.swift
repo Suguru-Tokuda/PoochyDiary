@@ -9,9 +9,10 @@ import UIKit
 
 protocol LogPoopViewControllerDelegate: AnyObject {
     func onCancelButtonTap()
+    func onDateTimeLabelTap()
 }
 
-final class LogPoopViewController: UIViewController {
+final class LogPoopViewController: BaseViewController {
     weak var delegate: LogPoopViewControllerDelegate?
 
     let viewModel: LogPoopViewModel
@@ -27,22 +28,21 @@ final class LogPoopViewController: UIViewController {
         nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        setupConstraints()
-    }
-
-    private func setupUI() {
-        logPoopView.delegate = self
+    override func constructView() {
+        super.constructView()
         navigationItem.title = "Log Poop"
-        view.addAutolayoutSubview(logPoopView)
-
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButtonTap))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .prominent, target: self, action: #selector(handleSaveButtonTap))
     }
 
-    private func setupConstraints() {
+    override func constructSubviews() {
+        super.constructSubviews()
+        logPoopView.delegate = self
+        view.addAutolayoutSubview(logPoopView)
+    }
+
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
             logPoopView.topAnchor.constraint(equalTo: view.topAnchor),
             logPoopView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -63,6 +63,10 @@ extension LogPoopViewController {
 }
 
 extension LogPoopViewController: LogPoopViewDelegate {
+    func onDateTimeTap() {
+        delegate?.onDateTimeLabelTap()
+    }
+    
     func onDateTimeChanged(dateTime: Date) {
     }
     

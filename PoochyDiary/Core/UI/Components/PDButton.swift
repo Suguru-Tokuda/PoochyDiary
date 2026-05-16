@@ -7,8 +7,7 @@
 
 import UIKit
 
-class PDButton: UIButton {
-
+class PDButton: BaseButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -17,9 +16,14 @@ class PDButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupUI() {
+    override func constructView() {
+        super.constructView()
         layer.borderColor = UIColor.black.withAlphaComponent(0.8).cgColor
-        layer.cornerRadius = 8
-        layer.borderWidth = 2
+        layer.cornerRadius = 24
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        constructView()
     }
 }
