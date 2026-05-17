@@ -39,6 +39,7 @@ class NotesView: BaseView {
         textView.backgroundColor = .clear
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
+        textView.returnKeyType = .done
         return textView
     }()
 
@@ -93,5 +94,14 @@ extension NotesView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
         onTextChange?(textView.text)
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextInRanges ranges: [NSValue], replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+
+        return true
     }
 }

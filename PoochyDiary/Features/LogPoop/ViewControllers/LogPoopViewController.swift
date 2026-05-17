@@ -28,6 +28,23 @@ final class LogPoopViewController: BaseViewController {
         nil
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChangeFrame),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
     override func constructView() {
         super.constructView()
         navigationItem.title = "Log Poop"
@@ -53,12 +70,34 @@ final class LogPoopViewController: BaseViewController {
 }
 
 extension LogPoopViewController {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+    }
+}
+
+extension LogPoopViewController {
     @objc private func handleCancelButtonTap() {
         delegate?.onCancelButtonTap()
     }
 
     @objc private func handleSaveButtonTap() {
         
+    }
+
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+
+        let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+        let intersection = view.bounds.intersection(keyboardFrameInView)
+        let bottomInset = intersection.height
+
+        logPoopView.setBottomInset(bottomInset)
+        logPoopView.textViewDidBeginEditing()
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        logPoopView.setBottomInset(0)
     }
 }
 

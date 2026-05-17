@@ -40,7 +40,7 @@ class PDLabel: BaseView {
         let label = UILabel()
         label.textColor = .gray
         label.text = "(optional)"
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
         label.isHidden = true
         return label
     }()

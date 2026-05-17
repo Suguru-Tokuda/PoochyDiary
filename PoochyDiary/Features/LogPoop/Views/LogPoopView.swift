@@ -81,6 +81,8 @@ final class LogPoopView: BaseView {
         dateTimeView.onDateSelectionLabelTapped = { [weak self] in
             self?.delegate?.onDateTimeTap()
         }
+
+        stackView.setCustomSpacing(12, after: photoSelectionView)
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -98,5 +100,18 @@ final class LogPoopView: BaseView {
 
             stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -48)
         ])
+    }
+
+    func setBottomInset(_ inset: CGFloat) {
+        scrollView.contentInset.bottom = inset
+        scrollView.verticalScrollIndicatorInsets.bottom = inset
+    }
+
+    func textViewDidBeginEditing() {
+        scrollView
+            .scrollRectToVisible(
+                notesView.convert(notesView.bounds, to: scrollView),
+                animated: true
+        )
     }
 }
