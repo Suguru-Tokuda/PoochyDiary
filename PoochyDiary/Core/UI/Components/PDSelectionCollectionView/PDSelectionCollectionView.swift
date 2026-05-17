@@ -9,7 +9,6 @@ import UIKit
 
 class PDSelectionCollectionView: BaseView {
     private enum Constants {
-        static let cellHeight: CGFloat = 112
         static let rowSpacing: CGFloat = 12
         static let sectionTopInset: CGFloat = 8
         static let sectionBottomInset: CGFloat = 8
@@ -33,32 +32,7 @@ class PDSelectionCollectionView: BaseView {
 
     private var diffableDataSource: DataSource?
     private var cellStyle: PDSelectionCellStyle
-
-    override var intrinsicContentSize: CGSize {
-        guard let model else {
-            return CGSize(width: UIView.noIntrinsicMetric, height: 0)
-        }
-
-        let itemCount = model.items.count
-        let columns = Constants.columnCount
-        let rows = Int(ceil(Double(itemCount) / Double(columns)))
-
-        let cellHeight: CGFloat = Constants.cellHeight
-        let rowSpacing: CGFloat = Constants.rowSpacing
-        let sectionTopInset: CGFloat = Constants.sectionTopInset
-        let sectionBottomInset: CGFloat = Constants.sectionBottomInset
-
-        let height =
-            sectionTopInset +
-            CGFloat(rows) * cellHeight +
-            CGFloat(max(0, rows - 1)) * rowSpacing +
-            sectionBottomInset
-
-        return CGSize(
-            width: UIView.noIntrinsicMetric,
-            height: height
-        )
-    }
+    private var collectionHeightConstraint: NSLayoutConstraint?
 
     init(
         frame: CGRect = .zero,
@@ -84,20 +58,23 @@ class PDSelectionCollectionView: BaseView {
 
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
+        collectionHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
+
+        collectionHeightConstraint?.isActive = true
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
+        updateCollectionViewHeight()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutIfNeeded()
-        invalidateIntrinsicContentSize()
     }
 
     private func makeDataSource() -> DataSource {
@@ -117,33 +94,40 @@ class PDSelectionCollectionView: BaseView {
     }
 
     private static func makeLayout() -> UICollectionViewCompositionalLayout {
-        let spacing: CGFloat = 12
-        let cellSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0 / Constants.columnCount),
-            heightDimension: .absolute(Constants.cellHeight)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: cellSize)
-        item.contentInsets = .zero
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(Constants.cellHeight)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item, item, item]
-        )
-        group.interItemSpacing = .fixed(spacing)
-        let layoutSection = NSCollectionLayoutSection(group: group)
-        layoutSection.interGroupSpacing = spacing
-        layoutSection.contentInsets = .zero
-        let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.scrollDirection = .vertical
-        
-        return UICollectionViewCompositionalLayout(
-                section: layoutSection,
-                configuration: config
-        )
+        UICollectionViewCompositionalLayout { _, layoutEnvironment in
+            let spacing: CGFloat = Constants.rowSpacing
+            let columns = Int(Constants.columnCount)
+
+            let availableWidth = layoutEnvironment.container.effectiveContentSize.width
+            let cellWidth = (availableWidth - CGFloat(columns - 1) * spacing) / CGFloat(columns)
+
+            let cellHeight = cellWidth
+
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .absolute(cellWidth),
+                heightDimension: .absolute(cellHeight)
+            )
+
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(cellHeight)
+            )
+
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: groupSize,
+                subitems: Array(repeating: item, count: columns)
+            )
+
+            group.interItemSpacing = .fixed(spacing)
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = spacing
+            section.contentInsets = .zero
+
+            return section
+        }
     }
 
     private func applyModel() {
@@ -159,5 +143,26 @@ class PDSelectionCollectionView: BaseView {
             collectionView.collectionViewLayout.invalidateLayout()
             invalidateIntrinsicContentSize()
         }
+    }
+
+    private func updateCollectionViewHeight() {
+        guard let model else { return }
+
+        let itemCount = model.items.count
+        let columns = Constants.columnCount
+        let rows = ceil(CGFloat(itemCount) / columns)
+
+        let availableWidth = bounds.width
+        guard availableWidth > 0 else { return }
+
+        let totalColumnSpacing = (columns - 1) * Constants.rowSpacing
+        let cellWidth = (availableWidth - totalColumnSpacing) / columns
+
+        let cellHeight = cellWidth
+        let totalRowSpacing = max(0, rows - 1) * Constants.rowSpacing
+
+        let height = rows * cellHeight + totalRowSpacing
+
+        collectionHeightConstraint?.constant = height
     }
 }

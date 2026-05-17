@@ -8,6 +8,10 @@
 import UIKit
 
 class PhotoSelectionView: BaseView {
+    // MARK: - typealias
+    private typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
+
     struct Model {
         let selectedImages: [String]
     }
@@ -18,11 +22,15 @@ class PhotoSelectionView: BaseView {
         }
     }
 
+    private var dataSource: DataSource?
+    private var collectionViewHeightConstraint: NSLayoutConstraint?
+    private var addPhotoViewHeightConstraint: NSLayoutConstraint?
+
     private let stackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: 12)
 
     private let label: PDLabel = {
         let label = PDLabel()
-        label.model = PDLabel.Model(title: "Photo", isOptional: true)
+        label.model = PDLabel.Model(title: "Photos", isOptional: true)
         return label
     }()
 
@@ -56,17 +64,20 @@ class PhotoSelectionView: BaseView {
     override init(frame: CGRect) {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         super.init(frame: frame)
+        collectionView.collectionViewLayout = Self.makeLayout()
+        dataSource = makeDataSource()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        nil
     }
     
     override func constructSubviews() {
         super.constructSubviews()
         collectionView.isHidden = true
+        collectionView.register(PhotoSelectionCollectionViewCell.self,
+                                forCellWithReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier)
         stackView.addArrangedSubviews([
-
             collectionView,
             addPhotoView,
             buttonStackView
@@ -84,6 +95,9 @@ class PhotoSelectionView: BaseView {
 
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+        addPhotoViewHeightConstraint = addPhotoView.heightAnchor.constraint(equalToConstant: 0)
+        
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -94,16 +108,96 @@ class PhotoSelectionView: BaseView {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            addPhotoView.heightAnchor.constraint(equalToConstant: 200),
-
             buttonStackView.heightAnchor.constraint(equalToConstant: 48)
         ])
+        collectionViewHeightConstraint?.isActive = true
+        addPhotoViewHeightConstraint?.isActive = true
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateCollectionViewHeight()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
     private func applyModel() {
         let selectedImages = model?.selectedImages ?? []
 
-        collectionView.isHidden = !selectedImages.isEmpty
-        addPhotoView.isHidden = selectedImages.isEmpty
+        collectionView.isHidden = selectedImages.isEmpty
+        addPhotoView.isHidden = !selectedImages.isEmpty
+
+        guard let dataSource else { return }
+        
+        dataSource.apply(makeSnapshot(imageURLs: selectedImages))
+    }
+}
+
+// MARK: - CollectionView
+
+extension PhotoSelectionView {
+    private static func makeLayout() -> UICollectionViewCompositionalLayout {
+        UICollectionViewCompositionalLayout { _, layoutEnvironment in
+            let spacing: CGFloat = 8
+            let availableWidth = layoutEnvironment.container.effectiveContentSize.width
+            let cellWidth = availableWidth * 0.9
+
+            let cellHeight = cellWidth
+
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .absolute(cellWidth),
+                heightDimension: .absolute(cellHeight)
+            )
+
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: groupSize,
+                subitems: [item]
+            )
+
+            group.interItemSpacing = .fixed(spacing)
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = spacing
+            section.contentInsets = .zero
+            section.orthogonalScrollingBehavior = .continuous
+            return section
+        }
+    }
+
+    private func makeDataSource() -> DataSource {
+        DataSource(collectionView: collectionView) { collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier, for: indexPath)
+                    as? PhotoSelectionCollectionViewCell else {
+                return nil
+            }
+
+            cell.model = PhotoSelectionCollectionViewCell.Model(imageURL: URL(string: item))
+
+            return cell
+        }
+    }
+
+    private func makeSnapshot(imageURLs: [String]) -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections([0])
+
+        snapshot.appendItems(imageURLs, toSection: 0)
+
+        return snapshot
+    }
+
+    private func updateCollectionViewHeight() {
+        let availableWidth = bounds.width
+        guard availableWidth > 0 else { return }
+
+        let height = availableWidth * 0.9
+        collectionViewHeightConstraint?.constant = height
+        addPhotoViewHeightConstraint?.constant = availableWidth * 0.7
     }
 }
