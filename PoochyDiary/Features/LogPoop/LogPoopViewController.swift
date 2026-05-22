@@ -26,7 +26,7 @@ final class LogPoopViewController: BaseViewController {
     init(viewModel: LogPoopViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        addSubscriptios()
+        addSubscriptions()
     }
 
     @available(*, unavailable)
@@ -88,7 +88,7 @@ final class LogPoopViewController: BaseViewController {
         ])
     }
 
-    private func addSubscriptios() {
+    private func addSubscriptions() {
         viewModel.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
