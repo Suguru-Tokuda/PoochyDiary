@@ -35,24 +35,11 @@ final class LogPoopViewController: BaseViewController {
     }
 
     @MainActor deinit {
-        subscriptions.removeAll()
+        removeSubscriptions()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillChangeFrame),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
 
         logPoopView.configure(
             dateTime: viewModel.dateTime,
@@ -89,6 +76,19 @@ final class LogPoopViewController: BaseViewController {
     }
 
     private func addSubscriptions() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillChangeFrame),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+
         viewModel.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
@@ -113,6 +113,20 @@ final class LogPoopViewController: BaseViewController {
                 logPoopView.configure(errors: errors)
             }
             .store(in: &subscriptions)
+    }
+
+    private func removeSubscriptions() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+        subscriptions.removeAll()
     }
 }
 
