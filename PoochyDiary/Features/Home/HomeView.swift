@@ -23,7 +23,7 @@ class HomeView: UIView {
     )
     let addLogPoopButton: UIButton = {
        let button = UIButton()
-        button.backgroundColor = .systemPurple
+        button.backgroundColor = .accent
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Log Poop", for: .normal)
         button.layer.cornerRadius = 8

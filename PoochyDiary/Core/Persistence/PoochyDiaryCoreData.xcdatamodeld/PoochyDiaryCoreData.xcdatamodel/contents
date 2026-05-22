@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24837" systemVersion="25E253" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24901" systemVersion="25F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="PetEntity" representedClassName="PetEntity" syncable="YES" codeGenerationType="class">
         <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="gender" optional="YES" attributeType="String"/>
@@ -15,15 +15,15 @@
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="petId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="stoolType" optional="YES" attributeType="String"/>
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PoopLogImageEntity" inverseName="poopLog" inverseEntity="PoopLogImageEntity"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PoopLogPhotoEntity" inverseName="poopLog" inverseEntity="PoopLogPhotoEntity"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="poopLogs" inverseEntity="TagEntity"/>
     </entity>
-    <entity name="PoopLogImageEntity" representedClassName="PoopLogImageEntity" syncable="YES" codeGenerationType="class">
+    <entity name="PoopLogPhotoEntity" representedClassName="PoopLogPhotoEntity" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="poopLog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PoopLogEntity" inverseName="images" inverseEntity="PoopLogEntity"/>
+        <relationship name="poopLog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PoopLogEntity" inverseName="photos" inverseEntity="PoopLogEntity"/>
     </entity>
     <entity name="TagEntity" representedClassName="TagEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>

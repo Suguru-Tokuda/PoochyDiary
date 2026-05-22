@@ -14,6 +14,21 @@ enum BloodAmount: String, CaseIterable, Codable {
     case moderate
     case large
 
+    var id: String {
+        switch self {
+        case .none:
+            return "0"
+        case .speck:
+            return "1"
+        case .streak:
+            return "2"
+        case .moderate:
+            return "3"
+        case .large:
+            return "4"
+        }
+    }
+
     var name: String {
         rawValue.firstLetterUppercased()
     }

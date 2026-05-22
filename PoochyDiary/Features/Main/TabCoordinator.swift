@@ -26,13 +26,13 @@ enum TabBarPage {
     var tabTitle: String {
         switch self {
         case .home:
-            return "Home"
+            return Strings.LogPoop.home
         case .history:
-            return "History"
+            return Strings.LogPoop.history
         case .trends:
-            return "Trends"
+            return Strings.LogPoop.trends
         case .profile:
-            return "Profile"
+            return Strings.LogPoop.profile
         }
     }
 
@@ -94,7 +94,6 @@ class TabCoordinator: BaseCoordinator {
         navigationController.setViewControllers([tabBarController], animated: false)
         
         navigationController.isNavigationBarHidden = true
-//        navigationController.setNavigationBarHidden(true, animated: false)
         
         startTab(.home)
     }

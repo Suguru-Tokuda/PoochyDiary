@@ -14,6 +14,21 @@ enum MucusLevel: String, CaseIterable, Codable {
     case moderate
     case heavy
 
+    var id: String {
+        switch self {
+        case .none:
+            return "0"
+        case .trace:
+            return "1"
+        case .mild:
+            return "2"
+        case .moderate:
+            return "3"
+        case .heavy:
+            return "4"
+        }
+    }
+
     var name: String {
         rawValue.firstLetterUppercased()
     }

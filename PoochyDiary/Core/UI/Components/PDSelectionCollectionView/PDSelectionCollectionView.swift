@@ -8,6 +8,10 @@
 import UIKit
 
 class PDSelectionCollectionView: BaseView {
+    // MARK: - Closures
+
+    var onSelectItem: ((PDSelectionItem) -> Void)?
+    
     private enum Constants {
         static let rowSpacing: CGFloat = 12
         static let sectionTopInset: CGFloat = 8
@@ -36,13 +40,14 @@ class PDSelectionCollectionView: BaseView {
 
     init(
         frame: CGRect = .zero,
-        cellStyle: PDSelectionCellStyle = PDSelectionCellStyle(selectedColor: .systemPurple)
+        cellStyle: PDSelectionCellStyle = PDSelectionCellStyle(selectedColor: .accent)
     ) {
         collectionView = UICollectionView(frame: frame, collectionViewLayout: Self.makeLayout())
         collectionView.isScrollEnabled = false
         self.cellStyle = cellStyle
         super.init(frame: frame)
         diffableDataSource = makeDataSource()
+        collectionView.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -67,7 +72,7 @@ class PDSelectionCollectionView: BaseView {
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
 
-        collectionHeightConstraint?.isActive = true
+        collectionHeightConstraint?.activate()
     }
 
     override func layoutSubviews() {
@@ -77,6 +82,43 @@ class PDSelectionCollectionView: BaseView {
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
+    func configure(selectedId: String) {
+        guard let model,
+              let visibleCells = collectionView.visibleCells as? [PDSelectionCollectionViewCell] else {
+            return
+        }
+
+        visibleCells.forEach {
+            if let indexPath = collectionView.indexPath(for: $0),
+               let item = model.items[safe: indexPath.row],
+               item.id == selectedId {
+                $0.isSelected = true
+            } else {
+                $0.isSelected = false
+            }
+        }
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension PDSelectionCollectionView: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard let model,
+           let selectedItem = model.items[safe: indexPath.item] else {
+            return
+        }
+
+        onSelectItem?(selectedItem)
+    }
+}
+
+// MARK: - private functions
+
+extension PDSelectionCollectionView {
     private func makeDataSource() -> DataSource {
         DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
             guard let self else { return nil }

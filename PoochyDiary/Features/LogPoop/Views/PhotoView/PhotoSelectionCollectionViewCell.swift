@@ -13,7 +13,7 @@ class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
     }
 
     struct Model {
-        let imageURL: URL?
+        let image: UIImage
     }
 
     var model: Model? {
@@ -49,10 +49,9 @@ class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
     }
 
     private func applyModel() {
-        guard let model,
-              let imageURL = model.imageURL else { return }
+        guard let model else { return }
 
-        imageView.setImageURL(imageURL)
+        imageView.image = model.image
     }
 
     override func prepareForReuse() {

@@ -28,43 +28,22 @@ class DateTimePickerView: BaseView {
         return datePicker
     }()
 
-    private let buttonStackView = UIStackView(
-        axis: .horizontal,
-        alignment: .fill,
-        distribution: .fillEqually,
-        spacing: 8
-    )
-
-    private let doneButton: PDButton = {
-        let button = PDButton()
-        button.setTitle("Done", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemPurple
-        return button
-    }()
-
-    private let cancelButton: PDButton = {
-        let button = PDButton()
-        button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemGray
-        return button
-    }()
+    private let actionBarView = ActionBarView()
 
     override func constructSubviews() {
         super.constructSubviews()
         addAutolayoutSubviews([
             datePicker,
-            buttonStackView
+            actionBarView
         ])
+        actionBarView.onCancel = { [weak self] in
+            self?.onCancel?()
+        }
 
-        buttonStackView.addArrangedSubviews([
-            cancelButton,
-            doneButton
-        ])
-
-        doneButton.addTarget(self, action: #selector(handleDoneButtonTap), for: .touchUpInside)
-        cancelButton.addTarget(self, action: #selector(handleCancelButtonTap), for: .touchUpInside)
+        actionBarView.onDone = { [weak self] in
+            guard let self else { return }
+            onDone?(datePicker.date)
+        }
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -74,10 +53,10 @@ class DateTimePickerView: BaseView {
             datePicker.topAnchor.constraint(equalTo: topAnchor),
             datePicker.leadingAnchor.constraint(equalTo: leadingAnchor),
             datePicker.trailingAnchor.constraint(equalTo: trailingAnchor),
-            datePicker.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor),
-            buttonStackView.heightAnchor.constraint(equalToConstant: 48),
-            buttonStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            buttonStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            datePicker.bottomAnchor.constraint(equalTo: actionBarView.topAnchor),
+            actionBarView.heightAnchor.constraint(equalToConstant: 48),
+            actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
     }
 
@@ -85,15 +64,5 @@ class DateTimePickerView: BaseView {
         guard let date = model?.date else { return }
 
         datePicker.date = date
-    }
-}
-
-extension DateTimePickerView {
-    @objc private func handleDoneButtonTap() {
-        onDone?(datePicker.date)
-    }
-
-    @objc private func handleCancelButtonTap() {
-        onCancel?()
     }
 }

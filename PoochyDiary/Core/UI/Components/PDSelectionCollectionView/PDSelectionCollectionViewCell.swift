@@ -12,7 +12,7 @@ struct PDSelectionCellStyle {
 }
 
 nonisolated struct PDSelectionItem: Hashable {
-    let id: UUID
+    let id: String
     let title: String
     let imageName: String
 }

@@ -9,6 +9,16 @@ import UIKit
 
 class NotesView: BaseView {
 
+    struct Model {
+        let notes: String?
+    }
+
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
+
     var onTextChange: ((String) -> Void)?
 
     private enum Constants {
@@ -21,7 +31,7 @@ class NotesView: BaseView {
 
     private let titleLabel: PDLabel = {
         let label = PDLabel()
-        label.model = PDLabel.Model(title: "Notes", isOptional: true)
+        label.model = PDLabel.Model(title: Strings.LogPoop.notes, isOptional: true)
         return label
     }()
 
@@ -45,7 +55,7 @@ class NotesView: BaseView {
 
     private let placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = "Add any notes about this poop..."
+        label.text = Strings.LogPoop.notesTextFieldPlaceholder
         label.textColor = .placeholderText
         label.font = .systemFont(ofSize: 16)
         return label
@@ -87,6 +97,12 @@ class NotesView: BaseView {
             placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor),
             placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
         ])
+    }
+
+    private func applyModel() {
+        guard let model else { return }
+
+        textView.text = model.notes
     }
 }
 

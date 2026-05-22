@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PoopLog: Identifiable, Equatable, Codable {
+struct PoopLog: Identifiable, Equatable {
     let id: UUID
     let petId: UUID
     var date: Date
@@ -15,7 +15,7 @@ struct PoopLog: Identifiable, Equatable, Codable {
     var mucusLevel: MucusLevel
     var bloodAmount: BloodAmount
     var note: String?
-    var imageFileNames: [String]
+    var photos: [Photo]
     var tags: [Tag]
 
     init(id: UUID,
@@ -25,7 +25,7 @@ struct PoopLog: Identifiable, Equatable, Codable {
          mucusLevel: MucusLevel,
          bloodAmount: BloodAmount,
          note: String? = nil,
-         imageFileNames: [String],
+         photos: [Photo],
          tags: [Tag]
     ) {
         self.id = id
@@ -35,32 +35,7 @@ struct PoopLog: Identifiable, Equatable, Codable {
         self.mucusLevel = mucusLevel
         self.bloodAmount = bloodAmount
         self.note = note
-        self.imageFileNames = imageFileNames
-        self.tags = tags
-    }
-
-    init?(
-        _ entity: PoopLogEntity,
-        imageFileNames: [String],
-        tags: [Tag]
-    ) {
-        guard let id = entity.id,
-              let petId = entity.petId,
-              let date = entity.date,
-              let stoolTypeStr = entity.stoolType,
-              let stoolType = StoolType(rawValue: stoolTypeStr),
-              let mucusLevelStr = entity.mucusLevel,
-              let mucusLevel = MucusLevel(rawValue: mucusLevelStr),
-              let bloodAmountStr = entity.bloodAmount,
-              let bloodAmount = BloodAmount(rawValue: bloodAmountStr)
-        else { return nil }
-        self.id = id
-        self.petId = petId
-        self.date = date
-        self.stoolType = stoolType
-        self.bloodAmount = bloodAmount
-        self.mucusLevel = mucusLevel
-        self.imageFileNames = imageFileNames
+        self.photos = photos
         self.tags = tags
     }
 }

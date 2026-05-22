@@ -13,6 +13,8 @@ final class AppCoordinator: BaseCoordinator {
 
     init(window: UIWindow) {
         self.window = window
+        super.init()
+        setupDependencies()
     }
 
     override func start() {
@@ -26,5 +28,10 @@ final class AppCoordinator: BaseCoordinator {
         window.makeKeyAndVisible()
 
         addChild(mainCoordinator)
+    }
+
+    private func setupDependencies() {
+        dependencies.imageFileManager = ImageFileManager()
+        dependencies.poochyDiaryCoreDataManager = PoochyDiaryCoreDataManager()
     }
 }

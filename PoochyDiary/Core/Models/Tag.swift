@@ -7,19 +7,11 @@
 
 import Foundation
 
-struct Tag: Identifiable, Equatable, Codable {
+nonisolated struct Tag: Identifiable, Equatable, Codable, Hashable {
     let id: UUID
     let name: String
 
     init(id: UUID, name: String) {
-        self.id = id
-        self.name = name
-    }
-
-    init?(_ entity: TagEntity) {
-        guard let id = entity.id,
-              let name = entity.name else { return nil }
-
         self.id = id
         self.name = name
     }

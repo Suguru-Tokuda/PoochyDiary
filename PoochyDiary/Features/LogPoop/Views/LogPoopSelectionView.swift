@@ -7,11 +7,17 @@
 
 import UIKit
 
-class LogPoopSelectionView: BaseView {
+class LogPoopSelectionView: LogPoopFormBaseView {
+    // MARK: - Closures
+
+    var onItemSelect: ((PDSelectionItem) -> Void)? {
+        didSet {
+            selectionView.onSelectItem = onItemSelect
+        }
+    }
+
     struct Model {
-        let title: String
-        let isOptional: Bool
-        let selectionItems: [PDSelectionItem]
+        let selectedId: String?
     }
 
     var model: Model? {
@@ -21,44 +27,56 @@ class LogPoopSelectionView: BaseView {
     }
     // MARK: - UI Components
 
+    private let stackView = UIStackView(
+        axis: .vertical,
+        alignment: .fill,
+        distribution: .fill,
+        spacing: 12
+    )
+
     private let label = PDLabel()
     private let selectionView: PDSelectionCollectionView
 
-    init(frame: CGRect = .zero, style: PDSelectionCellStyle = .init(selectedColor: .systemPurple)) {
+    init(frame: CGRect = .zero,
+         title: String,
+         isOptional: Bool,
+         selectionItems: [PDSelectionItem] = [],
+         style: PDSelectionCellStyle = .init(selectedColor: .accent)
+    ) {
+        label.model = PDLabel.Model(title: title, isOptional: isOptional)
         selectionView = PDSelectionCollectionView(cellStyle: style)
+        selectionView.model = PDSelectionCollectionView.Model(items: selectionItems)
         super.init(frame: frame)
     }
     
     required init?(coder: NSCoder) {
         nil
     }
-    
+
     override func constructSubviews() {
         super.constructSubviews()
-        addAutolayoutSubviews([
+        stackView.addArrangedSubviews([
             label,
+            errorMessageView,
             selectionView
         ])
+        addAutolayoutSubview(stackView)
     }
 
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: topAnchor),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-
-            selectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
-            selectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            selectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            selectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
 
     private func applyModel() {
-        guard let model else { return }
+        guard let model,
+        let id = model.selectedId else { return }
 
-        label.model = PDLabel.Model(title: model.title, isOptional: model.isOptional)
-        selectionView.model = PDSelectionCollectionView.Model(items: model.selectionItems)
+        selectionView.configure(selectedId: id)
     }
 }

@@ -8,12 +8,18 @@
 import UIKit
 
 class PhotoSelectionView: BaseView {
+
+    // MARK: - Closures
+
+    var onCameraButtonTap: (() -> Void)?
+    var onImageGalleryButtonTap: (() -> Void)?
+    
     // MARK: - typealias
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, String>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Int, Photo>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Photo>
 
     struct Model {
-        let selectedImages: [String]
+        let selectedPhotos: [Photo]
     }
 
     var model: Model? {
@@ -30,7 +36,7 @@ class PhotoSelectionView: BaseView {
 
     private let label: PDLabel = {
         let label = PDLabel()
-        label.model = PDLabel.Model(title: "Photos", isOptional: true)
+        label.model = PDLabel.Model(title: Strings.LogPoop.photos, isOptional: true)
         return label
     }()
 
@@ -44,20 +50,20 @@ class PhotoSelectionView: BaseView {
     )
     private let cameraButton: PDButton = {
         let button = PDButton()
-        button.setTitle("Camera", for: .normal)
+        button.setTitle(Strings.LogPoop.camera, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setImage(UIImage(systemName: "camera"), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .systemPurple
+        button.backgroundColor = .accent
         return button
     }()
     private let imageGalleryButton: PDButton = {
         let button = PDButton()
-        button.setTitle("Gallery", for: .normal)
+        button.setTitle(Strings.LogPoop.gallery, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setImage(UIImage(systemName: "photo"), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .systemPurple
+        button.backgroundColor = .accent
         return button
     }()
 
@@ -91,6 +97,9 @@ class PhotoSelectionView: BaseView {
             label,
             stackView
         ])
+
+        cameraButton.addTarget(self, action: #selector(handleCameraButtonTap), for: .touchUpInside)
+        imageGalleryButton.addTarget(self, action: #selector(handleImageGalleryButtonTap), for: .touchUpInside)
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -110,8 +119,8 @@ class PhotoSelectionView: BaseView {
 
             buttonStackView.heightAnchor.constraint(equalToConstant: 48)
         ])
-        collectionViewHeightConstraint?.isActive = true
-        addPhotoViewHeightConstraint?.isActive = true
+        collectionViewHeightConstraint?.activate()
+        addPhotoViewHeightConstraint?.activate()
     }
 
     override func layoutSubviews() {
@@ -121,14 +130,14 @@ class PhotoSelectionView: BaseView {
     }
 
     private func applyModel() {
-        let selectedImages = model?.selectedImages ?? []
+        let selectedPhotos = model?.selectedPhotos ?? []
 
-        collectionView.isHidden = selectedImages.isEmpty
-        addPhotoView.isHidden = !selectedImages.isEmpty
+        collectionView.isHidden = selectedPhotos.isEmpty
+        addPhotoView.isHidden = !selectedPhotos.isEmpty
 
         guard let dataSource else { return }
         
-        dataSource.apply(makeSnapshot(imageURLs: selectedImages))
+        dataSource.apply(makeSnapshot(photos: selectedPhotos))
     }
 }
 
@@ -177,17 +186,19 @@ extension PhotoSelectionView {
                 return nil
             }
 
-            cell.model = PhotoSelectionCollectionViewCell.Model(imageURL: URL(string: item))
+            if let image = item.image {
+                cell.model = PhotoSelectionCollectionViewCell.Model(image: image)
+            }
 
             return cell
         }
     }
 
-    private func makeSnapshot(imageURLs: [String]) -> Snapshot {
+    private func makeSnapshot(photos: [Photo]) -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([0])
 
-        snapshot.appendItems(imageURLs, toSection: 0)
+        snapshot.appendItems(photos, toSection: 0)
 
         return snapshot
     }
@@ -199,5 +210,17 @@ extension PhotoSelectionView {
         let height = availableWidth * 0.9
         collectionViewHeightConstraint?.constant = height
         addPhotoViewHeightConstraint?.constant = availableWidth * 0.7
+    }
+}
+
+// MARK: Button handlers
+
+extension PhotoSelectionView {
+    @objc private func handleCameraButtonTap() {
+        onCameraButtonTap?()
+    }
+
+    @objc private func handleImageGalleryButtonTap() {
+        onImageGalleryButtonTap?()
     }
 }

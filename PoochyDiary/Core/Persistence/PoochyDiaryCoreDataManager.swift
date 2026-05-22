@@ -9,10 +9,13 @@ import CoreData
 
 protocol PoochyDiaryCoreDataManaging {
     func getPets() throws -> [Pet]
+    func removePet(pet: Pet) throws
     func getPoopLogs(petId: UUID) throws -> [PoopLog]
     func getPoopLogImages(poopLogId: UUID) throws -> [String]
     func savePet(pet: Pet) throws
     func savePoopLog(poopLog: PoopLog) throws
+    func removePoopLog(poopLog: PoopLog) throws
+    func removePoopLogs(petId: UUID) throws
     func getAllTags() throws -> [Tag]
     func removeTag(tag: Tag) throws
 }
@@ -61,6 +64,25 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         
         return pets
     }
+
+    func removePet(pet: Pet) throws {
+        try context.performAndWait {
+            do {
+                // Wipe out all the logs before removing the pet.
+                try removePoopLogs(petId: pet.id)
+
+                let request: NSFetchRequest<PetEntity> = PetEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "id = %@", pet.id as CVarArg)
+                request.fetchLimit = 1
+
+                if let petEntity = try context.fetch(request).first {
+                    context.delete(petEntity)
+                }
+
+                try saveContext()
+            }
+        }
+    }
     
     func getPoopLogs(petId: UUID) throws -> [PoopLog] {
         var logs: [PoopLog] = []
@@ -75,18 +97,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             do {
                 let results = try context.fetch(request)
                 logs = results.compactMap { (entity: PoopLogEntity) -> PoopLog? in
-                    let existingImages = entity.images as? Set<PoopLogImageEntity> ?? []
-                    let existingTags = entity.tags as? Set<TagEntity> ?? []
-
-                    return PoopLog(
-                        entity,
-                        imageFileNames: Array(existingImages)
-                            .sorted(by: { $0.sortOrder < $1.sortOrder })
-                            .compactMap { $0.fileName },
-                        tags: Array(existingTags)
-                            .compactMap { Tag($0) }
-                            .sorted { $0.name < $1.name }
-                    )
+                    return makePoopLog(from: entity)
                 }
             } catch {
                 throw PoochyDiaryCoreDataError.entityFetchError(error)
@@ -95,12 +106,41 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         
         return logs
     }
+
+    func removePoopLog(poopLog: PoopLog) throws {
+        try context.performAndWait {
+            do {
+                let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "id = %@", poopLog.id as CVarArg)
+                request.fetchLimit = 1
+
+                if let poopLogEntity = try context.fetch(request).first {
+                    context.delete(poopLogEntity)
+                    try saveContext()
+                }
+            }
+        }
+    }
+
+    func removePoopLogs(petId: UUID) throws {
+        try context.performAndWait {
+            do {
+                let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "petId = %@", petId as CVarArg)
+
+                let poopLogEntities = try context.fetch(request)
+                poopLogEntities.forEach { context.delete($0) }
+
+                try saveContext()
+            }
+        }
+    }
     
     func getPoopLogImages(poopLogId: UUID) throws -> [String] {
         var imageFileNames: [String] = []
         
         try context.performAndWait {
-            let request: NSFetchRequest<PoopLogImageEntity> = PoopLogImageEntity.fetchRequest()
+            let request: NSFetchRequest<PoopLogPhotoEntity> = PoopLogPhotoEntity.fetchRequest()
             request.predicate = NSPredicate(format: "poopLog.id == %@", poopLogId as CVarArg)
             request.sortDescriptors = [
                 NSSortDescriptor(key: "sortOrder", ascending: true)
@@ -163,15 +203,15 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                 }
                 entity.tags = NSSet(array: tagEntities)
 
-                if let existingImages = entity.images as? Set<PoopLogImageEntity> {
+                if let existingImages = entity.photos as? Set<PoopLogPhotoEntity> {
                     existingImages.forEach { context.delete($0) }
-                    entity.images = nil
+                    entity.photos = nil
                 }
 
-                for (index, fileName) in poopLog.imageFileNames.enumerated() {
-                    let imageEntity = PoopLogImageEntity(context: context)
-                    imageEntity.id = UUID()
-                    imageEntity.fileName = fileName
+                for (index, photo) in poopLog.photos.enumerated() {
+                    let imageEntity = PoopLogPhotoEntity(context: context)
+                    imageEntity.id = photo.id
+                    imageEntity.fileName = photo.fileName
                     imageEntity.createdAt = Date()
                     imageEntity.sortOrder = Int16(index)
                     imageEntity.poopLog = entity
@@ -195,7 +235,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             
             do {
                 let results = try context.fetch(request)
-                tags = results.compactMap { Tag($0) }
+                tags = results.compactMap { makeTag(from: $0) }
             } catch {
                 throw PoochyDiaryCoreDataError.entityFetchError(error)
             }
@@ -239,5 +279,54 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         entity.name = normalizedName
 
         return entity
+    }
+
+    private func makeTag(from entity: TagEntity) -> Tag? {
+        guard let id = entity.id,
+              let name = entity.name else { return nil }
+
+        return Tag(id: id, name: name)
+    }
+
+    private func makePoopLog(from entity: PoopLogEntity) -> PoopLog? {
+        guard let id = entity.id,
+              let petId = entity.petId,
+              let date = entity.date,
+              let stoolTypeStr = entity.stoolType,
+              let stoolType = StoolType(rawValue: stoolTypeStr),
+              let mucusLevelStr = entity.mucusLevel,
+              let mucusLevel = MucusLevel(rawValue: mucusLevelStr),
+              let bloodAmountStr = entity.bloodAmount,
+              let bloodAmount = BloodAmount(rawValue: bloodAmountStr)
+        else { return nil }
+
+        let photoEntities = Array(entity.photos as? Set<PoopLogPhotoEntity> ?? [])
+        let tagEntities = Array(entity.tags as? Set<TagEntity> ?? [])
+
+        return PoopLog(
+            id: id,
+            petId: petId,
+            date: date,
+            stoolType: stoolType,
+            mucusLevel: mucusLevel,
+            bloodAmount: bloodAmount,
+            note: entity.note,
+            photos: photoEntities.compactMap { makePhoto(form: $0) }.sorted(by: { $0.sortOrder < $1.sortOrder }),
+            tags: tagEntities.compactMap { makeTag(from: $0) }.sorted(by: { $0.name < $1.name }))
+    }
+
+    private func makePhoto(form entity: PoopLogPhotoEntity) -> Photo? {
+        guard let id = entity.id,
+              let fileName = entity.fileName,
+              let createdAt = entity.createdAt else {
+            return nil
+        }
+        let sortOrder = entity.sortOrder
+        return Photo(
+            id: id,
+            fileName: fileName,
+            createdAt: createdAt,
+            sortOrder: Int(sortOrder)
+        )
     }
 }

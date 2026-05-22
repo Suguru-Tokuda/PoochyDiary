@@ -22,21 +22,21 @@ class AddPhotoView: BaseView {
     )
     private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "photo"))
-        imageView.tintColor = .systemPurple
+        imageView.tintColor = .accent
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     private let label: UILabel = {
        let label = UILabel()
-       label.text = "Add Photo"
+        label.text = Strings.LogPoop.addPhoto
        label.font = .systemFont(ofSize: 16, weight: .medium)
-       label.textColor = .systemPurple
+       label.textColor = .accent
     
        return label
     }()
     private let subTitle: UILabel = {
         let label = UILabel()
-        label.text = "Take a photo or upload from library"
+        label.text = Strings.LogPoop.takePhoto
         label.textColor = .systemGray
         label.font = .systemFont(ofSize: 14, weight: .medium)
         return label

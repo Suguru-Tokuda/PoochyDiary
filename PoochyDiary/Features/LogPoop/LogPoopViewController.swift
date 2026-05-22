@@ -5,11 +5,15 @@
 //  Created by Suguru Tokuda on 4/27/26.
 //
 
+import Combine
 import UIKit
 
 protocol LogPoopViewControllerDelegate: AnyObject {
     func onCancelButtonTap()
     func onDateTimeLabelTap()
+    func onTagsTap()
+    func onCameraButtonTap()
+    func onImageGalleryButtonTap()
 }
 
 final class LogPoopViewController: BaseViewController {
@@ -17,15 +21,21 @@ final class LogPoopViewController: BaseViewController {
 
     let viewModel: LogPoopViewModel
     let logPoopView = LogPoopView()
+    private var subscriptions = Set<AnyCancellable>()
 
     init(viewModel: LogPoopViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        addSubscriptios()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         nil
+    }
+
+    @MainActor deinit {
+        subscriptions.removeAll()
     }
 
     override func viewDidLoad() {
@@ -42,6 +52,16 @@ final class LogPoopViewController: BaseViewController {
             selector: #selector(keyboardWillHide),
             name: UIResponder.keyboardWillHideNotification,
             object: nil
+        )
+
+        logPoopView.configure(
+            dateTime: viewModel.dateTime,
+            stoolType: viewModel.stoolType,
+            mucusLevel: viewModel.mucusLevel,
+            bloodAmount: viewModel.bloodAmount,
+            photos: viewModel.photos,
+            notes: viewModel.notes,
+            tags: viewModel.tags
         )
     }
 
@@ -67,11 +87,38 @@ final class LogPoopViewController: BaseViewController {
             logPoopView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
+
+    private func addSubscriptios() {
+        viewModel.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+
+                logPoopView.configure(dateTime: state.dateTime,
+                                      stoolType: state.stoolType,
+                                      mucusLevel: state.mucusLevel,
+                                      bloodAmount: state.bloodAmount,
+                                      photos: state.photos,
+                                      notes: state.notes,
+                                      tags: state.tags
+                )
+            }
+            .store(in: &subscriptions)
+
+        viewModel.$errors
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errors in
+                guard let self else { return }
+
+                logPoopView.configure(errors: errors)
+            }
+            .store(in: &subscriptions)
+    }
 }
 
 extension LogPoopViewController {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
+        viewModel.notes = textView.text
     }
 }
 
@@ -81,7 +128,11 @@ extension LogPoopViewController {
     }
 
     @objc private func handleSaveButtonTap() {
-        
+        do {
+            try viewModel.save()
+        } catch {
+            // TODO: Show error
+        }
     }
 
     @objc private func keyboardWillChangeFrame(_ notification: Notification) {
@@ -102,28 +153,40 @@ extension LogPoopViewController {
 }
 
 extension LogPoopViewController: LogPoopViewDelegate {
+    
     func onDateTimeTap() {
         delegate?.onDateTimeLabelTap()
     }
-    
-    func onDateTimeChanged(dateTime: Date) {
+
+    func onStoolTypeChanged(item: PDSelectionItem) {
+        viewModel.setStoolType(item: item)
     }
     
-    func onStoolTypeChanged(stoolType: StoolType) {
+    func onMucusLevelChanged(item: PDSelectionItem) {
+        viewModel.setMucusLevel(item: item)
     }
     
-    func onMucusLevelChanged(mucusLevel: MucusLevel) {
+    func onBloodAmountChanged(item: PDSelectionItem) {
+        viewModel.setBloodAmount(item: item)
     }
     
-    func onBloodAmountChanged(bloodAmount: BloodAmount) {
-    }
-    
-    func onPhotoSelectionChanged(photos: [UIImage]) {
+    func onPhotoSelectionChanged(photos: [Photo]) {
+        viewModel.photos = photos
     }
     
     func onNotesChanged(notes: String) {
+        viewModel.notes = notes
     }
     
-    func onTagsChanged(tags: [Tag]) {
+    func onTagsTap() {
+        delegate?.onTagsTap()
+    }
+
+    func onCameraButtonTap() {
+        delegate?.onCameraButtonTap()
+    }
+    
+    func onImageGalleryButtonTap() {
+        delegate?.onImageGalleryButtonTap()
     }
 }

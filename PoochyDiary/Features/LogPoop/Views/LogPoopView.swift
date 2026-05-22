@@ -9,13 +9,14 @@ import UIKit
 
 protocol LogPoopViewDelegate: AnyObject {
     func onDateTimeTap()
-    func onDateTimeChanged(dateTime: Date)
-    func onStoolTypeChanged(stoolType: StoolType)
-    func onMucusLevelChanged(mucusLevel: MucusLevel)
-    func onBloodAmountChanged(bloodAmount: BloodAmount)
-    func onPhotoSelectionChanged(photos: [UIImage])
+    func onStoolTypeChanged(item: PDSelectionItem)
+    func onMucusLevelChanged(item: PDSelectionItem)
+    func onBloodAmountChanged(item: PDSelectionItem)
+    func onPhotoSelectionChanged(photos: [Photo])
     func onNotesChanged(notes: String)
-    func onTagsChanged(tags: [Tag])
+    func onTagsTap()
+    func onCameraButtonTap()
+    func onImageGalleryButtonTap()
 }
 
 final class LogPoopView: BaseView {
@@ -33,16 +34,51 @@ final class LogPoopView: BaseView {
         axis: .vertical,
         alignment: .fill,
         distribution: .fill,
-        spacing: 8
+        spacing: 12
     )
 
     private let dateTimeView = DateTimeView()
-    private let stoolTypeView = LogPoopSelectionView(style: PDSelectionCellStyle(selectedColor: .systemBrown))
-    private let mucusLevelView = LogPoopSelectionView(style: PDSelectionCellStyle(selectedColor: .systemGreen))
-    private let bloodAmountView = LogPoopSelectionView(style: PDSelectionCellStyle(selectedColor: .systemRed))
+    private let stoolTypeView = LogPoopSelectionView(
+        title: Strings.LogPoop.stoolType,
+        isOptional: false,
+        selectionItems: StoolType.allCases.map {
+            PDSelectionItem(
+                id: $0.id,
+                title: $0.name,
+                imageName: $0.imageName.rawValue)
+        },
+        style: PDSelectionCellStyle(selectedColor: .systemBrown)
+    )
+    private let mucusLevelView = LogPoopSelectionView(
+        title: Strings.LogPoop.mucusLevel,
+        isOptional: false,
+        selectionItems: MucusLevel.allCases.map {
+            PDSelectionItem(
+                id: $0.id,
+                title: $0.name,
+                imageName: $0.imageName.rawValue
+            )
+        },
+        style: PDSelectionCellStyle(selectedColor: .systemGreen))
+    private let bloodAmountView = LogPoopSelectionView(
+        title: Strings.LogPoop.bloodAmount,
+        isOptional: false,
+        selectionItems: BloodAmount.allCases.map {
+            PDSelectionItem(
+                id: $0.id,
+                title: $0.name,
+                imageName: $0.imageName.rawValue
+            )
+        },
+        style: PDSelectionCellStyle(selectedColor: .systemRed))
     private let photoSelectionView = PhotoSelectionView()
     private let notesView = NotesView()
-    private let tagView = TagView()
+    private let tagsView = SelectedTagsView(
+        labelTitle: Strings.LogPoop.tags,
+        isOptional: true,
+        shouldShowRemoveButton: false,
+        shouldShowConfigureTagsButton: true
+    )
 
     override func constructSubviews() {
         super.constructSubviews()
@@ -54,35 +90,13 @@ final class LogPoopView: BaseView {
             bloodAmountView,
             photoSelectionView,
             notesView,
-            tagView
+            tagsView
         ])
 
         addAutolayoutSubview(scrollView)
 
-        stoolTypeView.model = LogPoopSelectionView.Model(
-            title: "Stool Type",
-            isOptional: false,
-            selectionItems: StoolType.allCases.map {
-                PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
-        })
-        mucusLevelView.model = LogPoopSelectionView.Model(
-            title: "Mucus Level",
-            isOptional: false,
-            selectionItems: MucusLevel.allCases.map {
-            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
-        })
-        bloodAmountView.model = LogPoopSelectionView.Model(
-            title: "Blood Amount",
-            isOptional: false,
-            selectionItems: BloodAmount.allCases.map {
-            PDSelectionItem(id: UUID(), title: $0.name, imageName: $0.imageName.rawValue)
-        })
-
-        dateTimeView.onDateSelectionLabelTapped = { [weak self] in
-            self?.delegate?.onDateTimeTap()
-        }
-
         stackView.setCustomSpacing(12, after: photoSelectionView)
+        setupEventHandlers()
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -100,6 +114,86 @@ final class LogPoopView: BaseView {
 
             stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -48)
         ])
+    }
+
+    func configure(
+        dateTime: Date?,
+        stoolType: StoolType?,
+        mucusLevel: MucusLevel?,
+        bloodAmount: BloodAmount?,
+        photos: [Photo],
+        notes: String?,
+        tags: [Tag]
+    ) {
+        dateTimeView.model = DateTimeView.Model(dateTime: dateTime)
+        stoolTypeView.model = LogPoopSelectionView.Model(selectedId: stoolType?.id)
+        mucusLevelView.model = LogPoopSelectionView.Model(selectedId: mucusLevel?.id)
+        bloodAmountView.model = LogPoopSelectionView.Model(selectedId: bloodAmount?.id)
+        photoSelectionView.model = PhotoSelectionView.Model(selectedPhotos: photos)
+        notesView.model = NotesView.Model(notes: notes)
+        tagsView.model = SelectedTagsView.Model(selectedTags: tags)
+        tagsView.setConfigureButtonVisibility(isHidden: !tags.isEmpty)
+    }
+
+    func configure(errors: [LogPoopValidationError]) {
+        // Reset error message first
+        let formBaseViews: [LogPoopFormBaseView] = [
+            dateTimeView,
+            stoolTypeView,
+            mucusLevelView,
+            bloodAmountView
+        ]
+
+        formBaseViews.forEach {
+            $0.setErrorMessage(nil)
+        }
+
+        for error in errors {
+            switch error {
+            case .dateTimeRequired:
+                dateTimeView.setErrorMessage(error.message)
+            case .stoolTypeRequired:
+                stoolTypeView.setErrorMessage(error.message)
+            case .mucusLevelRequired:
+                mucusLevelView.setErrorMessage(error.message)
+            case .bloodAmountRequired:
+                bloodAmountView.setErrorMessage(error.message)
+            }
+        }
+    }
+
+    private func setupEventHandlers() {
+        dateTimeView.onDateSelectionLabelTapped = { [weak self] in
+            self?.delegate?.onDateTimeTap()
+        }
+
+        tagsView.onConfigureTagsButtonTap = { [weak self] in
+            self?.delegate?.onTagsTap()
+        }
+
+        tagsView.onChipTap = { [weak self] in
+            self?.delegate?.onTagsTap()
+        }
+
+        photoSelectionView.onCameraButtonTap = { [weak self] in
+            self?.delegate?.onCameraButtonTap()
+        }
+
+        photoSelectionView.onImageGalleryButtonTap = { [weak self] in
+            self?.delegate?.onImageGalleryButtonTap()
+        }
+
+        stoolTypeView.onItemSelect = { [weak self] item in
+            self?.delegate?.onStoolTypeChanged(item: item)
+        }
+
+        mucusLevelView.onItemSelect = { [weak self] item in
+            self?.delegate?.onMucusLevelChanged(item: item)
+        }
+
+        bloodAmountView.onItemSelect = { [weak self] item in
+            self?.delegate?.onBloodAmountChanged(item: item)            
+        }
     }
 
     func setBottomInset(_ inset: CGFloat) {

@@ -8,5 +8,6 @@
 import Foundation
 
 final class AppDependency {
-    
+    var poochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging?
+    var imageFileManager: ImageFileManaging?
 }

@@ -15,6 +15,23 @@ enum StoolType: String, CaseIterable, Codable {
     case mushy
     case watery
 
+    var id: String {
+        switch self {
+        case .extraFirm:
+            return "0"
+        case .firm:
+            return "1"
+        case .normal:
+            return "2"
+        case .soft:
+            return "3"
+        case .mushy:
+            return "4"
+        case .watery:
+            return "5"
+        }
+    }
+
     var name: String {
         switch self {
         case .extraFirm:
