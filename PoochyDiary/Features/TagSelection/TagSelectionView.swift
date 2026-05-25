@@ -176,7 +176,6 @@ class TagSelectionView: BaseView {
     }
 }
 
-
 extension TagSelectionView: UITextFieldDelegate {
     func textField(
         _ textField: UITextField,

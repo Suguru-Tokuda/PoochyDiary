@@ -67,7 +67,6 @@ class BaseTagOptionsView: BaseView {
         }
     }
 
-
     // MARK: - private functions
 
     private func updateCollectionViewHeight() {
