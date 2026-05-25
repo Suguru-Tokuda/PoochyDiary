@@ -44,7 +44,7 @@ final class ImageFileManager: ImageFileManaging {
             return nil
         }
     }
-    
+
     func saveImage(image: UIImage, fileName: String) throws {
         guard let folderURL else {
             throw ImageFileManagerError.folderURLNotFound
@@ -57,12 +57,12 @@ final class ImageFileManager: ImageFileManaging {
         let fileURL = folderURL.appendingPathComponent(fileName)
         try imageData.write(to: fileURL)
     }
-    
+
     func deleteImage(fileName: String) throws {
         guard let folderURL else {
             throw ImageFileManagerError.folderURLNotFound
         }
-    
+
         let fileURL = folderURL.appendingPathComponent(fileName)
 
         do {

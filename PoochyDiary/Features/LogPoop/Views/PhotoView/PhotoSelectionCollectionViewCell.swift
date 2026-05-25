@@ -29,7 +29,7 @@ class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
-        
+
         return imageView
     }()
 

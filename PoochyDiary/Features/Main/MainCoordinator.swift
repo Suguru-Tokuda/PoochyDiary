@@ -16,7 +16,7 @@ class MainCoordinator: BaseCoordinator {
         self.dependencies = dependencies
         super.init(navigationController)
     }
-    
+
     override func start() {
         let tabCoordinator = TabCoordinator(
             navigationController,

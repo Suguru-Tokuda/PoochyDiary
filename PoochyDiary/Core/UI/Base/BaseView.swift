@@ -12,7 +12,7 @@ class BaseView: UIView, Constructable {
         super.init(frame: frame)
         construct()
     }
-    
+
     required init?(coder: NSCoder) {
         nil
     }

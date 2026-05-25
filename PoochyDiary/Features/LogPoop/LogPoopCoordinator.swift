@@ -54,7 +54,7 @@ extension LogPoopCoordinator {
 }
 
 extension LogPoopCoordinator: LogPoopViewControllerDelegate {
-    
+
     func onCancelButtonTap() {
         navigationController.popViewController(animated: true)
         finish()
@@ -71,7 +71,7 @@ extension LogPoopCoordinator: LogPoopViewControllerDelegate {
         viewController.onDoneButtonTap = { [weak self] selectedDate in
             guard let self else { return }
             navigationController.dismiss(animated: true)
-            self.viewModel?.dateTime = selectedDate            
+            self.viewModel?.dateTime = selectedDate
         }
 
         if let sheet = viewController.sheetPresentationController {
@@ -111,7 +111,7 @@ extension LogPoopCoordinator: LogPoopViewControllerDelegate {
     func onCameraButtonTap() {
         openCamera()
     }
-    
+
     func onImageGalleryButtonTap() {
         openPhotoLibrary()
     }

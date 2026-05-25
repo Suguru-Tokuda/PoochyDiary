@@ -36,7 +36,7 @@ class SelectedTagsView: BaseTagOptionsView {
         self.shouldShowRemoveButton = shouldShowRemoveButton
         super.init(frame: frame)
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         nil
     }
@@ -62,7 +62,7 @@ class SelectedTagsView: BaseTagOptionsView {
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            
+
             collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -78,7 +78,7 @@ class SelectedTagsView: BaseTagOptionsView {
 
     override func applyModel() {
         guard let tags = model?.tags else { return }
-        
+
         applySnapshot(tags: tags, animatingDifferences: false)
 
         collectionView.isHidden = tags.isEmpty
@@ -104,7 +104,7 @@ class SelectedTagsView: BaseTagOptionsView {
             cell.onRemoveButtonTap = { [weak self] in
                 self?.onRemoveTag?(item)
             }
-            
+
             return cell
         }
     }
@@ -121,7 +121,7 @@ extension SelectedTagsView {
 // MARK: - CollectionView
 
 extension SelectedTagsView: UICollectionViewDelegate {
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         onChipTap?()
     }

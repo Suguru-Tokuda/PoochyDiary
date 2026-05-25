@@ -24,11 +24,11 @@ class TagSelectionViewController: BaseViewController {
     @MainActor deinit {
         subscriptions.removeAll()
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         nil
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addSubscriptions()

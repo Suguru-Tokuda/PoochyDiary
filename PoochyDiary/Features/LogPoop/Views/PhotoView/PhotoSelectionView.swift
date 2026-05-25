@@ -13,7 +13,7 @@ class PhotoSelectionView: BaseView {
 
     var onCameraButtonTap: (() -> Void)?
     var onImageGalleryButtonTap: (() -> Void)?
-    
+
     // MARK: - typealias
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, Photo>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Photo>
@@ -77,7 +77,7 @@ class PhotoSelectionView: BaseView {
     required init?(coder: NSCoder) {
         nil
     }
-    
+
     override func constructSubviews() {
         super.constructSubviews()
         collectionView.isHidden = true
@@ -92,7 +92,7 @@ class PhotoSelectionView: BaseView {
             cameraButton,
             imageGalleryButton
         ])
-        
+
         addAutolayoutSubviews([
             label,
             stackView
@@ -106,7 +106,7 @@ class PhotoSelectionView: BaseView {
         super.constructSubviewLayoutConstraints()
         collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
         addPhotoViewHeightConstraint = addPhotoView.heightAnchor.constraint(equalToConstant: 0)
-        
+
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -136,7 +136,7 @@ class PhotoSelectionView: BaseView {
         addPhotoView.isHidden = !selectedPhotos.isEmpty
 
         guard let dataSource else { return }
-        
+
         dataSource.apply(makeSnapshot(photos: selectedPhotos))
     }
 }

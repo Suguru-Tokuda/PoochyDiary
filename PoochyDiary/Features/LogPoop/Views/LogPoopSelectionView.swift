@@ -48,7 +48,7 @@ class LogPoopSelectionView: LogPoopFormBaseView {
         selectionView.model = PDSelectionCollectionView.Model(items: selectionItems)
         super.init(frame: frame)
     }
-    
+
     required init?(coder: NSCoder) {
         nil
     }

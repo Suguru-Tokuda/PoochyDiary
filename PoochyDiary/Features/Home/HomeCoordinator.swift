@@ -17,7 +17,7 @@ class HomeCoordinator: BaseCoordinator {
         self.dependencies = dependencies
         super.init(navigationController)
     }
-    
+
     override func start() {
         let viewModel = HomeViewModel()
         let viewController = HomeViewController(viewModel: viewModel)

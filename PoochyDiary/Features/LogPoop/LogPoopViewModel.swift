@@ -83,13 +83,12 @@ class LogPoopViewModel {
         do {
             self.tagOptions = try coreDataManager.getAllTags()
         } catch {
-            
         }
     }
 
     func addPhoto(image: UIImage) {
         guard let pet else { return }
-        
+
         var state = state
         let createdAt = Date()
         state.photos.append(Photo(

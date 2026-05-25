@@ -35,7 +35,7 @@ class HomeView: UIView {
         setupUI()
         setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         nil
     }

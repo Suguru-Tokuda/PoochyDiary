@@ -31,7 +31,7 @@ class AddPhotoView: BaseView {
         label.text = Strings.LogPoop.addPhoto
        label.font = .systemFont(ofSize: 16, weight: .medium)
        label.textColor = .accent
-    
+
        return label
     }()
     private let subTitle: UILabel = {

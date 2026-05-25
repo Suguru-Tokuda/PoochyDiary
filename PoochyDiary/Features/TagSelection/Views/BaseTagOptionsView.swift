@@ -34,11 +34,11 @@ class BaseTagOptionsView: BaseView {
         super.init(frame: frame)
         dataSource = makeDataSource()
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         nil
     }
-    
+
     func applyModel() {
         guard let model else { return }
 
@@ -82,29 +82,29 @@ class BaseTagOptionsView: BaseView {
     private static func makeLayout() -> UICollectionViewCompositionalLayout {
         let spacing: CGFloat = 8
         let cellHeight: CGFloat = 36
-        
+
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .estimated(100),
             heightDimension: .absolute(cellHeight)
         )
-        
+
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
+
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .absolute(cellHeight)
         )
-        
+
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item]
         )
 
         group.interItemSpacing = .fixed(spacing)
-        
+
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = spacing
-        
+
         return UICollectionViewCompositionalLayout(section: section)
     }
 
@@ -112,7 +112,7 @@ class BaseTagOptionsView: BaseView {
         var snapshot = Snapshot()
         snapshot.appendSections([0])
         snapshot.appendItems(tags, toSection: 0)
-        
+
         return snapshot
     }
 }

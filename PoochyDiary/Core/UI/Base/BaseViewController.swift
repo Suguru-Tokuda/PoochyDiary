@@ -20,8 +20,8 @@ class BaseViewController: UIViewController, Constructable {
     }
 
     func constructView() {}
-    
+
     func constructSubviews() {}
-    
+
     func constructSubviewLayoutConstraints() {}
 }

@@ -27,11 +27,11 @@ class PDErrorMessageView: BaseView {
         super.init(frame: frame)
         self.isHidden = isHidden
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         nil
     }
-    
+
     override func constructSubviews() {
         super.constructSubviews()
         addAutolayoutSubviews([

@@ -64,7 +64,7 @@ class PDLabel: BaseView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
-    
+
     private func applyModel() {
         guard let model else { return }
 

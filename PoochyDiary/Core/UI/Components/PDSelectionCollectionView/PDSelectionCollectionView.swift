@@ -11,7 +11,7 @@ class PDSelectionCollectionView: BaseView {
     // MARK: - Closures
 
     var onSelectItem: ((PDSelectionItem) -> Void)?
-    
+
     private enum Constants {
         static let rowSpacing: CGFloat = 12
         static let sectionTopInset: CGFloat = 8
@@ -130,7 +130,7 @@ extension PDSelectionCollectionView {
             }
 
             cell.configure(with: item, style: cellStyle)
-                    
+
             return cell
         }
     }

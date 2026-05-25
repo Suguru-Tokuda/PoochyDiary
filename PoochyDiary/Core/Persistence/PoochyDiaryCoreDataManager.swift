@@ -31,13 +31,13 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
     private var context: NSManagedObjectContext {
         persistentController.container.viewContext
     }
-    
+
     init(
         persistentController: PersistentController = .shared
     ) {
         self.persistentController = persistentController
     }
-    
+
     func saveContext() throws {
         if context.hasChanges {
             do {
@@ -47,12 +47,12 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             }
         }
     }
-    
+
     func getPets() async throws -> [Pet] {
         let context = context
         return try await context.perform {
             let request: NSFetchRequest<PetEntity> = PetEntity.fetchRequest()
-            
+
             do {
                 let results = try context.fetch(request)
                 return results.compactMap { Pet($0) }
@@ -82,7 +82,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             }
         }
     }
-    
+
     func getPoopLogs(petId: UUID) async throws -> [PoopLog] {
         let context = context
         return try await context.perform {
@@ -91,7 +91,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             request.sortDescriptors = [
                 NSSortDescriptor(key: "date", ascending: false)
             ]
-            
+
             do {
                 let results = try context.fetch(request)
                 return results.compactMap { (entity: PoopLogEntity) -> PoopLog? in
@@ -145,7 +145,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             request.sortDescriptors = [
                 NSSortDescriptor(key: "sortOrder", ascending: true)
             ]
-            
+
             do {
                 let results = try context.fetch(request)
                 return results.compactMap { $0.fileName }
@@ -154,7 +154,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             }
         }
     }
-    
+
     func savePet(pet: Pet) throws {
         try context.performAndWait {
             do {
@@ -177,7 +177,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             }
         }
     }
-    
+
     func savePoopLog(poopLog: PoopLog) async throws {
         let context = context
         try await context.perform { [weak self] in
@@ -189,9 +189,9 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                 request.fetchLimit = 1
 
                 let existing = try context.fetch(request).first
-            
+
                 let entity = existing ?? PoopLogEntity(context: context)
-                
+
                 entity.id = poopLog.id
                 entity.petId = poopLog.petId
                 entity.bloodAmount = poopLog.bloodAmount.rawValue
@@ -217,7 +217,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                     imageEntity.sortOrder = Int16(index)
                     imageEntity.poopLog = entity
                 }
-            
+
                 try saveContext()
             } catch {
                 throw PoochyDiaryCoreDataError.entitySaveError(error)
@@ -233,7 +233,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             request.sortDescriptors = [
                 NSSortDescriptor(key: "name", ascending: true)
             ]
-            
+
             do {
                 let results = try context.fetch(request)
                 tags = results.compactMap { makeTag(from: $0) }
@@ -270,11 +270,11 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         let request: NSFetchRequest<TagEntity> = TagEntity.fetchRequest()
         request.predicate = NSPredicate(format: "name == %@", normalizedName)
         request.fetchLimit = 1
-    
+
         if let existing = try context.fetch(request).first {
             return existing
         }
-    
+
         let entity = TagEntity(context: context)
         entity.id = tag.id
         entity.name = normalizedName

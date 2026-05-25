@@ -11,20 +11,20 @@ class BaseButton: UIButton, Constructable{
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
+
     required init?(coder: NSCoder) {
         nil
     }
-    
+
     private func construct() {
         constructView()
         constructSubviews()
         constructSubviewLayoutConstraints()
     }
-    
+
     func constructView() {}
-    
+
     func constructSubviews() {}
-    
+
     func constructSubviewLayoutConstraints() {}
 }

@@ -83,11 +83,11 @@ class TagSelectionView: BaseView {
         super.init(frame: frame)
         addSubscriptions()
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         nil
     }
-    
+
     override func constructSubviews() {
         super.constructSubviews()
         scrollView.addAutolayoutSubview(stackView)
@@ -124,7 +124,7 @@ class TagSelectionView: BaseView {
             scrollView.bottomAnchor.constraint(equalTo: actionBarView.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            
+
             actionBarView.bottomAnchor.constraint(equalTo: bottomAnchor),
             actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
             actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),

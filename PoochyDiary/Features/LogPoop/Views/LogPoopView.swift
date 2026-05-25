@@ -192,7 +192,7 @@ final class LogPoopView: BaseView {
         }
 
         bloodAmountView.onItemSelect = { [weak self] item in
-            self?.delegate?.onBloodAmountChanged(item: item)            
+            self?.delegate?.onBloodAmountChanged(item: item)
         }
     }
 

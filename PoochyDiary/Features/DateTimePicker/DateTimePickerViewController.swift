@@ -21,7 +21,7 @@ class DateTimePickerViewController: BaseViewController {
 
         datePickerView.model = DateTimePickerView.Model(date: viewModel.date)
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         nil
     }

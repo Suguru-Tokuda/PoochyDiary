@@ -167,7 +167,7 @@ extension LogPoopViewController {
 }
 
 extension LogPoopViewController: LogPoopViewDelegate {
-    
+
     func onDateTimeTap() {
         delegate?.onDateTimeLabelTap()
     }
@@ -175,23 +175,23 @@ extension LogPoopViewController: LogPoopViewDelegate {
     func onStoolTypeChanged(item: PDSelectionItem) {
         viewModel.setStoolType(item: item)
     }
-    
+
     func onMucusLevelChanged(item: PDSelectionItem) {
         viewModel.setMucusLevel(item: item)
     }
-    
+
     func onBloodAmountChanged(item: PDSelectionItem) {
         viewModel.setBloodAmount(item: item)
     }
-    
+
     func onPhotoSelectionChanged(photos: [Photo]) {
         viewModel.photos = photos
     }
-    
+
     func onNotesChanged(notes: String) {
         viewModel.notes = notes
     }
-    
+
     func onTagsTap() {
         delegate?.onTagsTap()
     }
@@ -199,7 +199,7 @@ extension LogPoopViewController: LogPoopViewDelegate {
     func onCameraButtonTap() {
         delegate?.onCameraButtonTap()
     }
-    
+
     func onImageGalleryButtonTap() {
         delegate?.onImageGalleryButtonTap()
     }
