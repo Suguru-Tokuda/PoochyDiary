@@ -54,6 +54,7 @@ class LogPoopViewModel {
             validate()
         }
     }
+    private var submitted = false
     @Published private(set) var errors: [LogPoopValidationError] = []
     private(set) var tagOptions: [Tag] = []
     var pet: Pet?
@@ -102,6 +103,8 @@ class LogPoopViewModel {
     }
 
     func validate() {
+        guard submitted else { return }
+
         var errors: [LogPoopValidationError] = []
 
         if state.dateTime == nil {
@@ -124,6 +127,7 @@ class LogPoopViewModel {
     }
 
     func save() throws {
+        submitted = true
         validate()
         guard state.isValid else {
             return

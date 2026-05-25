@@ -7,44 +7,15 @@
 
 import UIKit
 
-class TagOptionsView: BaseView {
+class TagOptionsView: BaseTagOptionsView {
 
     var onSelectTag: ((Tag) -> Void)?
-
-    // MARK: - typealias
-
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, Tag>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Tag>
-
-    struct Model {
-        let tags: [Tag]
-    }
-
-    var model: Model? {
-        didSet {
-            applyModel()
-        }
-    }
-
-    private var collectionViewHeightConstraint: NSLayoutConstraint?
 
     private let label: PDLabel = {
         let label = PDLabel()
         label.model = PDLabel.Model(title: "Tag Options", isOptional: false)
         return label
     }()
-    private let collectionView: UICollectionView
-    private var dataSource: DataSource?
-
-    override init(frame: CGRect) {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: Self.makeLayout())
-        super.init(frame: frame)
-        dataSource = makeDataSource()
-    }
-    
-    @MainActor required init?(coder: NSCoder) {
-        nil
-    }
 
     override func constructSubviews() {
         super.constructSubviews()
@@ -74,18 +45,13 @@ class TagOptionsView: BaseView {
         collectionViewHeightConstraint?.activate()
     }
 
-    private func applyModel() {
+    override func applyModel() {
         guard let model else { return }
 
         applySnapshot(tags: model.tags, animatingDifferences: false)
     }
 
-}
-
-// MARK: - CollectionView
-
-extension TagOptionsView {
-    private func makeDataSource() -> DataSource {
+    override func makeDataSource() -> DataSource {
         DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TagOptionsCollectionViewCell.reuseIdentifier,
@@ -100,66 +66,5 @@ extension TagOptionsView {
 
             return cell
         }
-    }
-    
-    private static func makeLayout() -> UICollectionViewCompositionalLayout {
-        let spacing: CGFloat = 8
-        let cellHeight: CGFloat = 36
-        
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(100),
-            heightDimension: .absolute(cellHeight)
-        )
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(cellHeight)
-        )
-        
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
-
-        group.interItemSpacing = .fixed(spacing)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = spacing
-        
-        return UICollectionViewCompositionalLayout(section: section)
-    }
-    
-    private func makeSnapshot(tags: [Tag]) -> Snapshot {
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(tags, toSection: 0)
-        
-        return snapshot
-    }
-    
-    private func applySnapshot(tags: [Tag], animatingDifferences: Bool) {
-        guard let dataSource else { return }
-
-        dataSource.apply(makeSnapshot(tags: tags),
-                         animatingDifferences: animatingDifferences) { [weak self] in
-            self?.updateCollectionViewHeight()
-        }
-    }
-
-    private func updateCollectionViewHeight() {
-        collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutIfNeeded()
-
-        let height = collectionView.collectionViewLayout.collectionViewContentSize.height
-
-        collectionViewHeightConstraint?.constant = max(80, ceil(height))
-        invalidateIntrinsicContentSize()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateCollectionViewHeight()
     }
 }

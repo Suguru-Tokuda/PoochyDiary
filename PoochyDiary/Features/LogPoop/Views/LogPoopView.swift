@@ -131,7 +131,7 @@ final class LogPoopView: BaseView {
         bloodAmountView.model = LogPoopSelectionView.Model(selectedId: bloodAmount?.id)
         photoSelectionView.model = PhotoSelectionView.Model(selectedPhotos: photos)
         notesView.model = NotesView.Model(notes: notes)
-        tagsView.model = SelectedTagsView.Model(selectedTags: tags)
+        tagsView.model = SelectedTagsView.Model(tags: tags)
         tagsView.setConfigureButtonVisibility(isHidden: !tags.isEmpty)
     }
 

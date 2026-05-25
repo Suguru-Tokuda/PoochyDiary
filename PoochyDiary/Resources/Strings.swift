@@ -8,14 +8,15 @@
 import Foundation
 
 enum Strings {
-    enum LogPoop {
-        static let title = "Log Poop"
-        
-        // Tag names
+    enum Tabs {
         static let home = "Home"
         static let history = "History"
         static let trends = "Trends"
         static let profile = "Profile"
+    }
+
+    enum LogPoop {
+        static let title = "Log Poop"
 
         // Form fields
         static let stoolType = "Stool Type"
@@ -29,17 +30,23 @@ enum Strings {
         static let tags = "Tags"
 
         static let selectDate = "Select Date"
-        static let notesTextFieldPlaceholder = "Add any notes about this poop..."
+        static let notesPlaceholder = "Add any notes about this poop..."
         static let addPhoto = "Add Photo"
         static let takePhoto = "Take a photo or upload from library"
 
-        static let stoolTypeRequired =
-            "Select a stool type."
+        static let stoolTypeRequired = "Select a stool type."
+        static let mucusLevelRequired = "Select a mucus level."
+        static let bloodAmountRequired = "Select a blood amount."
+    }
 
-        static let mucusLevelRequired =
-            "Select a mucus level."
+    enum TagSearch {
+        case noMatchingTagFound(String)
 
-        static let bloodAmountRequired =
-            "Select a blood amount."
+        var stringValue: String {
+            switch self {
+            case .noMatchingTagFound(let newTag):
+                return "No exact match found. Create a new tag \(newTag)"
+            }
+        }
     }
 }

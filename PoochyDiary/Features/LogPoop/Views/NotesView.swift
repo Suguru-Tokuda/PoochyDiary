@@ -55,7 +55,7 @@ class NotesView: BaseView {
 
     private let placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = Strings.LogPoop.notesTextFieldPlaceholder
+        label.text = Strings.LogPoop.notesPlaceholder
         label.textColor = .placeholderText
         label.font = .systemFont(ofSize: 16)
         return label

@@ -104,7 +104,7 @@ class NewTagSectionView: BaseView {
 
         createButton.configuration?.attributedTitle = attributedTitle
 
-        subTitleView.text = "No exact match found. Create a new tag \"\(model.newTag)\""
+        subTitleView.text = "\(Strings.TagSearch.noMatchingTagFound(model.newTag).stringValue)"
     }
 }
 

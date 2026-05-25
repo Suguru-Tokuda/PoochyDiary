@@ -143,7 +143,7 @@ class TagSelectionView: BaseView {
 
     func configure(selectedTags: [Tag], tagOptions: [Tag]) {
         selectedTagsView.isHidden = selectedTags.isEmpty
-        selectedTagsView.model = SelectedTagsView.Model(selectedTags: selectedTags)
+        selectedTagsView.model = SelectedTagsView.Model(tags: selectedTags)
         tagOptionsView.isHidden = tagOptions.isEmpty
         tagOptionsView.model = TagOptionsView.Model(tags: tagOptions)
     }

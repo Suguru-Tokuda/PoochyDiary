@@ -7,30 +7,15 @@
 
 import UIKit
 
-class SelectedTagsView: BaseView {
+class SelectedTagsView: BaseTagOptionsView {
+
     var onRemoveTag: ((Tag) -> Void)?
     var onChipTap: (() -> Void)?
     var onConfigureTagsButtonTap: (() -> Void)?
 
-    // MARK: - typealias
-
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, Tag>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Tag>
-    
-    struct Model {
-        let selectedTags: [Tag]
-    }
-
-    var model: Model? {
-        didSet {
-            applyModel()
-        }
-    }
     private let shouldShowRemoveButton: Bool
-    private var collectionViewHeightConstraint: NSLayoutConstraint?
 
     private let label = PDLabel()
-    private let collectionView: UICollectionView
     private let configureTagsButton: PDButton = {
         let button = PDButton()
         button.setTitle("Configure Tags", for: .normal)
@@ -40,20 +25,16 @@ class SelectedTagsView: BaseView {
         return button
     }()
 
-    private var dataSource: DataSource?
-
     init(frame: CGRect = .zero,
          labelTitle: String = "Selected Tags",
          isOptional: Bool = false,
          shouldShowRemoveButton: Bool = true,
          shouldShowConfigureTagsButton: Bool = false
     ) {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: Self.makeLayout())
         label.model = PDLabel.Model(title: labelTitle, isOptional: isOptional)
         configureTagsButton.isHidden = !shouldShowConfigureTagsButton
         self.shouldShowRemoveButton = shouldShowRemoveButton
         super.init(frame: frame)
-        dataSource = makeDataSource()
     }
     
     @MainActor required init?(coder: NSCoder) {
@@ -61,7 +42,6 @@ class SelectedTagsView: BaseView {
     }
 
     override func constructSubviews() {
-        super.constructSubviews()
         collectionView.register(SelectedTagCollectionViewCell.self,
                                 forCellWithReuseIdentifier: SelectedTagCollectionViewCell.reuseIdentifier)
         addAutolayoutSubviews([
@@ -96,36 +76,19 @@ class SelectedTagsView: BaseView {
         collectionViewHeightConstraint?.activate()
     }
 
-    private func applyModel() {
-        guard let selectedTags = model?.selectedTags else { return }
+    override func applyModel() {
+        guard let tags = model?.tags else { return }
         
-        applySnapshot(tags: selectedTags)
+        applySnapshot(tags: tags, animatingDifferences: false)
 
-        collectionView.isHidden = selectedTags.isEmpty
+        collectionView.isHidden = tags.isEmpty
     }
 
     func setConfigureButtonVisibility(isHidden: Bool) {
         configureTagsButton.isHidden = isHidden
     }
-}
 
-// MARK: - Event handlers
-
-extension SelectedTagsView {
-    @objc private func handleConfigureButtonTap() {
-        onConfigureTagsButtonTap?()
-    }
-}
-
-// MARK: - CollectionView
-
-extension SelectedTagsView: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        onChipTap?()
-    }
-    
-    private func makeDataSource() -> DataSource {
+    override func makeDataSource() -> DataSource {
         DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
             guard let self else { return nil }
             guard let cell = collectionView.dequeueReusableCell(
@@ -145,65 +108,21 @@ extension SelectedTagsView: UICollectionViewDelegate {
             return cell
         }
     }
+}
+
+// MARK: - Event handlers
+
+extension SelectedTagsView {
+    @objc private func handleConfigureButtonTap() {
+        onConfigureTagsButtonTap?()
+    }
+}
+
+// MARK: - CollectionView
+
+extension SelectedTagsView: UICollectionViewDelegate {
     
-    private static func makeLayout() -> UICollectionViewCompositionalLayout {
-        let spacing: CGFloat = 8
-        let cellHeight: CGFloat = 36
-        
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(100),
-            heightDimension: .absolute(cellHeight)
-        )
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(cellHeight)
-        )
-        
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
-
-        group.interItemSpacing = .fixed(spacing)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = spacing
-        
-        return UICollectionViewCompositionalLayout(section: section)
-    }
-
-    private func makeSnapshot(tags: [Tag]) -> Snapshot {
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(tags, toSection: 0)
-        
-        return snapshot
-    }
-    
-    private func applySnapshot(tags: [Tag]) {
-        guard let dataSource else { return }
-
-        dataSource.apply(makeSnapshot(tags: tags), animatingDifferences: false) { [weak self] in
-            self?.updateCollectionViewHeight()
-        }
-    }
-
-    private func updateCollectionViewHeight() {
-        collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.layoutIfNeeded()
-
-        var height = collectionView.collectionViewLayout.collectionViewContentSize.height
-        height = model?.selectedTags.isEmpty ?? true ? 0 : max(80, ceil(height))
-
-        collectionViewHeightConstraint?.constant = height
-        invalidateIntrinsicContentSize()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateCollectionViewHeight()
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        onChipTap?()
     }
 }

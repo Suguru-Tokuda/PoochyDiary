@@ -26,13 +26,13 @@ enum TabBarPage {
     var tabTitle: String {
         switch self {
         case .home:
-            return Strings.LogPoop.home
+            return Strings.Tabs.home
         case .history:
-            return Strings.LogPoop.history
+            return Strings.Tabs.history
         case .trends:
-            return Strings.LogPoop.trends
+            return Strings.Tabs.trends
         case .profile:
-            return Strings.LogPoop.profile
+            return Strings.Tabs.profile
         }
     }
 
