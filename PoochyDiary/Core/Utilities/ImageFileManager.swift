@@ -55,6 +55,11 @@ final class ImageFileManager: ImageFileManaging {
         }
 
         let fileURL = folderURL.appendingPathComponent(fileName)
+
+        if fileManager.fileExists(atPath: fileURL.path()) {
+            try fileManager.removeItem(at: fileURL)
+        }
+            
         try imageData.write(to: fileURL)
     }
 

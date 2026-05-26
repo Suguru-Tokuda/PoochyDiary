@@ -31,6 +31,7 @@ enum LogPoopValidationError {
 class LogPoopViewModel {
 
     struct State {
+        var poopLogId: UUID = UUID()
         var dateTime: Date?
         var stoolType: StoolType?
         var mucusLevel: MucusLevel?
@@ -38,6 +39,7 @@ class LogPoopViewModel {
         var photos: [Photo]
         var notes: String?
         var tags: [Tag]
+        var date: Date?
 
         var isDirty: Bool = false
 
@@ -56,8 +58,10 @@ class LogPoopViewModel {
     }
     private var submitted = false
     @Published private(set) var errors: [LogPoopValidationError] = []
+    var saveErrorPublisher = PassthroughSubject<Error, Never>()
     private(set) var tagOptions: [Tag] = []
     var pet: Pet?
+    private var saveTask: Task<Void, Never>?
 
     // MARK: - Dependencies
 
@@ -93,7 +97,7 @@ class LogPoopViewModel {
         let createdAt = Date()
         state.photos.append(Photo(
             id: UUID(),
-            fileName: "\(pet.id.uuidString)-photo-\(createdAt.description)",
+            fileName: "\(pet.id.uuidString)-\(state.poopLogId.uuidString)-photo-\(createdAt.description)",
             createdAt: createdAt,
             sortOrder: state.photos.count
         ))
@@ -125,11 +129,44 @@ class LogPoopViewModel {
         self.errors = errors
     }
 
-    func save() throws {
+    func save() {
         submitted = true
         validate()
-        guard state.isValid else {
+
+        guard saveTask == nil,
+              let pet,
+              state.isValid,
+              let stoolType = state.stoolType,
+              let mucusLevel = state.mucusLevel,
+              let bloodAmount = state.bloodAmount else {
             return
+        }
+
+        state.photos.forEach {
+            guard let image = $0.image else { return }
+            try? imageFileManager.saveImage(
+                image: image,
+                fileName: $0.fileName
+            )
+        }
+
+        saveTask = Task(priority: .userInitiated) { [weak self] in
+            guard let self else { return }
+
+            do {
+                try await coreDataManager.savePoopLog(poopLog:
+                                                PoopLog(id: state.poopLogId,
+                                                        petId: pet.id,
+                                                        date: state.date ?? Date(),
+                                                        stoolType: stoolType,
+                                                        mucusLevel: mucusLevel,
+                                                        bloodAmount: bloodAmount,
+                                                        photos: state.photos,
+                                                        tags: state.tags))                
+            } catch {
+                saveErrorPublisher.send(error)
+            }
+            saveTask = nil
         }
     }
 

@@ -89,7 +89,8 @@ final class LogPoopViewController: BaseViewController {
             object: nil
         )
 
-        viewModel.$state
+        viewModel
+            .$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
@@ -105,12 +106,22 @@ final class LogPoopViewController: BaseViewController {
             }
             .store(in: &subscriptions)
 
-        viewModel.$errors
+        viewModel
+            .$errors
             .receive(on: DispatchQueue.main)
             .sink { [weak self] errors in
                 guard let self else { return }
 
                 logPoopView.configure(errors: errors)
+            }
+            .store(in: &subscriptions)
+
+        viewModel
+            .saveErrorPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] error in
+                guard let self else { return }
+                // TODO: Show a pop up for the error.
             }
             .store(in: &subscriptions)
     }
@@ -142,11 +153,7 @@ extension LogPoopViewController {
     }
 
     @objc private func handleSaveButtonTap() {
-        do {
-            try viewModel.save()
-        } catch {
-            // TODO: Show error
-        }
+        viewModel.save()
     }
 
     @objc private func keyboardWillChangeFrame(_ notification: Notification) {
