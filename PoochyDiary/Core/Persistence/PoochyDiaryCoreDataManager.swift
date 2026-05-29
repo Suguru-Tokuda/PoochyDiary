@@ -209,14 +209,15 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                     entity.photos = nil
                 }
 
-                for (index, photo) in poopLog.photos.enumerated() {
+                entity.photos = NSSet(array: poopLog.photos.enumerated().map { (index, photo) in
                     let imageEntity = PoopLogPhotoEntity(context: context)
                     imageEntity.id = photo.id
                     imageEntity.fileName = photo.fileName
                     imageEntity.createdAt = Date()
                     imageEntity.sortOrder = Int16(index)
                     imageEntity.poopLog = entity
-                }
+                    return imageEntity
+                })
 
                 try saveContext()
             } catch {

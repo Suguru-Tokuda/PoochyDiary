@@ -153,7 +153,17 @@ extension LogPoopViewController {
     }
 
     @objc private func handleSaveButtonTap() {
-        viewModel.save()
+        viewModel.save { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success(_):
+                delegate?.onCancelButtonTap()
+            case .failure(_):
+                // Show error
+                break
+            }
+        }
     }
 
     @objc private func keyboardWillChangeFrame(_ notification: Notification) {

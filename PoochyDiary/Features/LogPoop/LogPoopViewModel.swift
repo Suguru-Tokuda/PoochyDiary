@@ -98,7 +98,7 @@ class LogPoopViewModel {
         let createdAt = Date()
         state.photos.append(Photo(
             id: UUID(),
-            fileName: "\(pet.id.uuidString)-\(state.poopLogId.uuidString)-photo-\(createdAt.description)",
+            fileName: "\(pet.id.uuidString)-\(state.poopLogId.uuidString)-photo-\(createdAt.description.replacingOccurrences(of: " ", with: "_"))",
             image: image,
             createdAt: createdAt,
             sortOrder: state.photos.count
@@ -146,7 +146,7 @@ class LogPoopViewModel {
         self.errors = errors
     }
 
-    func save() {
+    func save(completion: @escaping(Result<Void, Error>) -> ()) {
         submitted = true
         validate()
 
@@ -183,9 +183,12 @@ class LogPoopViewModel {
                                                         mucusLevel: mucusLevel,
                                                         bloodAmount: bloodAmount,
                                                         photos: state.photos,
-                                                        tags: state.tags))                
+                                                        tags: state.tags))
+                await MainActor.run {
+                    completion(.success(()))
+                }                
             } catch {
-                saveErrorPublisher.send(error)
+                completion(.failure(error))
             }
             saveTask = nil
         }
