@@ -14,21 +14,28 @@ final class LogPoopCoordinator: BaseCoordinator {
 
     init(
         _ navigationController: UINavigationController,
+        pet: Pet,
+        state: LogPoopViewModel.State? = nil,
         dependencies: AppDependency
     ) {
         self.dependencies = dependencies
         super.init(navigationController)
+        if let imageFileManager = dependencies.imageFileManager,
+           let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager {
+            viewModel = LogPoopViewModel(
+                pet: pet,
+                state: state,
+                coreDataManager: poochyDiaryCoreDataManager,
+                imageFileManager: imageFileManager
+            )
+        }
     }
 
     override func start() {
-        guard let imageFileManager = dependencies.imageFileManager,
-              let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager else { return }
-        let viewModel = LogPoopViewModel(coreDataManager: poochyDiaryCoreDataManager,
-                                         imageFileManager: imageFileManager)
+        guard let viewModel else { return }
         let viewController = LogPoopViewController(viewModel: viewModel)
         viewController.delegate = self
         navigationController.pushViewController(viewController, animated: true)
-        self.viewModel = viewModel
     }
 }
 
@@ -135,16 +142,17 @@ extension LogPoopCoordinator: UIImagePickerControllerDelegate & UINavigationCont
 
 extension LogPoopCoordinator: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.dismiss(animated: true)
+        results.forEach { result in
+            result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] object, error in
+                guard let self,
+                      let viewModel,
+                      let image = object as? UIImage else { return }
 
-        guard let result = results.first else { return }
+                viewModel.addPhoto(image: image)
+            }
+        }
 
-        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] object, error in
-            guard let self,
-                  let viewModel,
-                  let image = object as? UIImage else { return }
-
-            viewModel.addPhoto(image: image)
+        DispatchQueue.main.async {
             picker.dismiss(animated: true)
         }
     }

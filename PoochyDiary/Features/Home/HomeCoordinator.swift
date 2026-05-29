@@ -9,6 +9,7 @@ import UIKit
 
 class HomeCoordinator: BaseCoordinator {
     private let dependencies: AppDependency
+    private let viewModel = HomeViewModel()
 
     init(
         _ navigationController: UINavigationController,
@@ -19,7 +20,6 @@ class HomeCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let viewModel = HomeViewModel()
         let viewController = HomeViewController(viewModel: viewModel)
 
         viewController.onAddLogButtonTap = { [weak self] in
@@ -34,7 +34,11 @@ class HomeCoordinator: BaseCoordinator {
 
 extension HomeCoordinator {
     private func navigateToAddLogPoop() {
-        let logPoopCoordinator = LogPoopCoordinator(navigationController, dependencies: dependencies)
+        let logPoopCoordinator = LogPoopCoordinator(
+            navigationController,
+            pet: viewModel.activePet,
+            dependencies: dependencies
+        )
         logPoopCoordinator.start()
         addChild(logPoopCoordinator)
     }

@@ -70,6 +70,8 @@ final class ImageFileManager: ImageFileManaging {
 
         let fileURL = folderURL.appendingPathComponent(fileName)
 
+        guard fileManager.fileExists(atPath: fileURL.path()) else { return }
+
         do {
             try fileManager.removeItem(at: fileURL)
         } catch{

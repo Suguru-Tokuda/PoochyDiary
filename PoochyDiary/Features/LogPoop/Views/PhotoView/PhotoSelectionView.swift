@@ -13,6 +13,7 @@ class PhotoSelectionView: BaseView {
 
     var onCameraButtonTap: (() -> Void)?
     var onImageGalleryButtonTap: (() -> Void)?
+    var onRemoveImage: ((Photo) -> Void)?
 
     // MARK: - typealias
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, Photo>
@@ -80,6 +81,8 @@ class PhotoSelectionView: BaseView {
 
     override func constructSubviews() {
         super.constructSubviews()
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.isHidden = true
         collectionView.register(PhotoSelectionCollectionViewCell.self,
                                 forCellWithReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier)
@@ -184,6 +187,10 @@ extension PhotoSelectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier, for: indexPath)
                     as? PhotoSelectionCollectionViewCell else {
                 return nil
+            }
+
+            cell.onRemoveButtonTap = { [weak self] in
+                self?.onRemoveImage?(item)
             }
 
             if let image = item.image {

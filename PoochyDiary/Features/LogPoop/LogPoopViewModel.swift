@@ -37,6 +37,7 @@ class LogPoopViewModel {
         var mucusLevel: MucusLevel?
         var bloodAmount: BloodAmount?
         var photos: [Photo]
+        var removePhotos: [Photo] = []
         var notes: String?
         var tags: [Tag]
         var date: Date?
@@ -60,7 +61,7 @@ class LogPoopViewModel {
     @Published private(set) var errors: [LogPoopValidationError] = []
     var saveErrorPublisher = PassthroughSubject<Error, Never>()
     private(set) var tagOptions: [Tag] = []
-    var pet: Pet?
+    let pet: Pet
     private var saveTask: Task<Void, Never>?
 
     // MARK: - Dependencies
@@ -69,7 +70,13 @@ class LogPoopViewModel {
     let imageFileManager: ImageFileManaging
 
     init(
-        state: State = State(
+        pet: Pet,
+        state: State?,
+        coreDataManager: PoochyDiaryCoreDataManaging,
+        imageFileManager: ImageFileManaging
+    ) {
+        self.pet = pet
+        self.state = state ?? State(
             dateTime: nil,
             stoolType: nil,
             mucusLevel: nil,
@@ -77,11 +84,7 @@ class LogPoopViewModel {
             photos: [],
             notes: nil,
             tags: []
-        ),
-        coreDataManager: PoochyDiaryCoreDataManaging,
-        imageFileManager: ImageFileManaging
-    ) {
-        self.state = state
+        )
         self.coreDataManager = coreDataManager
         self.imageFileManager = imageFileManager
         do {
@@ -91,18 +94,32 @@ class LogPoopViewModel {
     }
 
     func addPhoto(image: UIImage) {
-        guard let pet else { return }
-
         var state = state
         let createdAt = Date()
         state.photos.append(Photo(
             id: UUID(),
             fileName: "\(pet.id.uuidString)-\(state.poopLogId.uuidString)-photo-\(createdAt.description)",
+            image: image,
             createdAt: createdAt,
             sortOrder: state.photos.count
         ))
 
         photos = state.photos
+    }
+
+    func removePhoto(photo: Photo) {
+        var state = state
+        var photos = state.photos
+        var removePhotos = state.removePhotos
+        photos.removeAll(where: { $0.id == photo.id })
+
+        if removePhotos.contains(where: { $0.id == photo.id }) {
+            removePhotos.append(photo)
+        }
+
+        state.photos = photos
+        state.removePhotos = removePhotos
+        self.state = state
     }
 
     func validate() {
@@ -134,7 +151,6 @@ class LogPoopViewModel {
         validate()
 
         guard saveTask == nil,
-              let pet,
               state.isValid,
               let stoolType = state.stoolType,
               let mucusLevel = state.mucusLevel,
@@ -142,16 +158,21 @@ class LogPoopViewModel {
             return
         }
 
-        state.photos.forEach {
-            guard let image = $0.image else { return }
-            try? imageFileManager.saveImage(
-                image: image,
-                fileName: $0.fileName
-            )
-        }
-
         saveTask = Task(priority: .userInitiated) { [weak self] in
             guard let self else { return }
+
+            state.removePhotos.forEach {
+                guard !$0.fileName.isEmpty else { return }
+                try? self.imageFileManager.deleteImage(fileName: $0.fileName)
+            }
+
+            state.photos.forEach {
+                guard let image = $0.image else { return }
+                try? self.imageFileManager.saveImage(
+                    image: image,
+                    fileName: $0.fileName
+                )
+            }
 
             do {
                 try await coreDataManager.savePoopLog(poopLog:

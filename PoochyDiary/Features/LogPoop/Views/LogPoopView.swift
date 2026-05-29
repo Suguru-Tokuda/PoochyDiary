@@ -17,6 +17,7 @@ protocol LogPoopViewDelegate: AnyObject {
     func onTagsTap()
     func onCameraButtonTap()
     func onImageGalleryButtonTap()
+    func onRemovePhoto(photo: Photo)
 }
 
 final class LogPoopView: BaseView {
@@ -181,6 +182,10 @@ final class LogPoopView: BaseView {
 
         photoSelectionView.onImageGalleryButtonTap = { [weak self] in
             self?.delegate?.onImageGalleryButtonTap()
+        }
+
+        photoSelectionView.onRemoveImage = { [weak self] photo in
+            self?.delegate?.onRemovePhoto(photo: photo)
         }
 
         stoolTypeView.onItemSelect = { [weak self] item in

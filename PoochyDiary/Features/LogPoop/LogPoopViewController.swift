@@ -195,6 +195,10 @@ extension LogPoopViewController: LogPoopViewDelegate {
         viewModel.photos = photos
     }
 
+    func onRemovePhoto(photo: Photo) {
+        viewModel.removePhoto(photo: photo)
+    }
+
     func onNotesChanged(notes: String) {
         viewModel.notes = notes
     }
