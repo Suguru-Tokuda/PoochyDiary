@@ -18,7 +18,7 @@ class PDErrorMessageView: BaseView {
     private let errorMessageLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemRed
-        label.font = .systemFont(ofSize: 13, weight: .medium)
+        label.font = .systemFont(ofSize: 10, weight: .medium)
         label.numberOfLines = 0
         return label
     }()
@@ -45,7 +45,7 @@ class PDErrorMessageView: BaseView {
         NSLayoutConstraint.activate([
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 20),
+            imageView.heightAnchor.constraint(equalToConstant: 16),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             errorMessageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             errorMessageLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 4)

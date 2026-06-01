@@ -17,6 +17,10 @@ nonisolated struct PDSelectionItem: Hashable {
     let imageName: String
 }
 
+enum CellPosition {
+    case first, last, middle, only
+}
+
 class PDSelectionCollectionViewCell: BaseCollectionViewCell {
 
     static var reuseIdentifier: String {
@@ -25,10 +29,10 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
 
     private enum Constants {
         static let borderRadius: CGFloat = 8
-        static let padding: CGFloat = 4
+        static let padding: CGFloat = 2
         static let borderWidth: CGFloat = 1
         static let selectedBorderWidth: CGFloat = 2
-        static let fontSize: CGFloat = 14
+        static let fontSize: CGFloat = 10
     }
 
     override var isSelected: Bool {
@@ -37,7 +41,8 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         }
     }
 
-    private var style: PDSelectionCellStyle?
+//    private var style: PDSelectionCellStyle?
+    private var selectedColor: UIColor?
 
     // MARK: - UI Elements
 
@@ -82,25 +87,44 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.padding),
 
-            imageView.widthAnchor.constraint(equalToConstant: 84),
-            imageView.heightAnchor.constraint(equalToConstant: 84)
+            imageView.widthAnchor.constraint(equalToConstant: 50),
+            imageView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 
     func configure(
         with item: PDSelectionItem,
-        style: PDSelectionCellStyle
+        selectedColor: UIColor = .accent,
+        position: CellPosition
     ) {
-        self.style = style
-
+        self.selectedColor = selectedColor
+        applyCornerRadiusMask(cellPosition: position)
         label.text = item.title
         imageView.image = UIImage(named: item.imageName)
 
         updateSelectionStyle()
     }
 
+    private func applyCornerRadiusMask(cellPosition: CellPosition) {
+        switch cellPosition {
+        case .first:
+            contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        case .last:
+            contentView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        case .middle:
+            contentView.layer.maskedCorners = []
+        case .only:
+            contentView.layer.maskedCorners = [
+                .layerMinXMinYCorner,
+                .layerMaxXMinYCorner,
+                .layerMinXMaxYCorner,
+                .layerMaxXMaxYCorner
+            ]
+        }
+    }
+
     private func updateSelectionStyle() {
-        let selectedColor = style?.selectedColor ?? .systemIndigo
+        let selectedColor = selectedColor ?? .systemIndigo
 
         contentView.layer.borderColor = isSelected
             ? selectedColor.cgColor
@@ -119,7 +143,8 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         super.prepareForReuse()
         label.text = nil
         imageView.image = nil
-        style = nil
+        selectedColor = nil
+        contentView.layer.maskedCorners = []
         updateSelectionStyle()
     }
 }

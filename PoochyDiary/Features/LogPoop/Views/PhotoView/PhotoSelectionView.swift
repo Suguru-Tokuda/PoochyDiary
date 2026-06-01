@@ -216,7 +216,7 @@ extension PhotoSelectionView {
 
         let height = availableWidth * 0.9
         collectionViewHeightConstraint?.constant = height
-        addPhotoViewHeightConstraint?.constant = availableWidth * 0.7
+        addPhotoViewHeightConstraint?.constant = availableWidth * 0.3
     }
 }
 

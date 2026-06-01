@@ -41,10 +41,10 @@ class LogPoopSelectionView: LogPoopFormBaseView {
          title: String,
          isOptional: Bool,
          selectionItems: [PDSelectionItem] = [],
-         style: PDSelectionCellStyle = .init(selectedColor: .accent)
+         style: PDSelectionCollectionView.Style = PDSelectionCollectionView.Style(selectedColor: .accent)
     ) {
         label.model = PDLabel.Model(title: title, isOptional: isOptional)
-        selectionView = PDSelectionCollectionView(cellStyle: style)
+        selectionView = PDSelectionCollectionView(style: style)
         selectionView.model = PDSelectionCollectionView.Model(items: selectionItems)
         super.init(frame: frame)
     }

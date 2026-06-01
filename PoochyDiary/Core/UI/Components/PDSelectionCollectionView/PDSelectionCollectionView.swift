@@ -8,12 +8,35 @@
 import UIKit
 
 class PDSelectionCollectionView: BaseView {
+    struct Style {
+        var numberOfColumns: Int
+        var cellStyle: CellStyle
+        var cellSpacing: CGFloat
+        var selectedColor: UIColor
+
+        init(numberOfColumns: Int = 0,
+             cellStyle: CellStyle = .customHeight(80),
+             cellSpacing: CGFloat = 0,
+             selectedColor: UIColor = .accent
+        ) {
+            self.numberOfColumns = numberOfColumns
+            self.cellStyle = cellStyle
+            self.cellSpacing = cellSpacing
+            self.selectedColor = selectedColor
+        }
+    }
+
+    enum CellStyle {
+        case square(Int)
+        case customHeight(CGFloat)
+    }
+
     // MARK: - Closures
 
     var onSelectItem: ((PDSelectionItem) -> Void)?
 
     private enum Constants {
-        static let rowSpacing: CGFloat = 12
+        static let rowSpacing: CGFloat = 0
         static let sectionTopInset: CGFloat = 8
         static let sectionBottomInset: CGFloat = 8
         static let columnCount: CGFloat = 3
@@ -35,16 +58,16 @@ class PDSelectionCollectionView: BaseView {
     let collectionView: UICollectionView
 
     private var diffableDataSource: DataSource?
-    private var cellStyle: PDSelectionCellStyle
+    private var style: Style
     private var collectionHeightConstraint: NSLayoutConstraint?
 
     init(
         frame: CGRect = .zero,
-        cellStyle: PDSelectionCellStyle = PDSelectionCellStyle(selectedColor: .accent)
+        style: Style = Style()
     ) {
         collectionView = UICollectionView(frame: frame, collectionViewLayout: Self.makeLayout())
         collectionView.isScrollEnabled = false
-        self.cellStyle = cellStyle
+        self.style = style
         super.init(frame: frame)
         diffableDataSource = makeDataSource()
         collectionView.delegate = self
@@ -78,6 +101,7 @@ class PDSelectionCollectionView: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
+        collectionView.layoutIfNeeded()
         updateCollectionViewHeight()
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -129,21 +153,49 @@ extension PDSelectionCollectionView {
                 return nil
             }
 
-            cell.configure(with: item, style: cellStyle)
+            let cellPosition: CellPosition
+
+            if model?.items.count == 1 {
+                cellPosition = .only
+            } else if indexPath.item == 0 {
+                cellPosition = .first
+            } else if indexPath.item == (model?.items.count ?? -1) - 1 {
+                cellPosition = .last
+            } else {
+                cellPosition = .middle
+            }
+
+            cell.configure(with: item, selectedColor: style.selectedColor, position: cellPosition)
 
             return cell
         }
     }
 
-    private static func makeLayout() -> UICollectionViewCompositionalLayout {
+    private static func makeLayout(
+        itemCount: Int = 0,
+        cellStyle: CellStyle = .square(3),
+        spacing: CGFloat = 0
+    ) -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, layoutEnvironment in
-            let spacing: CGFloat = Constants.rowSpacing
-            let columns = Int(Constants.columnCount)
+            let columns: Int
+
+            switch cellStyle {
+            case .customHeight(_):
+                columns = itemCount
+            case .square(let numberOfColumns):
+                columns = numberOfColumns
+            }
 
             let availableWidth = layoutEnvironment.container.effectiveContentSize.width
             let cellWidth = (availableWidth - CGFloat(columns - 1) * spacing) / CGFloat(columns)
+            let cellHeight: CGFloat
 
-            let cellHeight = cellWidth
+            switch cellStyle {
+            case .customHeight(let height):
+                cellHeight = height
+            case .square(_):
+                cellHeight = cellWidth
+            }
 
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .absolute(cellWidth),
@@ -179,6 +231,12 @@ extension PDSelectionCollectionView {
         snapshot.appendSections([0])
         snapshot.appendItems(model.items, toSection: 0)
 
+        collectionView.collectionViewLayout = Self.makeLayout(
+            itemCount: model.items.count,
+            cellStyle: style.cellStyle,
+            spacing: style.cellSpacing
+        )
+
         diffableDataSource?.apply(snapshot) { [weak self] in
             guard let self else { return }
 
@@ -188,23 +246,30 @@ extension PDSelectionCollectionView {
     }
 
     private func updateCollectionViewHeight() {
-        guard let model else { return }
+        let cellStyle = style.cellStyle
 
-        let itemCount = model.items.count
-        let columns = Constants.columnCount
-        let rows = ceil(CGFloat(itemCount) / columns)
+        switch cellStyle {
+        case .square(let numberOfColumns):
+            guard let model else { return }
 
-        let availableWidth = bounds.width
-        guard availableWidth > 0 else { return }
+            let itemCount = model.items.count
+            let columns = CGFloat(numberOfColumns)
+            let rows = ceil(CGFloat(itemCount) / columns)
 
-        let totalColumnSpacing = (columns - 1) * Constants.rowSpacing
-        let cellWidth = (availableWidth - totalColumnSpacing) / columns
+            let availableWidth = bounds.width
+            guard availableWidth > 0 else { return }
 
-        let cellHeight = cellWidth
-        let totalRowSpacing = max(0, rows - 1) * Constants.rowSpacing
+            let totalColumnSpacing = (columns - 1) * Constants.rowSpacing
+            let cellWidth = (availableWidth - totalColumnSpacing) / columns
 
-        let height = rows * cellHeight + totalRowSpacing
+            let cellHeight = cellWidth
+            let totalRowSpacing = max(0, rows - 1) * Constants.rowSpacing
 
-        collectionHeightConstraint?.constant = height
+            let height = rows * cellHeight + totalRowSpacing
+
+            collectionHeightConstraint?.constant = height
+        case .customHeight(let height):
+            collectionHeightConstraint?.constant = height
+        }
     }
 }

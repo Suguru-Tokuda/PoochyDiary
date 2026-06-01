@@ -48,7 +48,7 @@ final class LogPoopView: BaseView {
                 title: $0.name,
                 imageName: $0.imageName.rawValue)
         },
-        style: PDSelectionCellStyle(selectedColor: .systemBrown)
+        style: PDSelectionCollectionView.Style(selectedColor: .systemBrown)
     )
     private let mucusLevelView = LogPoopSelectionView(
         title: Strings.LogPoop.mucusLevel,
@@ -60,7 +60,7 @@ final class LogPoopView: BaseView {
                 imageName: $0.imageName.rawValue
             )
         },
-        style: PDSelectionCellStyle(selectedColor: .systemGreen))
+        style: PDSelectionCollectionView.Style(selectedColor: .systemGreen))
     private let bloodAmountView = LogPoopSelectionView(
         title: Strings.LogPoop.bloodAmount,
         isOptional: false,
@@ -71,7 +71,7 @@ final class LogPoopView: BaseView {
                 imageName: $0.imageName.rawValue
             )
         },
-        style: PDSelectionCellStyle(selectedColor: .systemRed))
+        style: PDSelectionCollectionView.Style(selectedColor: .systemRed))
     private let photoSelectionView = PhotoSelectionView()
     private let notesView = NotesView()
     private let tagsView = SelectedTagsView(
