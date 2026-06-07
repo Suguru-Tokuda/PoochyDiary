@@ -37,6 +37,9 @@ enum Strings {
         static let stoolTypeRequired = "Select a stool type."
         static let mucusLevelRequired = "Select a mucus level."
         static let bloodAmountRequired = "Select a blood amount."
+
+        static let yesterday = "Yesterday"
+        static let today = "Today"
     }
 
     enum TagSearch {

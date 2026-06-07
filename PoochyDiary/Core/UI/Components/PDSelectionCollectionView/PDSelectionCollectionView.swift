@@ -211,7 +211,8 @@ extension PDSelectionCollectionView {
 
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
-                subitems: Array(repeating: item, count: columns)
+//                subitems: Array(repeating: item, count: columns)
+                subitems: [item]
             )
 
             group.interItemSpacing = .fixed(spacing)

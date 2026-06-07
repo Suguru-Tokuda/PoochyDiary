@@ -166,12 +166,16 @@ class LogPoopViewModel {
                 try? self.imageFileManager.deleteImage(fileName: $0.fileName)
             }
 
-            state.photos.forEach {
-                guard let image = $0.image else { return }
-                try? self.imageFileManager.saveImage(
-                    image: image,
-                    fileName: $0.fileName
-                )
+            var photos = state.photos
+
+            photos.enumerated().forEach { (index, photo) in
+                guard let image = photo.image else { return }
+
+                if let savedURL = try? self.imageFileManager.saveImage(image: image, fileName: photo.fileName) {
+                    var photo = photo
+                    photo.imageURL = savedURL
+                    photos[index] = photo
+                }
             }
 
             do {
@@ -182,7 +186,7 @@ class LogPoopViewModel {
                                                         stoolType: stoolType,
                                                         mucusLevel: mucusLevel,
                                                         bloodAmount: bloodAmount,
-                                                        photos: state.photos,
+                                                        photos: photos,
                                                         tags: state.tags))
                 await MainActor.run {
                     completion(.success(()))

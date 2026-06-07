@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PoopLog: Identifiable, Equatable {
+nonisolated struct PoopLog: Identifiable, Equatable, Hashable {
     let id: UUID
     let petId: UUID
     var date: Date

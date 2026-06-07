@@ -10,18 +10,21 @@ import UIKit
 nonisolated struct Photo: Identifiable, Equatable, Hashable {
     let id: UUID
     let fileName: String
+    var imageURL: URL?
     var image: UIImage?
     let createdAt: Date
     let sortOrder: Int
 
     init(id: UUID,
          fileName: String,
+         imageURL: URL? = nil,
          image: UIImage? = nil,
          createdAt: Date,
          sortOrder: Int
     ) {
         self.id = id
         self.fileName = fileName
+        self.imageURL = imageURL
         self.image = image
         self.createdAt = createdAt
         self.sortOrder = sortOrder

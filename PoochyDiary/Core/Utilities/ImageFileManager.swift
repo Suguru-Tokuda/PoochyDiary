@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ImageFileManaging {
-    func saveImage(image: UIImage, fileName: String) throws
+    func saveImage(image: UIImage, fileName: String) throws -> URL
     func deleteImage(fileName: String) throws
 }
 
@@ -45,7 +45,7 @@ final class ImageFileManager: ImageFileManaging {
         }
     }
 
-    func saveImage(image: UIImage, fileName: String) throws {
+    func saveImage(image: UIImage, fileName: String) throws -> URL {
         guard let folderURL else {
             throw ImageFileManagerError.folderURLNotFound
         }
@@ -61,6 +61,8 @@ final class ImageFileManager: ImageFileManaging {
         }
             
         try imageData.write(to: fileURL)
+
+        return fileURL
     }
 
     func deleteImage(fileName: String) throws {
