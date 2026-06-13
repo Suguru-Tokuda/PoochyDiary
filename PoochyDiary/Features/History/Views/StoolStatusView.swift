@@ -87,8 +87,6 @@ class StoolStatusView: BaseView {
         stoolTypeLabel.model = PDIconLabel.Model(labelText: model.stoolType.name, imageName: LabelType.stoolType.imageName)
         mucusLevelLabel.model = PDIconLabel.Model(labelText: model.mucusLevel.name, imageName: LabelType.mucusLevel.imageName)
         bloodLevelLabel.model = PDIconLabel.Model(labelText: model.bloodAmount.name, imageName: LabelType.bloodAmount.imageName)
-
-        invalidateIntrinsicContentSize()
     }
 
     private static func makeLabel() -> UILabel {
@@ -101,10 +99,5 @@ class StoolStatusView: BaseView {
         let view = UIView()
         view.backgroundColor = .systemGray4
         return view
-    }
-
-
-    override var intrinsicContentSize: CGSize {
-        stackView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }
