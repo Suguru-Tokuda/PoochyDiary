@@ -240,4 +240,14 @@ extension FullScreenImageView: UICollectionViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         updatePageLabel()
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let cell = cell as? FullScreenImageViewCell {
+            cell.resetZoom()
+        }
+    }
 }

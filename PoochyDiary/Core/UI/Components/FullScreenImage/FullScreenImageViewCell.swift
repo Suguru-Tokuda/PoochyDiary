@@ -26,35 +26,42 @@ class FullScreenImageViewCell: BaseCollectionViewCell {
     }
 
     /// The currently loaded image — used by the dismiss transition to snapshot the right frame.
-    var currentImage: UIImage? { imageView.image }
+    var currentImage: UIImage? {
+        zoomableImageView.image
+    }
 
-    private let imageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.clipsToBounds = true
-        return iv
+    private let zoomableImageView: ZoomableImageView = {
+        let imageView = ZoomableImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
 
     // MARK: - Constructable
 
     override func constructSubviews() {
         super.constructSubviews()
-        contentView.addAutolayoutSubview(imageView)
+        contentView.addAutolayoutSubview(zoomableImageView)
     }
 
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            zoomableImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            zoomableImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            zoomableImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            zoomableImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        imageView.image = nil
+        zoomableImageView.image = nil
+        zoomableImageView.resetZoom()
+    }
+
+    func resetZoom() {
+        zoomableImageView.resetZoom()
     }
 
     // MARK: - Model
@@ -62,9 +69,9 @@ class FullScreenImageViewCell: BaseCollectionViewCell {
     private func applyModel() {
         guard let model else { return }
         if let imageURL = model.imageURL {
-            imageView.setImageURL(imageURL)
+            zoomableImageView.setImageURL(imageURL)
         } else if let image = model.image {
-            imageView.image = image
+            zoomableImageView.image = image
         }
     }
 }
