@@ -25,7 +25,7 @@ class TagSelectionView: BaseView {
         axis: .vertical,
         alignment: .fill,
         distribution: .fill,
-        spacing: 12
+        spacing: Spacing.space12
     )
     private let headerStackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fillEqually)
     private let titleLabel: UILabel = {
@@ -126,18 +126,18 @@ class TagSelectionView: BaseView {
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             actionBarView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space24),
+            actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space24),
 
             stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -24),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 24),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -24),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -Spacing.space24),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: Spacing.space24),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -Spacing.space24),
 
-            searchTextField.heightAnchor.constraint(equalToConstant: 40),
-            actionBarView.heightAnchor.constraint(equalToConstant: 48),
+            searchTextField.heightAnchor.constraint(equalToConstant: Spacing.space40),
+            actionBarView.heightAnchor.constraint(equalToConstant: Spacing.space48),
 
-            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -48)
+            stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -Spacing.space48)
         ])
     }
 

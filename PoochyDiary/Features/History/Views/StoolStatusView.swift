@@ -8,7 +8,7 @@
 import UIKit
 
 class StoolStatusView: BaseView {
-    private enum LabelType {
+    enum LabelType {
         case stoolType
         case mucusLevel
         case bloodAmount
@@ -41,7 +41,7 @@ class StoolStatusView: BaseView {
         axis: .horizontal,
         alignment: .fill,
         distribution: .fill,
-        spacing: 4
+        spacing: Spacing.space4
     )
 
     private let stoolTypeLabel = PDIconLabel()

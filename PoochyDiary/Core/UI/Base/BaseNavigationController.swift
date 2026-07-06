@@ -5,10 +5,12 @@
 //  Created by Suguru Tokuda on 4/27/26.
 //
 
+import Combine
 import UIKit
 
 class BaseNavigationController: UINavigationController {
     var isNewViewControllerBeingAdded = false
+    private let popSubject = PassthroughSubject<UIViewController, Never>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +26,16 @@ class BaseNavigationController: UINavigationController {
 
         isNewViewControllerBeingAdded = true
         super.pushViewController(viewController, animated: animated)
+    }
+
+    override func popViewController(animated: Bool) -> UIViewController? {
+        let popped = super.popViewController(animated: animated)
+
+        if let popped {
+            popSubject.send(popped)
+        }
+
+        return popped
     }
 }
 
@@ -47,5 +59,14 @@ extension BaseNavigationController {
             .prefersNavigationBarHidden ?? false
 
         setNavigationBarHidden(hidden, animated: animated)
+    }
+}
+
+extension BaseNavigationController {
+    func popPublisher(for viewController: UIViewController) -> AnyPublisher<Void, Never> {
+        popSubject
+            .filter { $0 === viewController}
+            .map { _ in }
+            .eraseToAnyPublisher()
     }
 }

@@ -26,7 +26,7 @@ class PDLabel: BaseView {
         axis: .horizontal,
         alignment: .fill,
         distribution: .fill,
-        spacing: 2
+        spacing: Spacing.space2
     )
 
     let titleLabel: UILabel = {

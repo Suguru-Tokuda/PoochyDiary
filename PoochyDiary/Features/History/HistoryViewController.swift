@@ -14,8 +14,9 @@ final class HistoryViewController: BaseViewController {
 
     private let poopHistoryCollectionView = PoopHistoryCollectionView()
 
-    init(viewModel: HistoryViewModel) {
+    init(viewModel: HistoryViewModel, onLogSelect: ((PoopLog) -> Void)?) {
         self.viewModel = viewModel
+        poopHistoryCollectionView.onLogSelect = onLogSelect
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -41,8 +42,8 @@ final class HistoryViewController: BaseViewController {
         NSLayoutConstraint.activate([
             poopHistoryCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             poopHistoryCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            poopHistoryCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            poopHistoryCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            poopHistoryCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Spacing.space16),
+            poopHistoryCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.space16)
         ])
     }
 }

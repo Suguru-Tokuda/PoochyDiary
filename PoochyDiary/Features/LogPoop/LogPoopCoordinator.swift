@@ -5,12 +5,14 @@
 //  Created by Suguru Tokuda on 4/27/26.
 //
 
+import Combine
 import UIKit
 import PhotosUI
 
 final class LogPoopCoordinator: BaseCoordinator {
     private let dependencies: AppDependency
     private var viewModel: LogPoopViewModel?
+    private var subscriptions = Set<AnyCancellable>()
 
     init(
         _ navigationController: UINavigationController,
@@ -36,6 +38,13 @@ final class LogPoopCoordinator: BaseCoordinator {
         let viewController = LogPoopViewController(viewModel: viewModel)
         viewController.delegate = self
         navigationController.pushViewController(viewController, animated: true)
+
+        if let navigationController = navigationController as? BaseNavigationController {
+            navigationController
+                .popPublisher(for: viewController)
+                .sink { [weak self] in self?.finish() }
+                .store(in: &subscriptions)
+        }
     }
 }
 
@@ -64,7 +73,6 @@ extension LogPoopCoordinator: LogPoopViewControllerDelegate {
 
     func onCancelButtonTap() {
         navigationController.popViewController(animated: true)
-        finish()
     }
 
     func onDateTimeLabelTap() {

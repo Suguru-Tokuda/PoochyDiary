@@ -54,9 +54,9 @@ class DateTimePickerView: BaseView {
             datePicker.leadingAnchor.constraint(equalTo: leadingAnchor),
             datePicker.trailingAnchor.constraint(equalTo: trailingAnchor),
             datePicker.bottomAnchor.constraint(equalTo: actionBarView.topAnchor),
-            actionBarView.heightAnchor.constraint(equalToConstant: 48),
-            actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            actionBarView.heightAnchor.constraint(equalToConstant: Spacing.space48),
+            actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
+            actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16)
         ])
     }
 

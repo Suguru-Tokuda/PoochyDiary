@@ -29,7 +29,7 @@ class PDIconLabel: BaseView {
         }
     }
 
-    private let stackView = UIStackView(axis: .horizontal, alignment: .center, distribution: .fill, spacing: 2)
+    private let stackView = UIStackView(axis: .horizontal, alignment: .center, distribution: .fill, spacing: Spacing.space2)
     private let iconView = UIImageView()
     private let label: UILabel = {
         let label = UILabel()

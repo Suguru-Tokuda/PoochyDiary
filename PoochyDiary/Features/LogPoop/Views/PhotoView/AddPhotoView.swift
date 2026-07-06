@@ -18,7 +18,7 @@ class AddPhotoView: BaseView {
         axis: .vertical,
         alignment: .center,
         distribution: .fill,
-        spacing: 4
+        spacing: Spacing.space4
     )
     private let imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "photo"))
@@ -70,8 +70,8 @@ class AddPhotoView: BaseView {
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16),
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Spacing.space16),
+            stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Spacing.space16),
 
             imageView.widthAnchor.constraint(equalToConstant: 40),
             imageView.heightAnchor.constraint(equalToConstant: 40),

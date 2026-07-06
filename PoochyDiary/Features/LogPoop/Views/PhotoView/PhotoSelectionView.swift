@@ -33,7 +33,7 @@ class PhotoSelectionView: BaseView {
     private var collectionViewHeightConstraint: NSLayoutConstraint?
     private var addPhotoViewHeightConstraint: NSLayoutConstraint?
 
-    private let stackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: 12)
+    private let stackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: Spacing.space12)
 
     private let label: PDLabel = {
         let label = PDLabel()
@@ -47,7 +47,7 @@ class PhotoSelectionView: BaseView {
         axis: .horizontal,
         alignment: .fill,
         distribution: .fillEqually,
-        spacing: 8
+        spacing: Spacing.space8
     )
     private let cameraButton: PDButton = {
         let button = PDButton()
@@ -115,12 +115,12 @@ class PhotoSelectionView: BaseView {
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            stackView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            stackView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Spacing.space8),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            buttonStackView.heightAnchor.constraint(equalToConstant: 48)
+            buttonStackView.heightAnchor.constraint(equalToConstant: Spacing.space48)
         ])
         collectionViewHeightConstraint?.activate()
         addPhotoViewHeightConstraint?.activate()
@@ -149,7 +149,7 @@ class PhotoSelectionView: BaseView {
 extension PhotoSelectionView {
     private static func makeLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, layoutEnvironment in
-            let spacing: CGFloat = 8
+            let spacing: CGFloat = Spacing.space8
             let availableWidth = layoutEnvironment.container.effectiveContentSize.width
             let cellWidth = availableWidth * 0.9
 

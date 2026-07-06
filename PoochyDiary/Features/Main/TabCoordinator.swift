@@ -92,7 +92,6 @@ class TabCoordinator: BaseCoordinator {
         tabBarController.tabBar.isTranslucent = false
 
         navigationController.setViewControllers([tabBarController], animated: false)
-
         navigationController.isNavigationBarHidden = true
 
         startTab(.home)

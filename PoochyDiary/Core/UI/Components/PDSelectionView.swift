@@ -66,15 +66,15 @@ final class PDSelectionView: BaseView {
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 48),
+            heightAnchor.constraint(equalToConstant: Spacing.space48),
 
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Spacing.space8),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space8),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
 
-            imageView.widthAnchor.constraint(equalToConstant: 24),
-            imageView.heightAnchor.constraint(equalToConstant: 24)
+            imageView.widthAnchor.constraint(equalToConstant: Spacing.space24),
+            imageView.heightAnchor.constraint(equalToConstant: Spacing.space24)
         ])
     }
 

@@ -12,6 +12,8 @@ struct DateGroup: Hashable {
 }
 
 class PoopHistoryCollectionView: BaseView {
+    var onLogSelect: ((PoopLog) -> Void)?
+
     struct Model {
         let items: [PoopLog]
     }
@@ -28,7 +30,6 @@ class PoopHistoryCollectionView: BaseView {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
     private let collectionView: UICollectionView
-
     private var diffableDataSource: DataSource?
 
     var model: Model? {
@@ -42,6 +43,7 @@ class PoopHistoryCollectionView: BaseView {
         super.init(frame: frame)
         collectionView.collectionViewLayout = makeLayout()
         diffableDataSource = makeDataSource()
+        collectionView.delegate = self
     }
 
     @MainActor required init?(coder: NSCoder) {
@@ -68,6 +70,18 @@ class PoopHistoryCollectionView: BaseView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension PoopHistoryCollectionView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let item = diffableDataSource?.itemIdentifier(for: indexPath) else { return }
+        switch item {
+        case .entry(let log):
+            onLogSelect?(log)
+        }
     }
 }
 
@@ -133,12 +147,12 @@ extension PoopHistoryCollectionView {
                 alignment: .top
             )
 
-            header.edgeSpacing = .init(leading: .fixed(0), top: .fixed(8), trailing: .fixed(0), bottom: .fixed(0))
+            header.edgeSpacing = .init(leading: .fixed(0), top: .fixed(Spacing.space8), trailing: .fixed(0), bottom: .fixed(0))
 
             let section = NSCollectionLayoutSection(group: group)
-            section.interGroupSpacing = 4
+            section.interGroupSpacing = Spacing.space4
             section.boundarySupplementaryItems = [header]
-            section.contentInsets = .init(top: 4, leading: 0, bottom: 4, trailing: 0)
+            section.contentInsets = .init(top: Spacing.space4, leading: 0, bottom: Spacing.space4, trailing: 0)
 
             return section
         }

@@ -33,5 +33,10 @@ final class AppCoordinator: BaseCoordinator {
     private func setupDependencies() {
         dependencies.imageFileManager = ImageFileManager()
         dependencies.poochyDiaryCoreDataManager = PoochyDiaryCoreDataManager()
+        dependencies.petStore = PetStore()
+
+        if let petStore = dependencies.petStore {
+            petStore.select(pet: .mock())
+        }
     }
 }

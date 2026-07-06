@@ -48,7 +48,7 @@ class PDErrorMessageView: BaseView {
             imageView.heightAnchor.constraint(equalToConstant: 16),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             errorMessageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            errorMessageLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 4)
+            errorMessageLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Spacing.space4)
         ])
     }
 

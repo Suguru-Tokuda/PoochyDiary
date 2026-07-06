@@ -1,17 +1,15 @@
 //
-//  PDImageCarouselViewCell.swift
+//  FullScreenImageViewCell.swift
 //  PoochyDiary
 //
-//  Created by Suguru Tokuda on 6/5/26.
+//  Created by Suguru Tokuda on 7/5/26.
 //
 
 import UIKit
 
-class PDImageCarouselViewCell: BaseCollectionViewCell {
+class FullScreenImageViewCell: BaseCollectionViewCell {
 
-    class var reuseIdentifer: String {
-      "PDImageCarouselViewCell"
-    }
+    class var reuseIdentifier: String { "FullScreenImageViewCell" }
 
     struct Model {
         let imageURL: URL?
@@ -24,25 +22,20 @@ class PDImageCarouselViewCell: BaseCollectionViewCell {
     }
 
     var model: Model? {
-        didSet {
-            applyModel()
-        }
+        didSet { applyModel() }
     }
 
-    /// The currently loaded image — used by the zoom transition animator.
-    var thumbnailImage: UIImage? { imageView.image }
+    /// The currently loaded image — used by the dismiss transition to snapshot the right frame.
+    var currentImage: UIImage? { imageView.image }
 
     private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = true
+        return iv
     }()
 
-    override func constructView() {
-        super.constructView()
-        contentView.layer.cornerRadius = 8
-    }
+    // MARK: - Constructable
 
     override func constructSubviews() {
         super.constructSubviews()
@@ -63,6 +56,8 @@ class PDImageCarouselViewCell: BaseCollectionViewCell {
         super.prepareForReuse()
         imageView.image = nil
     }
+
+    // MARK: - Model
 
     private func applyModel() {
         guard let model else { return }

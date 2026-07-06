@@ -63,7 +63,7 @@ class SelectedTagsView: BaseTagOptionsView {
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Spacing.space8),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
@@ -71,7 +71,7 @@ class SelectedTagsView: BaseTagOptionsView {
             configureTagsButton.bottomAnchor.constraint(equalTo: bottomAnchor),
             configureTagsButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             configureTagsButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            configureTagsButton.heightAnchor.constraint(equalToConstant: 48)
+            configureTagsButton.heightAnchor.constraint(equalToConstant: Spacing.space48)
         ])
         collectionViewHeightConstraint?.activate()
     }

@@ -34,7 +34,7 @@ class SelectedTagCollectionViewCell: BaseCollectionViewCell {
         axis: .horizontal,
         alignment: .fill,
         distribution: .fill,
-        spacing: 8
+        spacing: Spacing.space8
     )
 
     private let label: UILabel = {
@@ -102,8 +102,8 @@ class SelectedTagCollectionViewCell: BaseCollectionViewCell {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.space4),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spacing.space4)
         ])
     }
 

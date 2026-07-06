@@ -26,9 +26,9 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
         axis: .horizontal,
         alignment: .center,
         distribution: .fill,
-        spacing: 8
+        spacing: Spacing.space8
     )
-    private let verticalStackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: 4)
+    private let verticalStackView = UIStackView(axis: .vertical, alignment: .fill, distribution: .fill, spacing: Spacing.space4)
     private let imageCarouselView: PDImageCarouselView = {
         let imageCarouselView = PDImageCarouselView()
         imageCarouselView.layer.cornerRadius = 8
@@ -78,10 +78,10 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
         carouselWidth.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
-            outerStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            outerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            outerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            outerStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            outerStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.space8),
+            outerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Spacing.space8),
+            outerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Spacing.space8),
+            outerStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spacing.space8),
             carouselHeight,
             carouselWidth
         ])

@@ -83,7 +83,7 @@ class NotesView: BaseView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.space8),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),

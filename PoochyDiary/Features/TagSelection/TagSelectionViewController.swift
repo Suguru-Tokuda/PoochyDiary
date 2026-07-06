@@ -42,7 +42,7 @@ class TagSelectionViewController: BaseViewController {
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
-            tagSelectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            tagSelectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spacing.space24),
             tagSelectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tagSelectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tagSelectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)

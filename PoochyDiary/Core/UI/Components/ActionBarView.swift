@@ -20,7 +20,7 @@ class ActionBarView: BaseView {
         axis: .horizontal,
         alignment: .fill,
         distribution: .fillEqually,
-        spacing: 8
+        spacing: Spacing.space8
     )
 
     private let doneButton: PDButton = {

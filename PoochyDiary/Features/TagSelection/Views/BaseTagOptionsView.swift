@@ -80,7 +80,7 @@ class BaseTagOptionsView: BaseView {
     }
 
     private static func makeLayout() -> UICollectionViewCompositionalLayout {
-        let spacing: CGFloat = 8
+        let spacing: CGFloat = Spacing.space8
         let cellHeight: CGFloat = 36
 
         let itemSize = NSCollectionLayoutSize(

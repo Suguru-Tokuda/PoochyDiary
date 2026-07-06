@@ -34,13 +34,13 @@ class NewTagSectionView: BaseView {
             systemName: "plus.circle"
         )?.withRenderingMode(.alwaysTemplate)
         config.imagePlacement = .leading
-        config.imagePadding = 8
+        config.imagePadding = Spacing.space8
         config.titleAlignment = .leading
         config.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
-            leading: 16,
+            leading: Spacing.space16,
             bottom: 0,
-            trailing: 16
+            trailing: Spacing.space16
         )
 
         button.configuration = config
@@ -82,16 +82,16 @@ class NewTagSectionView: BaseView {
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-            createButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            createButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Spacing.space8),
             createButton.leadingAnchor.constraint(equalTo: leadingAnchor),
             createButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            createButton.heightAnchor.constraint(equalToConstant: 40),
-            subTitleView.topAnchor.constraint(equalTo: createButton.bottomAnchor, constant: 8),
+            createButton.heightAnchor.constraint(equalToConstant: Spacing.space40),
+            subTitleView.topAnchor.constraint(equalTo: createButton.bottomAnchor, constant: Spacing.space8),
             subTitleView.leadingAnchor.constraint(equalTo: leadingAnchor),
             subTitleView.trailingAnchor.constraint(equalTo: trailingAnchor),
             subTitleView.bottomAnchor.constraint(equalTo: bottomAnchor),
             chevronImageView.centerYAnchor.constraint(equalTo: createButton.centerYAnchor),
-            chevronImageView.trailingAnchor.constraint(equalTo: createButton.trailingAnchor, constant: -16)
+            chevronImageView.trailingAnchor.constraint(equalTo: createButton.trailingAnchor, constant: -Spacing.space16)
         ])
     }
 

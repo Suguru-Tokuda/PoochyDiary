@@ -39,3 +39,9 @@ struct Pet: Identifiable, Equatable, Codable {
         self.type = animalType
     }
 }
+
+extension Pet {
+    static func mock() -> Pet {
+        Pet(id: UUID(), name: "Leo", dateOfBirth: Date("2019-06-19"), gender: .male, type: .dog)
+    }
+}

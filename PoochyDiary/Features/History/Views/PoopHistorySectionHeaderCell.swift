@@ -20,7 +20,7 @@ class PoopHistorySectionHeaderView: BaseCollectionReusableView {
         axis: .horizontal,
         alignment: .leading,
         distribution: .fill,
-        spacing: 2
+        spacing: Spacing.space2
     )
     private let calendarImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "calendar"))

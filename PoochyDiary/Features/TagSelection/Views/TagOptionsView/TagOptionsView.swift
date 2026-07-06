@@ -37,7 +37,7 @@ class TagOptionsView: BaseTagOptionsView {
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Spacing.space8),
             collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
