@@ -33,6 +33,7 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
         let imageCarouselView = PDImageCarouselView()
         imageCarouselView.layer.cornerRadius = 8
         imageCarouselView.clipsToBounds = true
+        imageCarouselView.isUserInteractionEnabled = false
         return imageCarouselView
     }()
     private let timeLabel: UILabel = {
