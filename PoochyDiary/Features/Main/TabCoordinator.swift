@@ -90,6 +90,7 @@ class TabCoordinator: BaseCoordinator {
         tabBarController.setViewControllers(navControllers, animated: false)
         tabBarController.selectedIndex = TabBarPage.home.tabOrderNumber
         tabBarController.tabBar.isTranslucent = false
+        configureTabBarAppearance()
 
         navigationController.setViewControllers([tabBarController], animated: false)
         navigationController.isNavigationBarHidden = true
@@ -134,6 +135,27 @@ class TabCoordinator: BaseCoordinator {
         coordinator.start()
         tabCoordinators[page] = coordinator
         addChild(coordinator)
+    }
+
+    private func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = PoochyTheme.surface
+        appearance.shadowColor = PoochyTheme.outline
+
+        let normalColor = PoochyTheme.secondaryText
+        let selectedColor = PoochyTheme.accent
+
+        appearance.stackedLayoutAppearance.normal.iconColor = normalColor
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: normalColor]
+        appearance.stackedLayoutAppearance.selected.iconColor = selectedColor
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: selectedColor]
+
+        tabBarController.tabBar.standardAppearance = appearance
+        tabBarController.tabBar.scrollEdgeAppearance = appearance
+        tabBarController.tabBar.tintColor = selectedColor
+        tabBarController.tabBar.unselectedItemTintColor = normalColor
+        tabBarController.view.backgroundColor = PoochyTheme.background
     }
 }
 

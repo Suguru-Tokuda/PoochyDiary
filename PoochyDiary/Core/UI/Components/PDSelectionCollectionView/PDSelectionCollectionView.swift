@@ -66,7 +66,6 @@ class PDSelectionCollectionView: BaseView {
         style: Style = Style()
     ) {
         collectionView = UICollectionView(frame: frame, collectionViewLayout: Self.makeLayout())
-        collectionView.isScrollEnabled = false
         self.style = style
         super.init(frame: frame)
         diffableDataSource = makeDataSource()
@@ -174,8 +173,7 @@ extension PDSelectionCollectionView {
     private static func makeLayout(
         itemCount: Int = 0,
         cellStyle: CellStyle = .square(3),
-        spacing: CGFloat = 0
-    ) -> UICollectionViewCompositionalLayout {
+        spacing: CGFloat = 0    ) -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, layoutEnvironment in
             let columns: Int
 
@@ -211,7 +209,6 @@ extension PDSelectionCollectionView {
 
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
-//                subitems: Array(repeating: item, count: columns)
                 subitems: [item]
             )
 
@@ -220,6 +217,7 @@ extension PDSelectionCollectionView {
             let section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = spacing
             section.contentInsets = .zero
+            section.orthogonalScrollingBehavior = .groupPaging
 
             return section
         }

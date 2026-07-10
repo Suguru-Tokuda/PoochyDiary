@@ -41,7 +41,6 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         }
     }
 
-//    private var style: PDSelectionCellStyle?
     private var selectedColor: UIColor?
 
     // MARK: - UI Elements
@@ -67,7 +66,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         contentView.layer.cornerRadius = Constants.borderRadius
         contentView.layer.borderColor = UIColor.systemGray5.cgColor
         contentView.layer.borderWidth = Constants.borderWidth
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = PoochyTheme.surface
         contentView.layer.masksToBounds = true
     }
 

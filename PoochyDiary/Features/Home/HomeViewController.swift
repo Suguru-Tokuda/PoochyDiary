@@ -41,6 +41,7 @@ final class HomeViewController: UIViewController {
 
     private func setupUI() {
         homeView.delegate = self
+        homeView.model = .mock(petName: viewModel.activePet.name)
         view.addAutolayoutSubview(homeView)
     }
 

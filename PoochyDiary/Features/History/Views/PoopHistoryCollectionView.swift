@@ -43,11 +43,15 @@ class PoopHistoryCollectionView: BaseView {
         super.init(frame: frame)
         collectionView.collectionViewLayout = makeLayout()
         diffableDataSource = makeDataSource()
-        collectionView.delegate = self
     }
 
     @MainActor required init?(coder: NSCoder) {
         nil
+    }
+
+    override func constructView() {
+        super.constructView()
+        backgroundColor = PoochyTheme.background
     }
 
     override func constructSubviews() {
@@ -60,6 +64,7 @@ class PoopHistoryCollectionView: BaseView {
         collectionView.register(PoopHistoryCollectionViewCell.self,
                                 forCellWithReuseIdentifier: PoopHistoryCollectionViewCell.reuseIdentifier)
         addAutolayoutSubview(collectionView)
+        collectionView.backgroundColor = PoochyTheme.background
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -70,18 +75,6 @@ class PoopHistoryCollectionView: BaseView {
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension PoopHistoryCollectionView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let item = diffableDataSource?.itemIdentifier(for: indexPath) else { return }
-        switch item {
-        case .entry(let log):
-            onLogSelect?(log)
-        }
     }
 }
 
@@ -96,6 +89,9 @@ extension PoopHistoryCollectionView {
                     withReuseIdentifier: PoopHistoryCollectionViewCell.reuseIdentifier,
                     for: indexPath) as? PoopHistoryCollectionViewCell
                 cell?.model = PoopHistoryCollectionViewCell.Model(log: log)
+                cell?.onCellTap = { [weak self] in
+                    self?.onLogSelect?(log)
+                }
                 return cell
             }
         }

@@ -73,4 +73,14 @@ extension LogDetailsCoordinator: LogDetailsViewControllerDelegate {
         fullScreenVC.transitioningDelegate = zoomDelegate
         navigationController.present(fullScreenVC, animated: true)
     }
+
+    func editButtonTap() {
+        let logPoopCoordinator = LogPoopCoordinator(
+            navigationController, pet: pet,
+            log: log,
+            dependencies: dependencies
+        )
+        addChild(logPoopCoordinator)
+        logPoopCoordinator.start()
+    }
 }

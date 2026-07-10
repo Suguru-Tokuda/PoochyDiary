@@ -85,7 +85,7 @@ class PDImageCarouselView: BaseView {
         case .carousel:
             collectionView.showsHorizontalScrollIndicator = false
         case .thumbnails:
-            collectionView.showsHorizontalScrollIndicator = true
+            collectionView.showsHorizontalScrollIndicator = false
             collectionView.showsVerticalScrollIndicator = false
         }
     }

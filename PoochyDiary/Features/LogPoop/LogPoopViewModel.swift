@@ -71,20 +71,32 @@ class LogPoopViewModel {
 
     init(
         pet: Pet,
-        state: State?,
+        log: PoopLog?,
         coreDataManager: PoochyDiaryCoreDataManaging,
         imageFileManager: ImageFileManaging
     ) {
         self.pet = pet
-        self.state = state ?? State(
-            dateTime: nil,
-            stoolType: nil,
-            mucusLevel: nil,
-            bloodAmount: nil,
-            photos: [],
-            notes: nil,
-            tags: []
-        )
+        if let log {
+            state = State(
+                dateTime: log.date,
+                stoolType: log.stoolType,
+                mucusLevel: log.mucusLevel,
+                bloodAmount: log.bloodAmount,
+                photos: log.photos,
+                notes: log.notes,
+                tags: log.tags
+            )
+        } else {
+            self.state = State(
+                dateTime: nil,
+                stoolType: nil,
+                mucusLevel: nil,
+                bloodAmount: nil,
+                photos: [],
+                notes: nil,
+                tags: []
+            )
+        }
         self.coreDataManager = coreDataManager
         self.imageFileManager = imageFileManager
         do {

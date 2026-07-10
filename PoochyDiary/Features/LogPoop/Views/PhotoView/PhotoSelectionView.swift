@@ -86,6 +86,7 @@ class PhotoSelectionView: BaseView {
         collectionView.isHidden = true
         collectionView.register(PhotoSelectionCollectionViewCell.self,
                                 forCellWithReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier)
+        collectionView.backgroundColor = PoochyTheme.background
         stackView.addArrangedSubviews([
             collectionView,
             addPhotoView,
@@ -177,7 +178,7 @@ extension PhotoSelectionView {
             let section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = spacing
             section.contentInsets = .zero
-            section.orthogonalScrollingBehavior = .continuous
+            section.orthogonalScrollingBehavior = .groupPaging
             return section
         }
     }

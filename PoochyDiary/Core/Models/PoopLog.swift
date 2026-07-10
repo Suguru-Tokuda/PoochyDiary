@@ -14,7 +14,7 @@ nonisolated struct PoopLog: Identifiable, Equatable, Hashable {
     var stoolType: StoolType
     var mucusLevel: MucusLevel
     var bloodAmount: BloodAmount
-    var note: String?
+    var notes: String?
     var photos: [Photo]
     var tags: [Tag]
 
@@ -34,7 +34,7 @@ nonisolated struct PoopLog: Identifiable, Equatable, Hashable {
         self.stoolType = stoolType
         self.mucusLevel = mucusLevel
         self.bloodAmount = bloodAmount
-        self.note = note
+        self.notes = note
         self.photos = photos
         self.tags = tags
     }

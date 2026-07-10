@@ -31,7 +31,7 @@ final class PDSelectionView: BaseView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .preferredFont(forTextStyle: .footnote)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -49,7 +49,7 @@ final class PDSelectionView: BaseView {
         layer.cornerRadius = 8
         layer.borderColor = UIColor.systemGray5.cgColor
         layer.borderWidth = 1
-        backgroundColor = .systemBackground
+        backgroundColor = PoochyTheme.surface
     }
 
     override func constructSubviews() {

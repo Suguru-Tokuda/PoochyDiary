@@ -15,6 +15,7 @@ protocol LogDetailsViewControllerDelegate: AnyObject {
         sourceView: UIView,
         photos: [Photo]
     )
+    func editButtonTap()
 }
 
 class LogDetailsViewController: BaseViewController {
@@ -50,7 +51,14 @@ class LogDetailsViewController: BaseViewController {
 
     override func constructSubviews() {
         super.constructSubviews()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Edit",
+            style: .plain,
+            target: self,
+            action: #selector(handleEditButtonTap)
+        )
         view.addAutolayoutSubview(logDetailsView)
+        view.backgroundColor = PoochyTheme.background
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -75,5 +83,11 @@ class LogDetailsViewController: BaseViewController {
                 )
             }
             .store(in: &subscriptions)
+    }
+}
+
+extension LogDetailsViewController {
+    @objc private func handleEditButtonTap() {
+        delegate?.editButtonTap()
     }
 }

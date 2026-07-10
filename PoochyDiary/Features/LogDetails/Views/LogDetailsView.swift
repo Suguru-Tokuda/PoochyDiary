@@ -42,6 +42,7 @@ class LogDetailsView: BaseView {
     override func constructView() {
         super.constructView()
         scrollView.alwaysBounceVertical = true
+        backgroundColor = PoochyTheme.background
     }
 
     override func constructSubviews() {
@@ -81,7 +82,7 @@ class LogDetailsView: BaseView {
             stoolType: model.log.stoolType,
             mucusLevel: model.log.mucusLevel,
             bloodAmount: model.log.bloodAmount,
-            note: model.log.note,
+            note: model.log.notes,
             tags: model.log.tags
         )
 

@@ -25,38 +25,73 @@ class LogDetailsPhotosView: BaseView {
     }
 
     private enum Constants {
-        static let thumbnailSize: CGFloat = 96
+        static let thumbnailSize: CGFloat = 124
     }
 
     // MARK: - UI Components
 
+    private let cardView = UIView()
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = Strings.LogPoop.photos
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.textColor = PoochyTheme.primaryText
         return label
     }()
 
-    private let carouselView = PDImageCarouselView(configuration: .thumbnails)
+    private let countLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.textColor = PoochyTheme.secondaryText
+        label.textAlignment = .right
+        return label
+    }()
+
+    private let carouselView = PDImageCarouselView(
+        configuration: .init(style: .thumbnails(
+            size: Constants.thumbnailSize,
+            spacing: Spacing.space16,
+            sectionInset: Spacing.space16
+        ))
+    )
 
     // MARK: - Constructable
 
+    override func constructView() {
+        super.constructView()
+        cardView.applyPoochyCardStyle(cornerRadius: 22)
+    }
+
     override func constructSubviews() {
         super.constructSubviews()
-        addAutolayoutSubviews([titleLabel, carouselView])
+        cardView.addAutolayoutSubviews([
+            titleLabel,
+            countLabel,
+            carouselView
+        ])
+        addAutolayoutSubview(cardView)
     }
 
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: Spacing.space8),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
+            cardView.topAnchor.constraint(equalTo: topAnchor),
+            cardView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            cardView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
+            cardView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
 
-            carouselView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.space8),
-            carouselView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            carouselView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            carouselView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: Spacing.space20),
+            titleLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: Spacing.space16),
+
+            countLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            countLabel.leadingAnchor.constraint(greaterThanOrEqualTo: titleLabel.trailingAnchor, constant: Spacing.space8),
+            countLabel.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -Spacing.space16),
+
+            carouselView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.space16),
+            carouselView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
+            carouselView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
+            carouselView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -Spacing.space16),
             carouselView.heightAnchor.constraint(equalToConstant: Constants.thumbnailSize)
         ])
     }
@@ -67,6 +102,7 @@ class LogDetailsPhotosView: BaseView {
         guard let model else { return }
         let photos = model.photos
         isHidden = photos.isEmpty
+        countLabel.text = "\(photos.count) photo\(photos.count == 1 ? "" : "s")"
         carouselView.model = PDImageCarouselView.Model(photos: photos)
     }
 }

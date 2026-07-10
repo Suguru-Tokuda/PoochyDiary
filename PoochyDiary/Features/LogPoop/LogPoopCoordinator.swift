@@ -17,7 +17,7 @@ final class LogPoopCoordinator: BaseCoordinator {
     init(
         _ navigationController: UINavigationController,
         pet: Pet,
-        state: LogPoopViewModel.State? = nil,
+        log: PoopLog? = nil,
         dependencies: AppDependency
     ) {
         self.dependencies = dependencies
@@ -26,7 +26,7 @@ final class LogPoopCoordinator: BaseCoordinator {
            let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager {
             viewModel = LogPoopViewModel(
                 pet: pet,
-                state: state,
+                log: log,
                 coreDataManager: poochyDiaryCoreDataManager,
                 imageFileManager: imageFileManager
             )
@@ -37,6 +37,7 @@ final class LogPoopCoordinator: BaseCoordinator {
         guard let viewModel else { return }
         let viewController = LogPoopViewController(viewModel: viewModel)
         viewController.delegate = self
+
         navigationController.pushViewController(viewController, animated: true)
 
         if let navigationController = navigationController as? BaseNavigationController {
@@ -70,7 +71,6 @@ extension LogPoopCoordinator {
 }
 
 extension LogPoopCoordinator: LogPoopViewControllerDelegate {
-
     func onCancelButtonTap() {
         navigationController.popViewController(animated: true)
     }

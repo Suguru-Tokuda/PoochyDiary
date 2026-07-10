@@ -103,6 +103,7 @@ class NotesView: BaseView {
         guard let model else { return }
 
         textView.text = model.notes
+        placeholderLabel.isHidden = !(model.notes?.isEmpty ?? true)
     }
 }
 

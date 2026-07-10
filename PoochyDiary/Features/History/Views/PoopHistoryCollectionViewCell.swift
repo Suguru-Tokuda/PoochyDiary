@@ -8,6 +8,8 @@
 import UIKit
 
 class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
+    var onCellTap: (() -> Void)?
+
     struct Model {
         let log: PoopLog
     }
@@ -33,7 +35,6 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
         let imageCarouselView = PDImageCarouselView()
         imageCarouselView.layer.cornerRadius = 8
         imageCarouselView.clipsToBounds = true
-        imageCarouselView.isUserInteractionEnabled = false
         return imageCarouselView
     }()
     private let timeLabel: UILabel = {
@@ -69,6 +70,8 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
         ])
         
         contentView.addAutolayoutSubview(outerStackView)
+        contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCellTap)))
+        imageCarouselView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCellTap)))
     }
 
     override func constructSubviewLayoutConstraints() {
@@ -103,5 +106,9 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
             mucusLevel: log.mucusLevel,
             bloodAmount: log.bloodAmount
         )
+    }
+
+    @objc private func handleCellTap() {
+        onCellTap?()
     }
 }

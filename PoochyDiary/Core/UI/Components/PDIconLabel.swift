@@ -34,6 +34,7 @@ class PDIconLabel: BaseView {
     private let label: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.textColor = PoochyTheme.primaryText
         return label
     }()
 

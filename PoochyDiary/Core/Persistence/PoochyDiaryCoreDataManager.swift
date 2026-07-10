@@ -196,7 +196,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                 entity.petId = poopLog.petId
                 entity.bloodAmount = poopLog.bloodAmount.rawValue
                 entity.mucusLevel = poopLog.mucusLevel.rawValue
-                entity.note = poopLog.note
+                entity.note = poopLog.notes
                 entity.date = poopLog.date
                 entity.stoolType = poopLog.stoolType.rawValue
                 let tagEntities = try poopLog.tags.map {

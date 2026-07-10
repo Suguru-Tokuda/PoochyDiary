@@ -81,6 +81,11 @@ final class LogPoopView: BaseView {
         shouldShowConfigureTagsButton: true
     )
 
+    override func constructView() {
+        super.constructView()
+        backgroundColor = PoochyTheme.background
+    }
+
     override func constructSubviews() {
         super.constructSubviews()
         scrollView.addAutolayoutSubview(stackView)

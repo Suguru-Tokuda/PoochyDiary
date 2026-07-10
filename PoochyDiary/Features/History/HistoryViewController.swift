@@ -30,10 +30,15 @@ final class HistoryViewController: BaseViewController {
         poopHistoryCollectionView.model = PoopHistoryCollectionView.Model(items: HistoryViewModel.mockData)
     }
 
+    override func constructView() {
+        super.constructView()
+        view.backgroundColor = PoochyTheme.background
+    }
+
     override func constructSubviews() {
         super.constructSubviews()
 
-        view.addAutolayoutSubview(poopHistoryCollectionView)
+        view.addAutolayoutSubview(poopHistoryCollectionView)        
     }
 
     override func constructSubviewLayoutConstraints() {

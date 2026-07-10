@@ -24,6 +24,7 @@ final class AppCoordinator: BaseCoordinator {
         )
         mainCoordinator.start()
 
+        window.backgroundColor = PoochyTheme.background
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
 
