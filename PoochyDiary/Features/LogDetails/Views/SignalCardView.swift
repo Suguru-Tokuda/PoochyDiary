@@ -24,7 +24,7 @@ final class SignalCardView: BaseView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.font = .themedFont(.pill)
         label.textColor = PoochyTheme.secondaryText
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
@@ -34,7 +34,7 @@ final class SignalCardView: BaseView {
 
     private let valueLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.font = .themedFont(.bodyEmphasized)
         label.textColor = PoochyTheme.primaryText
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true

@@ -35,14 +35,14 @@ class LogDetailsPhotosView: BaseView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = Strings.LogPoop.photos
-        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.font = .themedFont(.sectionTitle)
         label.textColor = PoochyTheme.primaryText
         return label
     }()
 
     private let countLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.font = .themedFont(.captionEmphasized)
         label.textColor = PoochyTheme.secondaryText
         label.textAlignment = .right
         return label

@@ -48,7 +48,7 @@ class LogDetailsHeaderView: BaseView {
     private let statusLabel: UILabel = {
         let label = UILabel()
         label.text = "No concerns"
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.font = .themedFont(.pill)
         label.textColor = PoochyTheme.accent
         return label
     }()
@@ -61,14 +61,14 @@ class LogDetailsHeaderView: BaseView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.font = .themedFont(.heroTitle)
         label.textColor = PoochyTheme.primaryText
         return label
     }()
 
     private let dateTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.font = .themedFont(.captionEmphasized)
         label.textColor = PoochyTheme.secondaryText
         return label
     }()

@@ -18,7 +18,7 @@ class PDErrorMessageView: BaseView {
     private let errorMessageLabel: UILabel = {
         let label = UILabel()
         label.textColor = .systemRed
-        label.font = .systemFont(ofSize: 10, weight: .medium)
+        label.font = .themedFont(.caption)
         label.numberOfLines = 0
         return label
     }()

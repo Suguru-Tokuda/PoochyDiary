@@ -67,15 +67,15 @@ class HomeView: UIView {
         spacing: Spacing.space4
     )
     private let eyebrowLabel = HomeView.makeLabel(
-        font: .systemFont(ofSize: 13, weight: .semibold),
+        font: .themedFont(.captionEmphasized),
         color: PoochyTheme.secondaryText
     )
     private let titleLabel = HomeView.makeLabel(
-        font: .systemFont(ofSize: 30, weight: .bold),
+        font: .themedFont(.screenTitle),
         color: PoochyTheme.primaryText
     )
     private let subtitleLabel = HomeView.makeLabel(
-        font: .systemFont(ofSize: 15, weight: .regular),
+        font: .themedFont(.body),
         color: PoochyTheme.secondaryText
     )
     private let avatarView = UIView()
@@ -107,15 +107,15 @@ class HomeView: UIView {
     )
     private let statusEyebrowLabel = HomeView.makeLabel(
         text: "CURRENT STATUS",
-        font: .systemFont(ofSize: 11, weight: .bold),
+        font: .themedFont(.pill),
         color: PoochyTheme.secondaryText
     )
     private let statusTitleLabel = HomeView.makeLabel(
-        font: .systemFont(ofSize: 24, weight: .bold),
+        font: .themedFont(.metric),
         color: PoochyTheme.primaryText
     )
     private let statusDetailLabel = HomeView.makeLabel(
-        font: .systemFont(ofSize: 15, weight: .regular),
+        font: .themedFont(.body),
         color: PoochyTheme.secondaryText,
         numberOfLines: 0
     )
@@ -138,7 +138,7 @@ class HomeView: UIView {
             trailing: Spacing.space20
         )
         button.configuration = configuration
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        button.titleLabel?.font = .themedFont(.button)
         return button
     }()
 
@@ -324,15 +324,15 @@ private final class HomeMetricView: BaseView {
     override func constructSubviews() {
         super.constructSubviews()
 
-        valueLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        valueLabel.font = .themedFont(.metric)
         valueLabel.textColor = PoochyTheme.primaryText
         valueLabel.adjustsFontSizeToFitWidth = true
         valueLabel.minimumScaleFactor = 0.8
 
-        titleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        titleLabel.font = .themedFont(.captionEmphasized)
         titleLabel.textColor = PoochyTheme.primaryText
 
-        captionLabel.font = .systemFont(ofSize: 11, weight: .medium)
+        captionLabel.font = .themedFont(.caption)
         captionLabel.textColor = PoochyTheme.secondaryText
         captionLabel.numberOfLines = 2
 
@@ -383,7 +383,7 @@ private final class HomePillView: BaseView {
     override func constructSubviews() {
         super.constructSubviews()
 
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
+        label.font = .themedFont(.pill)
         label.textColor = PoochyTheme.accent
 
         imageView.contentMode = .scaleAspectFit
@@ -451,10 +451,10 @@ private final class HomeKeyValueRowView: BaseView {
         imageView.tintColor = PoochyTheme.accent
         imageView.contentMode = .scaleAspectFit
 
-        titleLabel.font = .systemFont(ofSize: 12, weight: .semibold)
+        titleLabel.font = .themedFont(.pill)
         titleLabel.textColor = PoochyTheme.secondaryText
 
-        valueLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        valueLabel.font = .themedFont(.bodyEmphasized)
         valueLabel.textColor = PoochyTheme.primaryText
 
         iconContainer.addAutolayoutSubview(imageView)
@@ -527,11 +527,11 @@ private final class HomeInsightCardView: BaseView {
         imageView.tintColor = PoochyTheme.attention
         imageView.contentMode = .scaleAspectFit
 
-        titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        titleLabel.font = .themedFont(.cardTitle)
         titleLabel.textColor = PoochyTheme.primaryText
         titleLabel.numberOfLines = 0
 
-        detailLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        detailLabel.font = .themedFont(.body)
         detailLabel.textColor = PoochyTheme.secondaryText
         detailLabel.numberOfLines = 0
 
@@ -605,10 +605,10 @@ private final class HomeRecentLogCardView: BaseView {
         super.constructSubviews()
 
         titleLabel.text = "Recent log"
-        titleLabel.font = .systemFont(ofSize: 16, weight: .bold)
+        titleLabel.font = .themedFont(.cardTitle)
         titleLabel.textColor = PoochyTheme.primaryText
 
-        timeLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        timeLabel.font = .themedFont(.captionEmphasized)
         timeLabel.textColor = PoochyTheme.secondaryText
         timeLabel.textAlignment = .right
 
@@ -672,10 +672,10 @@ private final class HomeStatusChipView: BaseView {
         imageView.tintColor = PoochyTheme.accent
         imageView.contentMode = .scaleAspectFit
 
-        titleLabel.font = .systemFont(ofSize: 11, weight: .semibold)
+        titleLabel.font = .themedFont(.caption)
         titleLabel.textColor = PoochyTheme.secondaryText
 
-        valueLabel.font = .systemFont(ofSize: 13, weight: .bold)
+        valueLabel.font = .themedFont(.captionEmphasized)
         valueLabel.textColor = PoochyTheme.primaryText
         valueLabel.adjustsFontSizeToFitWidth = true
         valueLabel.minimumScaleFactor = 0.8

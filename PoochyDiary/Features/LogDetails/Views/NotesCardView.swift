@@ -10,14 +10,14 @@ import UIKit
 final class NotesCardView: BaseView {
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.font = .themedFont(.pill)
         label.textColor = PoochyTheme.secondaryText
         return label
     }()
 
     private let bodyLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .themedFont(.body)
         label.textColor = PoochyTheme.primaryText
         label.numberOfLines = 0
         return label

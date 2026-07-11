@@ -31,7 +31,7 @@ final class PDSelectionView: BaseView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.font = .themedFont(.caption)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

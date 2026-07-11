@@ -39,7 +39,7 @@ class PoopHistoryCollectionViewCell: BaseCollectionViewCell {
     }()
     private let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
+        label.font = .themedFont(.captionEmphasized)
         return label
     }()
     private let stoolStatusView = StoolStatusView()

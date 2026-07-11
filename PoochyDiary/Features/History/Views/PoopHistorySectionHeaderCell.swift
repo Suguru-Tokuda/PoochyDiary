@@ -29,7 +29,7 @@ class PoopHistorySectionHeaderView: BaseCollectionReusableView {
     }()
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .semibold)
+        label.font = .themedFont(.captionEmphasized)
         return label
     }()
 

@@ -29,7 +29,7 @@ class AddPhotoView: BaseView {
     private let label: UILabel = {
        let label = UILabel()
         label.text = Strings.LogPoop.addPhoto
-       label.font = .systemFont(ofSize: 16, weight: .medium)
+       label.font = .themedFont(.button)
        label.textColor = .accent
 
        return label
@@ -38,7 +38,7 @@ class AddPhotoView: BaseView {
         let label = UILabel()
         label.text = Strings.LogPoop.takePhoto
         label.textColor = .systemGray
-        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.font = .themedFont(.caption)
         return label
     }()
     private let dashedBorderLayer = CAShapeLayer()

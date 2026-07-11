@@ -33,7 +33,7 @@ class PDIconLabel: BaseView {
     private let iconView = UIImageView()
     private let label: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = .themedFont(.captionEmphasized)
         label.textColor = PoochyTheme.primaryText
         return label
     }()

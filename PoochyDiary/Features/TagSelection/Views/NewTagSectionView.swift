@@ -60,7 +60,7 @@ class NewTagSectionView: BaseView {
     }()
     private let subTitleView: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 10, weight: .light)
+        label.font = .themedFont(.caption)
         label.textColor = .gray
         return label
     }()
@@ -99,7 +99,7 @@ class NewTagSectionView: BaseView {
         guard let model else { return }
 
         var attributedTitle = AttributedString("Create \"\(model.newTag)\"")
-        attributedTitle.font = .systemFont(ofSize: 14, weight: .bold)
+        attributedTitle.font = .themedFont(.button)
         attributedTitle.foregroundColor = .accent
 
         createButton.configuration?.attributedTitle = attributedTitle

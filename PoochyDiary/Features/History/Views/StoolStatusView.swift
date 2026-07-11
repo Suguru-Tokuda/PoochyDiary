@@ -91,7 +91,7 @@ class StoolStatusView: BaseView {
 
     private static func makeLabel() -> UILabel {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = .themedFont(.caption)
         return label
     }
 

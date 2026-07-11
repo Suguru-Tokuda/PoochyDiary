@@ -36,7 +36,7 @@ class FullScreenImageView: BaseView {
     private let pageLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.font = .themedFont(.bodyEmphasized)
         label.textAlignment = .center
         return label
     }()

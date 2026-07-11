@@ -30,13 +30,13 @@ class TagSelectionView: BaseView {
     private let headerStackView = UIStackView(axis: .vertical, alignment: .center, distribution: .fillEqually)
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = .themedFont(.sectionTitle)
         label.text = "Tags"
         return label
     }()
     private let subTitles: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = .themedFont(.caption)
         label.textColor = .systemGray2
         label.text = "Add diet, medication, symptoms or custom tags."
         return label

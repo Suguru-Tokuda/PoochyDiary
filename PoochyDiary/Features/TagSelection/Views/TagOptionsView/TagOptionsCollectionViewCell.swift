@@ -33,7 +33,7 @@ class TagOptionsCollectionViewCell: BaseCollectionViewCell {
 
     private let label: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.font = .themedFont(.caption)
         label.textColor = .accent
         return label
     }()

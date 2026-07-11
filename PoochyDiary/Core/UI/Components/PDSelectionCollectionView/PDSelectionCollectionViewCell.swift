@@ -32,7 +32,6 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         static let padding: CGFloat = 2
         static let borderWidth: CGFloat = 1
         static let selectedBorderWidth: CGFloat = 2
-        static let fontSize: CGFloat = 10
     }
 
     override var isSelected: Bool {
@@ -55,7 +54,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
 
     private let label: UILabel = {
        let label = UILabel()
-       label.font = .systemFont(ofSize: Constants.fontSize, weight: .semibold)
+       label.font = .themedFont(.pill)
        label.textAlignment = .center
        label.numberOfLines = 2
        return label

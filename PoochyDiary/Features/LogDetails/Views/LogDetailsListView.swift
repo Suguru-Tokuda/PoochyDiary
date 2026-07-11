@@ -32,7 +32,7 @@ class LogDetailsListView: BaseView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Health Signals"
-        label.font = .systemFont(ofSize: 22, weight: .bold)
+        label.font = .themedFont(.sectionTitle)
         label.textColor = PoochyTheme.primaryText
         return label
     }()
@@ -40,7 +40,7 @@ class LogDetailsListView: BaseView {
     private let checkCountLabel: UILabel = {
         let label = UILabel()
         label.text = "3 checks"
-        label.font = .systemFont(ofSize: 13, weight: .semibold)
+        label.font = .themedFont(.captionEmphasized)
         label.textColor = PoochyTheme.secondaryText
         label.setContentHuggingPriority(.required, for: .horizontal)
         return label

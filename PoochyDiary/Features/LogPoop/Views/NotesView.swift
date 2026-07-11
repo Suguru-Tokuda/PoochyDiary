@@ -45,7 +45,7 @@ class NotesView: BaseView {
 
     private let textView: UITextView = {
         let textView = UITextView()
-        textView.font = .systemFont(ofSize: 16)
+        textView.font = .themedFont(.body)
         textView.backgroundColor = .clear
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
@@ -57,7 +57,7 @@ class NotesView: BaseView {
         let label = UILabel()
         label.text = Strings.LogPoop.notesPlaceholder
         label.textColor = .placeholderText
-        label.font = .systemFont(ofSize: 16)
+        label.font = .themedFont(.body)
         return label
     }()
 
