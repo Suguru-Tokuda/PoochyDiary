@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HomeViewDelegate: AnyObject {
-    func onAddLogPoopButtonTapped()
+    func onAddDiaryEntryButtonTapped()
 }
 
 class HomeView: UIView {
@@ -16,9 +16,9 @@ class HomeView: UIView {
         let petName: String
         let statusTitle: String
         let statusDetail: String
-        let lastLogText: String
-        let weeklyLogs: String
-        let normalLogs: String
+        let lastDiaryText: String
+        let weeklyDiaries: String
+        let normalDiaries: String
         let watchItems: String
         let insightTitle: String
         let insightDetail: String
@@ -27,13 +27,13 @@ class HomeView: UIView {
             Model(
                 petName: petName,
                 statusTitle: "Steady this week",
-                statusDetail: "Most recent log is normal with no mucus or blood.",
-                lastLogText: "Today, 8:45 AM",
-                weeklyLogs: "6",
-                normalLogs: "4/6",
+                statusDetail: "Most recent diary is normal with no mucus or blood.",
+                lastDiaryText: "Today, 8:45 AM",
+                weeklyDiaries: "6",
+                normalDiaries: "4/6",
                 watchItems: "1",
                 insightTitle: "Keep an eye on one watch item",
-                insightDetail: "A small amount of blood appeared once this week. Track the next couple of logs for a pattern."
+                insightDetail: "A small amount of blood appeared once this week. Track the next couple of diaries for a pattern."
             )
         }
     }
@@ -120,9 +120,9 @@ class HomeView: UIView {
         numberOfLines: 0
     )
     private let statusPill = HomePillView()
-    private let lastLogRow = HomeKeyValueRowView()
+    private let lastDiaryRow = HomeKeyValueRowView()
 
-    let addLogPoopButton: UIButton = {
+    let addDiaryEntryButton: UIButton = {
         let button = UIButton(type: .system)
         var configuration = UIButton.Configuration.filled()
         configuration.baseBackgroundColor = PoochyTheme.accent
@@ -130,7 +130,7 @@ class HomeView: UIView {
         configuration.cornerStyle = .large
         configuration.image = UIImage(systemName: "plus.circle.fill")
         configuration.imagePadding = Spacing.space8
-        configuration.title = "Log new entry"
+        configuration.title = "Diary new entry"
         configuration.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
             leading: Spacing.space20,
@@ -153,7 +153,7 @@ class HomeView: UIView {
     private let watchMetricView = HomeMetricView()
 
     private let insightCard = HomeInsightCardView()
-    private let recentLogCard = HomeRecentLogCardView()
+    private let recentDiaryCard = HomeRecentDiaryCardView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -171,7 +171,7 @@ class HomeView: UIView {
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
 
-        addLogPoopButton.addTarget(self, action: #selector(handleAddLogPoopButtonTap), for: .touchUpInside)
+        addDiaryEntryButton.addTarget(self, action: #selector(handleAddDiaryEntryButtonTap), for: .touchUpInside)
 
         avatarView.backgroundColor = PoochyTheme.accentSoft
         avatarView.layer.cornerRadius = 28
@@ -200,8 +200,8 @@ class HomeView: UIView {
         ])
         statusStack.addArrangedSubviews([
             statusTopRow,
-            lastLogRow,
-            addLogPoopButton
+            lastDiaryRow,
+            addDiaryEntryButton
         ])
         statusCard.addAutolayoutSubview(statusStack)
 
@@ -216,7 +216,7 @@ class HomeView: UIView {
             statusCard,
             metricsStack,
             insightCard,
-            recentLogCard
+            recentDiaryCard
         ])
         stackView.setCustomSpacing(Spacing.space24, after: headerRow)
 
@@ -249,7 +249,7 @@ class HomeView: UIView {
             statusStack.leadingAnchor.constraint(equalTo: statusCard.leadingAnchor, constant: Spacing.space20),
             statusStack.trailingAnchor.constraint(equalTo: statusCard.trailingAnchor, constant: -Spacing.space20),
 
-            addLogPoopButton.heightAnchor.constraint(equalToConstant: 52),
+            addDiaryEntryButton.heightAnchor.constraint(equalToConstant: 52),
             weeklyMetricView.heightAnchor.constraint(equalToConstant: 112),
             normalMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor),
             watchMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor)
@@ -260,20 +260,20 @@ class HomeView: UIView {
         let model = model ?? .mock(petName: "Leo")
 
         eyebrowLabel.text = "POOCHY DIARY"
-        titleLabel.text = "\(model.petName)'s health log"
+        titleLabel.text = "\(model.petName)'s health diary"
         subtitleLabel.text = "A calm overview before the next walk."
 
         statusTitleLabel.text = model.statusTitle
         statusDetailLabel.text = model.statusDetail
         statusPill.configure(text: "On track", systemImageName: "checkmark.circle.fill", tintColor: PoochyTheme.accent)
-        lastLogRow.configure(
-            title: "Last log",
-            value: model.lastLogText,
+        lastDiaryRow.configure(
+            title: "Last diary",
+            value: model.lastDiaryText,
             systemImageName: "clock.fill"
         )
 
-        weeklyMetricView.configure(value: model.weeklyLogs, title: "Logs", caption: "past 7 days")
-        normalMetricView.configure(value: model.normalLogs, title: "Normal", caption: "healthy signs")
+        weeklyMetricView.configure(value: model.weeklyDiaries, title: "Diaries", caption: "past 7 days")
+        normalMetricView.configure(value: model.normalDiaries, title: "Normal", caption: "healthy signs")
         watchMetricView.configure(
             value: model.watchItems,
             title: "Watch",
@@ -282,11 +282,11 @@ class HomeView: UIView {
         )
 
         insightCard.configure(title: model.insightTitle, detail: model.insightDetail)
-        recentLogCard.configure(timeText: model.lastLogText, stoolText: "Normal", mucusText: "None", bloodText: "None")
+        recentDiaryCard.configure(timeText: model.lastDiaryText, stoolText: "Normal", mucusText: "None", bloodText: "None")
     }
 
-    @objc private func handleAddLogPoopButtonTap() {
-        delegate?.onAddLogPoopButtonTapped()
+    @objc private func handleAddDiaryEntryButtonTap() {
+        delegate?.onAddDiaryEntryButtonTapped()
     }
 
     private static func makeLabel(
@@ -571,7 +571,7 @@ private final class HomeInsightCardView: BaseView {
     }
 }
 
-private final class HomeRecentLogCardView: BaseView {
+private final class HomeRecentDiaryCardView: BaseView {
     private let stackView = UIStackView(
         axis: .vertical,
         alignment: .fill,
@@ -604,7 +604,7 @@ private final class HomeRecentLogCardView: BaseView {
     override func constructSubviews() {
         super.constructSubviews()
 
-        titleLabel.text = "Recent log"
+        titleLabel.text = "Recent diary"
         titleLabel.font = .themedFont(.cardTitle)
         titleLabel.textColor = PoochyTheme.primaryText
 

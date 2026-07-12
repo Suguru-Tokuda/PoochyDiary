@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     // Closures
-    var onAddLogButtonTap: (() -> Void)?
+    var onAddDiaryButtonTap: (() -> Void)?
     let viewModel: HomeViewModel
     let homeView = HomeView()
 
@@ -56,8 +56,8 @@ final class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: HomeViewDelegate {
-    func onAddLogPoopButtonTapped() {
-        onAddLogButtonTap?()
+    func onAddDiaryEntryButtonTapped() {
+        onAddDiaryButtonTap?()
     }
 }
 

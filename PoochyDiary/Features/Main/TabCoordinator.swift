@@ -9,14 +9,14 @@ import UIKit
 
 enum TabBarPage {
     case home
-    case history
+    case diary
     case trends
     case profile
 
     init?(index: Int) {
         switch index {
         case 0: self = .home
-        case 1: self = .history
+        case 1: self = .diary
         case 2: self = .trends
         case 3: self = .profile
         default: return nil
@@ -27,8 +27,8 @@ enum TabBarPage {
         switch self {
         case .home:
             return Strings.Tabs.home
-        case .history:
-            return Strings.Tabs.history
+        case .diary:
+            return Strings.Tabs.diary
         case .trends:
             return Strings.Tabs.trends
         case .profile:
@@ -40,7 +40,7 @@ enum TabBarPage {
         switch self {
         case .home:
             return 0
-        case .history:
+        case .diary:
             return 1
         case .trends:
             return 2
@@ -54,8 +54,8 @@ enum TabBarPage {
         switch self {
         case .home:
             systemName = "house.fill"
-        case .history:
-            systemName = "clock"
+        case .diary:
+            systemName = "book.closed"
         case .trends:
             systemName = "chart.xyaxis.line"
         case .profile:
@@ -81,7 +81,7 @@ class TabCoordinator: BaseCoordinator {
     }
 
     override func start() {
-        let pages: [TabBarPage] = [.home, .history, .trends, .profile]
+        let pages: [TabBarPage] = [.home, .diary, .trends, .profile]
         let navControllers = pages
             .sorted(by: { $0.tabOrderNumber < $1.tabOrderNumber })
             .map { makeTab(for: $0) }
@@ -124,8 +124,8 @@ class TabCoordinator: BaseCoordinator {
         switch page {
         case .home:
             coordinator = HomeCoordinator(navController, dependencies: dependencies)
-        case .history:
-            coordinator = HistoryCoordinator(navController, dependencies: dependencies)
+        case .diary:
+            coordinator = DiaryCoordinator(navController, dependencies: dependencies)
         case .trends:
             coordinator = TrendsCoordinator(navController, dependencies: dependencies)
         case .profile:

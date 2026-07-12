@@ -22,10 +22,10 @@ class HomeCoordinator: BaseCoordinator {
     override func start() {
         let viewController = HomeViewController(viewModel: viewModel)
 
-        viewController.onAddLogButtonTap = { [weak self] in
+        viewController.onAddDiaryButtonTap = { [weak self] in
             guard let self else { return }
 
-            navigateToAddLogPoop()
+            navigateToAddDiaryEntry()
         }
 
         navigationController.setViewControllers([viewController], animated: false)
@@ -33,13 +33,13 @@ class HomeCoordinator: BaseCoordinator {
 }
 
 extension HomeCoordinator {
-    private func navigateToAddLogPoop() {
-        let logPoopCoordinator = LogPoopCoordinator(
+    private func navigateToAddDiaryEntry() {
+        let diaryEntryCoordinator = DiaryEntryCoordinator(
             navigationController,
             pet: viewModel.activePet,
             dependencies: dependencies
         )
-        logPoopCoordinator.start()
-        addChild(logPoopCoordinator)
+        diaryEntryCoordinator.start()
+        addChild(diaryEntryCoordinator)
     }
 }

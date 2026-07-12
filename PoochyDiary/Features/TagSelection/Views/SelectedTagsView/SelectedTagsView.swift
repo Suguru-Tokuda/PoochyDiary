@@ -14,13 +14,19 @@ class SelectedTagsView: BaseTagOptionsView {
     var onConfigureTagsButtonTap: (() -> Void)?
 
     private let shouldShowRemoveButton: Bool
+    private var configureTagsButtonHeightConstraint: NSLayoutConstraint?
 
     private let label = PDLabel()
-    private let configureTagsButton: PDButton = {
-        let button = PDButton()
-        button.setTitle("Configure Tags", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .accent
+    private let configureTagsButton: UIButton = {
+        let button = UIButton(type: .system)
+        var configuration = UIButton.Configuration.plain()
+        configuration.title = "Add tags"
+        configuration.image = UIImage(systemName: "plus.circle")
+        configuration.imagePadding = Spacing.space4
+        configuration.baseForegroundColor = PoochyTheme.accent
+        configuration.contentInsets = .zero
+        button.configuration = configuration
+        button.contentHorizontalAlignment = .leading
         button.isHidden = true
         return button
     }()
@@ -58,6 +64,9 @@ class SelectedTagsView: BaseTagOptionsView {
     override func constructSubviewLayoutConstraints() {
         super.constructSubviewLayoutConstraints()
         collectionViewHeightConstraint = collectionView.heightAnchor.constraint(equalToConstant: 0)
+        configureTagsButtonHeightConstraint = configureTagsButton.heightAnchor.constraint(
+            equalToConstant: configureTagsButton.isHidden ? 0 : 44
+        )
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -70,22 +79,22 @@ class SelectedTagsView: BaseTagOptionsView {
             configureTagsButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
             configureTagsButton.bottomAnchor.constraint(equalTo: bottomAnchor),
             configureTagsButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-            configureTagsButton.trailingAnchor.constraint(equalTo: trailingAnchor),
-            configureTagsButton.heightAnchor.constraint(equalToConstant: Spacing.space48)
+            configureTagsButton.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         ])
         collectionViewHeightConstraint?.activate()
+        configureTagsButtonHeightConstraint?.activate()
     }
 
     override func applyModel() {
         guard let tags = model?.tags else { return }
 
-        applySnapshot(tags: tags, animatingDifferences: false)
-
         collectionView.isHidden = tags.isEmpty
+        applySnapshot(tags: tags, animatingDifferences: false)
     }
 
     func setConfigureButtonVisibility(isHidden: Bool) {
         configureTagsButton.isHidden = isHidden
+        configureTagsButtonHeightConstraint?.constant = isHidden ? 0 : 44
     }
 
     override func makeDataSource() -> DataSource {

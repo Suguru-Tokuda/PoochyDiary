@@ -29,7 +29,7 @@ final class ImageFileManager: ImageFileManaging {
             .urls(for: .documentDirectory, in: .userDomainMask)
             .first?
             .appending(
-                path: "PoopLogPhotos",
+                path: "DiaryPhotos",
                 directoryHint: .isDirectory
             )
 

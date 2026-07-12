@@ -10,13 +10,13 @@ import Foundation
 enum Strings {
     enum Tabs {
         static let home = "Home"
-        static let history = "History"
+        static let diary = "Diary"
         static let trends = "Trends"
         static let profile = "Profile"
     }
 
-    enum LogPoop {
-        static let title = "Log Poop"
+    enum DiaryEntry {
+        static let title = "Diary Poop"
 
         // Form fields
         static let stoolType = "Stool Type"

@@ -10,12 +10,12 @@ import CoreData
 protocol PoochyDiaryCoreDataManaging {
     func getPets() async throws -> [Pet]
     func removePet(pet: Pet) async throws
-    func getPoopLogs(petId: UUID) async throws -> [PoopLog]
-    func getPoopLogImages(poopLogId: UUID) async throws -> [String]
+    func getDiaries(petId: UUID) async throws -> [Diary]
+    func getDiaryImages(diaryId: UUID) async throws -> [String]
     func savePet(pet: Pet) throws
-    func savePoopLog(poopLog: PoopLog) async throws
-    func removePoopLog(poopLog: PoopLog) async throws
-    func removePoopLogs(petId: UUID) async throws
+    func saveDiary(diary: Diary) async throws
+    func removeDiary(diary: Diary) async throws
+    func removeDiaries(petId: UUID) async throws
     func getAllTags() throws -> [Tag]
     func removeTag(tag: Tag) throws
 }
@@ -67,8 +67,8 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             guard let self else { return }
 
             do {
-                // Wipe out all the logs before removing the pet.
-                try removePoopLogs(petId: pet.id, context: context)
+                // Wipe out all the diaries before removing the pet.
+                try removeDiaries(petId: pet.id, context: context)
 
                 let request: NSFetchRequest<PetEntity> = PetEntity.fetchRequest()
                 request.predicate = NSPredicate(format: "id = %@", pet.id as CVarArg)
@@ -83,10 +83,10 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         }
     }
 
-    func getPoopLogs(petId: UUID) async throws -> [PoopLog] {
+    func getDiaries(petId: UUID) async throws -> [Diary] {
         let context = context
         return try await context.perform {
-            let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
+            let request: NSFetchRequest<DiaryEntity> = DiaryEntity.fetchRequest()
             request.predicate = NSPredicate(format: "petId == %@", petId as CVarArg)
             request.sortDescriptors = [
                 NSSortDescriptor(key: "date", ascending: false)
@@ -94,8 +94,8 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
 
             do {
                 let results = try context.fetch(request)
-                return results.compactMap { (entity: PoopLogEntity) -> PoopLog? in
-                    self.makePoopLog(from: entity)
+                return results.compactMap { (entity: DiaryEntity) -> Diary? in
+                    self.makeDiary(from: entity)
                 }
             } catch {
                 throw PoochyDiaryCoreDataError.entityFetchError(error)
@@ -103,45 +103,45 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         }
     }
 
-    func removePoopLog(poopLog: PoopLog) async throws {
+    func removeDiary(diary: Diary) async throws {
         try await context.perform { [weak self] in
             guard let self else { return }
 
             do {
-                let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "id = %@", poopLog.id as CVarArg)
+                let request: NSFetchRequest<DiaryEntity> = DiaryEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "id = %@", diary.id as CVarArg)
                 request.fetchLimit = 1
 
-                if let poopLogEntity = try context.fetch(request).first {
-                    context.delete(poopLogEntity)
+                if let diaryEntity = try context.fetch(request).first {
+                    context.delete(diaryEntity)
                     try saveContext()
                 }
             }
         }
     }
 
-    func removePoopLogs(petId: UUID) async throws {
+    func removeDiaries(petId: UUID) async throws {
         let context = context
         try await context.perform { [weak self] in
             guard let self else { return }
 
             do {
-                let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
+                let request: NSFetchRequest<DiaryEntity> = DiaryEntity.fetchRequest()
                 request.predicate = NSPredicate(format: "petId = %@", petId as CVarArg)
 
-                let poopLogEntities = try context.fetch(request)
-                poopLogEntities.forEach { context.delete($0) }
+                let diaryEntities = try context.fetch(request)
+                diaryEntities.forEach { context.delete($0) }
 
                 try saveContext()
             }
         }
     }
 
-    func getPoopLogImages(poopLogId: UUID) async throws -> [String] {
+    func getDiaryImages(diaryId: UUID) async throws -> [String] {
         let context = context
         return try await context.perform {
-            let request: NSFetchRequest<PoopLogPhotoEntity> = PoopLogPhotoEntity.fetchRequest()
-            request.predicate = NSPredicate(format: "poopLog.id == %@", poopLogId as CVarArg)
+            let request: NSFetchRequest<DiaryPhotoEntity> = DiaryPhotoEntity.fetchRequest()
+            request.predicate = NSPredicate(format: "diary.id == %@", diaryId as CVarArg)
             request.sortDescriptors = [
                 NSSortDescriptor(key: "sortOrder", ascending: true)
             ]
@@ -178,44 +178,44 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         }
     }
 
-    func savePoopLog(poopLog: PoopLog) async throws {
+    func saveDiary(diary: Diary) async throws {
         let context = context
         try await context.perform { [weak self] in
             guard let self else { return }
 
             do {
-                let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
-                request.predicate = NSPredicate(format: "id == %@", poopLog.id as CVarArg)
+                let request: NSFetchRequest<DiaryEntity> = DiaryEntity.fetchRequest()
+                request.predicate = NSPredicate(format: "id == %@", diary.id as CVarArg)
                 request.fetchLimit = 1
 
                 let existing = try context.fetch(request).first
 
-                let entity = existing ?? PoopLogEntity(context: context)
+                let entity = existing ?? DiaryEntity(context: context)
 
-                entity.id = poopLog.id
-                entity.petId = poopLog.petId
-                entity.bloodAmount = poopLog.bloodAmount.rawValue
-                entity.mucusLevel = poopLog.mucusLevel.rawValue
-                entity.note = poopLog.notes
-                entity.date = poopLog.date
-                entity.stoolType = poopLog.stoolType.rawValue
-                let tagEntities = try poopLog.tags.map {
+                entity.id = diary.id
+                entity.petId = diary.petId
+                entity.bloodAmount = diary.bloodAmount.rawValue
+                entity.mucusLevel = diary.mucusLevel.rawValue
+                entity.note = diary.notes
+                entity.date = diary.date
+                entity.stoolType = diary.stoolType.rawValue
+                let tagEntities = try diary.tags.map {
                     try self.fetchOrCreateTag(tag: $0)
                 }
                 entity.tags = NSSet(array: tagEntities)
 
-                if let existingImages = entity.photos as? Set<PoopLogPhotoEntity> {
+                if let existingImages = entity.photos as? Set<DiaryPhotoEntity> {
                     existingImages.forEach { context.delete($0) }
                     entity.photos = nil
                 }
 
-                entity.photos = NSSet(array: poopLog.photos.enumerated().map { (index, photo) in
-                    let imageEntity = PoopLogPhotoEntity(context: context)
+                entity.photos = NSSet(array: diary.photos.enumerated().map { (index, photo) in
+                    let imageEntity = DiaryPhotoEntity(context: context)
                     imageEntity.id = photo.id
                     imageEntity.fileName = photo.fileName
                     imageEntity.createdAt = Date()
                     imageEntity.sortOrder = Int16(index)
-                    imageEntity.poopLog = entity
+                    imageEntity.diary = entity
                     return imageEntity
                 })
 
@@ -290,7 +290,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         return Tag(id: id, name: name)
     }
 
-    private func makePoopLog(from entity: PoopLogEntity) -> PoopLog? {
+    private func makeDiary(from entity: DiaryEntity) -> Diary? {
         guard let id = entity.id,
               let petId = entity.petId,
               let date = entity.date,
@@ -302,10 +302,10 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
               let bloodAmount = BloodAmount(rawValue: bloodAmountStr)
         else { return nil }
 
-        let photoEntities = Array(entity.photos as? Set<PoopLogPhotoEntity> ?? [])
+        let photoEntities = Array(entity.photos as? Set<DiaryPhotoEntity> ?? [])
         let tagEntities = Array(entity.tags as? Set<TagEntity> ?? [])
 
-        return PoopLog(
+        return Diary(
             id: id,
             petId: petId,
             date: date,
@@ -317,7 +317,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             tags: tagEntities.compactMap { makeTag(from: $0) }.sorted(by: { $0.name < $1.name }))
     }
 
-    private func makePhoto(form entity: PoopLogPhotoEntity) -> Photo? {
+    private func makePhoto(form entity: DiaryPhotoEntity) -> Photo? {
         guard let id = entity.id,
               let fileName = entity.fileName,
               let createdAt = entity.createdAt else {
@@ -332,16 +332,16 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         )
     }
 
-    private func removePoopLogs(
+    private func removeDiaries(
         petId: UUID,
         context: NSManagedObjectContext
     ) throws {
-        let request: NSFetchRequest<PoopLogEntity> = PoopLogEntity.fetchRequest()
+        let request: NSFetchRequest<DiaryEntity> = DiaryEntity.fetchRequest()
         request.predicate = NSPredicate(format: "petId == %@", petId as CVarArg)
 
-        let poopLogEntities = try context.fetch(request)
+        let diaryEntities = try context.fetch(request)
 
-        poopLogEntities.forEach {
+        diaryEntities.forEach {
             context.delete($0)
         }
     }

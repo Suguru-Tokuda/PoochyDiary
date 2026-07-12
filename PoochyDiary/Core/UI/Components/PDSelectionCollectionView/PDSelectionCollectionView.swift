@@ -78,6 +78,7 @@ class PDSelectionCollectionView: BaseView {
 
     override func constructSubviews() {
         super.constructSubviews()
+        collectionView.backgroundColor = PoochyTheme.background
         collectionView.register(PDSelectionCollectionViewCell.self,
                                 forCellWithReuseIdentifier: PDSelectionCollectionViewCell.reuseIdentifier)
         addAutolayoutSubview(collectionView)

@@ -7,7 +7,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="PoopLogEntity" representedClassName="PoopLogEntity" syncable="YES" codeGenerationType="class">
+    <entity name="DiaryEntity" representedClassName="DiaryEntity" renamingIdentifier="PoopLogEntity" syncable="YES" codeGenerationType="class">
         <attribute name="bloodAmount" optional="YES" attributeType="String"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -15,20 +15,20 @@
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="petId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="stoolType" optional="YES" attributeType="String"/>
-        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PoopLogPhotoEntity" inverseName="poopLog" inverseEntity="PoopLogPhotoEntity"/>
-        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="poopLogs" inverseEntity="TagEntity"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiaryPhotoEntity" inverseName="diary" inverseEntity="DiaryPhotoEntity"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="diaries" inverseEntity="TagEntity"/>
     </entity>
-    <entity name="PoopLogPhotoEntity" representedClassName="PoopLogPhotoEntity" syncable="YES" codeGenerationType="class">
+    <entity name="DiaryPhotoEntity" representedClassName="DiaryPhotoEntity" renamingIdentifier="PoopLogPhotoEntity" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="poopLog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PoopLogEntity" inverseName="photos" inverseEntity="PoopLogEntity"/>
+        <relationship name="diary" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DiaryEntity" inverseName="photos" inverseEntity="DiaryEntity" renamingIdentifier="poopLog"/>
     </entity>
     <entity name="TagEntity" representedClassName="TagEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="poopLogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PoopLogEntity" inverseName="tags" inverseEntity="PoopLogEntity"/>
+        <relationship name="diaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DiaryEntity" inverseName="tags" inverseEntity="DiaryEntity" renamingIdentifier="poopLogs"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="name"/>

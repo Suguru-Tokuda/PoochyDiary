@@ -75,7 +75,9 @@ class BaseTagOptionsView: BaseView {
 
         let height = collectionView.collectionViewLayout.collectionViewContentSize.height
 
-        collectionViewHeightConstraint?.constant = max(80, ceil(height))
+        collectionViewHeightConstraint?.constant = collectionView.isHidden
+            ? 0
+            : max(80, ceil(height))
         invalidateIntrinsicContentSize()
     }
 
