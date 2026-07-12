@@ -9,22 +9,22 @@ import Combine
 import Foundation
 
 protocol PetStoring {
-  var petPublisher: AnyPublisher<Pet?, Never> { get }
-  var currentPet: Pet? { get }
-  func select(pet: Pet)
+    var petPublisher: AnyPublisher<Pet?, Never> { get }
+    var currentPet: Pet? { get }
+    func select(pet: Pet)
 }
 
 final class PetStore: PetStoring {
-  private var selectedPet = CurrentValueSubject<Pet?, Never>(nil)
+    private var selectedPet = CurrentValueSubject<Pet?, Never>(nil)
 
-  var currentPet: Pet? {
-    selectedPet.value
-  }
-  var petPublisher: AnyPublisher<Pet?, Never> {
-    selectedPet.eraseToAnyPublisher()
-  }
+    var currentPet: Pet? {
+        selectedPet.value
+    }
+    var petPublisher: AnyPublisher<Pet?, Never> {
+        selectedPet.eraseToAnyPublisher()
+    }
 
-  func select(pet: Pet) {
-    selectedPet.value = pet
-  }
+    func select(pet: Pet) {
+        selectedPet.value = pet
+    }
 }

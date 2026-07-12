@@ -8,6 +8,6 @@
 import Foundation
 
 enum AnimalType: String, Codable {
-  case cat
-  case dog
+    case cat
+    case dog
 }

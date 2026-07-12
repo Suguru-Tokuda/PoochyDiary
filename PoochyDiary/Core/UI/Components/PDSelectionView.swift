@@ -8,80 +8,81 @@
 import UIKit
 
 final class PDSelectionView: BaseView {
-  struct Model {
-    let text: String
-    let image: UIImage?
-  }
-
-  var model: Model? {
-    didSet {
-      applyModel()
+    struct Model {
+        let text: String
+        let image: UIImage?
     }
-  }
 
-  // MARK: - UI Components
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
 
-  private let stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .horizontal
-    stackView.alignment = .center
-    stackView.distribution = .fill
-    return stackView
-  }()
+    // MARK: - UI Components
 
-  private let titleLabel: UILabel = {
-    let label = UILabel()
-    label.font = .themedFont(.caption)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        return stackView
+    }()
 
-  private let imageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.tintColor = .label
-    imageView.contentMode = .scaleAspectFit
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    return imageView
-  }()
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .themedFont(.caption)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
-  override func constructView() {
-    super.constructView()
-    layer.cornerRadius = 8
-    layer.borderColor = PoochyTheme.outline.cgColor
-    layer.borderWidth = 1
-    backgroundColor = PoochyTheme.surface
-  }
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .label
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
 
-  override func constructSubviews() {
-    super.constructSubviews()
-    stackView.addArrangedSubviews([
-      titleLabel,
-      imageView
-    ])
-    titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    imageView.setContentHuggingPriority(.required, for: .horizontal)
-    addAutolayoutSubview(stackView)
-  }
+    override func constructView() {
+        super.constructView()
+        layer.cornerRadius = 8
+        layer.borderColor = PoochyTheme.outline.cgColor
+        layer.borderWidth = 1
+        backgroundColor = PoochyTheme.surface
+    }
 
-  override func constructSubviewLayoutConstraints() {
-    super.constructSubviewLayoutConstraints()
-    NSLayoutConstraint.activate([
-      heightAnchor.constraint(equalToConstant: Spacing.space48),
+    override func constructSubviews() {
+        super.constructSubviews()
+        stackView.addArrangedSubviews([
+            titleLabel,
+            imageView
+        ])
+        titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        addAutolayoutSubview(stackView)
+    }
 
-      stackView.topAnchor.constraint(equalTo: topAnchor, constant: Spacing.space8),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space8),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: Spacing.space48),
 
-      imageView.widthAnchor.constraint(equalToConstant: Spacing.space24),
-      imageView.heightAnchor.constraint(equalToConstant: Spacing.space24)
-    ])
-  }
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: Spacing.space8),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space8),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
+            stackView.trailingAnchor.constraint(
+                equalTo: trailingAnchor, constant: -Spacing.space16),
 
-  private func applyModel() {
-    guard let model else { return }
+            imageView.widthAnchor.constraint(equalToConstant: Spacing.space24),
+            imageView.heightAnchor.constraint(equalToConstant: Spacing.space24)
+        ])
+    }
 
-    titleLabel.text = model.text
-    imageView.image = model.image
-  }
+    private func applyModel() {
+        guard let model else { return }
+
+        titleLabel.text = model.text
+        imageView.image = model.image
+    }
 }

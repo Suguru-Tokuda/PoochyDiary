@@ -8,77 +8,78 @@
 import UIKit
 
 class DiaryEntrySelectionView: DiaryEntryFormBaseView {
-  // MARK: - Closures
+    // MARK: - Closures
 
-  var onItemSelect: ((PDSelectionItem) -> Void)? {
-    didSet {
-      selectionView.onSelectItem = onItemSelect
+    var onItemSelect: ((PDSelectionItem) -> Void)? {
+        didSet {
+            selectionView.onSelectItem = onItemSelect
+        }
     }
-  }
 
-  struct Model {
-    let selectedId: String?
-  }
-
-  var model: Model? {
-    didSet {
-      applyModel()
+    struct Model {
+        let selectedId: String?
     }
-  }
-  // MARK: - UI Components
 
-  private let stackView = UIStackView(
-    axis: .vertical,
-    alignment: .fill,
-    distribution: .fill,
-    spacing: 12
-  )
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
+    // MARK: - UI Components
 
-  private let label = PDLabel()
-  private let selectionView: PDSelectionCollectionView
+    private let stackView = UIStackView(
+        axis: .vertical,
+        alignment: .fill,
+        distribution: .fill,
+        spacing: 12
+    )
 
-  init(
-    frame: CGRect = .zero,
-    title: String,
-    isOptional: Bool,
-    selectionItems: [PDSelectionItem] = [],
-    style: PDSelectionCollectionView.Style = PDSelectionCollectionView.Style(selectedColor: .accent)
-  ) {
-    label.model = PDLabel.Model(title: title, isOptional: isOptional)
-    selectionView = PDSelectionCollectionView(style: style)
-    selectionView.model = PDSelectionCollectionView.Model(items: selectionItems)
-    super.init(frame: frame)
-  }
+    private let label = PDLabel()
+    private let selectionView: PDSelectionCollectionView
 
-  required init?(coder: NSCoder) {
-    nil
-  }
+    init(
+        frame: CGRect = .zero,
+        title: String,
+        isOptional: Bool,
+        selectionItems: [PDSelectionItem] = [],
+        style: PDSelectionCollectionView.Style = PDSelectionCollectionView.Style(
+            selectedColor: .accent)
+    ) {
+        label.model = PDLabel.Model(title: title, isOptional: isOptional)
+        selectionView = PDSelectionCollectionView(style: style)
+        selectionView.model = PDSelectionCollectionView.Model(items: selectionItems)
+        super.init(frame: frame)
+    }
 
-  override func constructSubviews() {
-    super.constructSubviews()
-    stackView.addArrangedSubviews([
-      label,
-      errorMessageView,
-      selectionView
-    ])
-    addAutolayoutSubview(stackView)
-  }
+    required init?(coder: NSCoder) {
+        nil
+    }
 
-  override func constructSubviewLayoutConstraints() {
-    super.constructSubviewLayoutConstraints()
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
-  }
+    override func constructSubviews() {
+        super.constructSubviews()
+        stackView.addArrangedSubviews([
+            label,
+            errorMessageView,
+            selectionView
+        ])
+        addAutolayoutSubview(stackView)
+    }
 
-  private func applyModel() {
-    guard let model,
-      let id = model.selectedId
-    else { return }
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+    }
 
-    selectionView.configure(selectedId: id)
-  }
+    private func applyModel() {
+        guard let model,
+            let id = model.selectedId
+        else { return }
+
+        selectionView.configure(selectedId: id)
+    }
 }

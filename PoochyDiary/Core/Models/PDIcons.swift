@@ -9,24 +9,24 @@ import Foundation
 
 enum PDIcons: String {
 
-  // Blood
-  case bloodLarge
-  case bloodModerate
-  case bloodNone
-  case bloodSpeck
-  case bloodStreak
+    // Blood
+    case bloodLarge
+    case bloodModerate
+    case bloodNone
+    case bloodSpeck
+    case bloodStreak
 
-  // Mucus
-  case mucusHeavy
-  case mucusMild
-  case mucusModerate
-  case mucusTrace
+    // Mucus
+    case mucusHeavy
+    case mucusMild
+    case mucusModerate
+    case mucusTrace
 
-  // Stool type
-  case stoolExtraFirm
-  case stoolFirm
-  case stoolMushy
-  case stoolNormal
-  case stoolSoft
-  case stoolWatery
+    // Stool type
+    case stoolExtraFirm
+    case stoolFirm
+    case stoolMushy
+    case stoolNormal
+    case stoolSoft
+    case stoolWatery
 }

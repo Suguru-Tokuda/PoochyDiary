@@ -9,66 +9,66 @@ import UIKit
 
 class PDLabel: BaseView {
 
-  struct Model {
-    let title: String
-    let isOptional: Bool
-  }
-
-  var model: Model? {
-    didSet {
-      applyModel()
+    struct Model {
+        let title: String
+        let isOptional: Bool
     }
-  }
 
-  // MARK: - UI Components
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
 
-  let stackView = UIStackView(
-    axis: .horizontal,
-    alignment: .fill,
-    distribution: .fill,
-    spacing: Spacing.space2
-  )
+    // MARK: - UI Components
 
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.font = .themedFont(.bodyEmphasized)
-    label.textColor = PoochyTheme.primaryText
-    return label
-  }()
+    let stackView = UIStackView(
+        axis: .horizontal,
+        alignment: .fill,
+        distribution: .fill,
+        spacing: Spacing.space2
+    )
 
-  let optionalLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = PoochyTheme.secondaryText
-    label.text = "(optional)"
-    label.font = .themedFont(.pill)
-    label.isHidden = true
-    return label
-  }()
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .themedFont(.bodyEmphasized)
+        label.textColor = PoochyTheme.primaryText
+        return label
+    }()
 
-  override func constructSubviews() {
-    super.constructSubviews()
-    stackView.addArrangedSubviews([
-      titleLabel,
-      optionalLabel
-    ])
+    let optionalLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = PoochyTheme.secondaryText
+        label.text = "(optional)"
+        label.font = .themedFont(.pill)
+        label.isHidden = true
+        return label
+    }()
 
-    addAutolayoutSubview(stackView)
-  }
+    override func constructSubviews() {
+        super.constructSubviews()
+        stackView.addArrangedSubviews([
+            titleLabel,
+            optionalLabel
+        ])
 
-  override func constructSubviewLayoutConstraints() {
-    super.constructSubviewLayoutConstraints()
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
-  }
+        addAutolayoutSubview(stackView)
+    }
 
-  private func applyModel() {
-    guard let model else { return }
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+    }
 
-    titleLabel.text = model.title
-    optionalLabel.isHidden = !model.isOptional
-  }
+    private func applyModel() {
+        guard let model else { return }
+
+        titleLabel.text = model.title
+        optionalLabel.isHidden = !model.isOptional
+    }
 }

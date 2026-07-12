@@ -8,7 +8,7 @@
 import Foundation
 
 protocol Constructable {
-  func constructView()
-  func constructSubviews()
-  func constructSubviewLayoutConstraints()
+    func constructView()
+    func constructSubviews()
+    func constructSubviewLayoutConstraints()
 }

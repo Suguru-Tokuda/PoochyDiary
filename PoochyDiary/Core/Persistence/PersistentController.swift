@@ -8,30 +8,30 @@
 import CoreData
 
 struct PersistentController {
-  static let shared = PersistentController()
+    static let shared = PersistentController()
 
-  static var preview: PersistentController = {
-    let result = PersistentController(inMemory: true)
-    let viewContext = result.container.viewContext
-    return result
-  }()
+    static var preview: PersistentController = {
+        let result = PersistentController(inMemory: true)
+        let viewContext = result.container.viewContext
+        return result
+    }()
 
-  let container: NSPersistentContainer
+    let container: NSPersistentContainer
 
-  init(inMemory: Bool = false) {
-    container = NSPersistentContainer(name: "PoochyDiaryCoreData")
+    init(inMemory: Bool = false) {
+        container = NSPersistentContainer(name: "PoochyDiaryCoreData")
 
-    if inMemory {
-      container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        if inMemory {
+            container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        }
+
+        container.loadPersistentStores { (_, error) in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
-
-    container.loadPersistentStores { (_, error) in
-      if let error = error as NSError? {
-        fatalError("Unresolved error \(error), \(error.userInfo)")
-      }
-    }
-
-    container.viewContext.automaticallyMergesChangesFromParent = true
-    container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-  }
 }

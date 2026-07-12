@@ -8,22 +8,22 @@
 import UIKit
 
 class BaseView: UIView, Constructable {
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    construct()
-  }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        construct()
+    }
 
-  required init?(coder: NSCoder) {
-    nil
-  }
+    required init?(coder: NSCoder) {
+        nil
+    }
 
-  private func construct() {
-    constructView()
-    constructSubviews()
-    constructSubviewLayoutConstraints()
-  }
+    private func construct() {
+        constructView()
+        constructSubviews()
+        constructSubviewLayoutConstraints()
+    }
 
-  func constructView() {}
-  func constructSubviews() {}
-  func constructSubviewLayoutConstraints() {}
+    func constructView() {}
+    func constructSubviews() {}
+    func constructSubviewLayoutConstraints() {}
 }

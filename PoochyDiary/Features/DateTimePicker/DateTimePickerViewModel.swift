@@ -8,5 +8,5 @@
 import Foundation
 
 class DateTimePickerViewModel {
-  var date: Date?
+    var date: Date?
 }

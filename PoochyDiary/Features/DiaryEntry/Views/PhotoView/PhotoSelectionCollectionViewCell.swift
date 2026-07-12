@@ -8,82 +8,82 @@
 import UIKit
 
 class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
-  class var reuseIdentifier: String {
-    "PhotoSelectionCollectionViewCell"
-  }
-
-  struct Model {
-    let image: UIImage
-  }
-
-  var model: Model? {
-    didSet {
-      applyModel()
+    class var reuseIdentifier: String {
+        "PhotoSelectionCollectionViewCell"
     }
-  }
 
-  var onRemoveButtonTap: (() -> Void)?
+    struct Model {
+        let image: UIImage
+    }
 
-  // MARK: - UI Components
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
 
-  private let imageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.contentMode = .scaleAspectFill
-    imageView.clipsToBounds = true
-    imageView.layer.cornerRadius = 8
+    var onRemoveButtonTap: (() -> Void)?
 
-    return imageView
-  }()
+    // MARK: - UI Components
 
-  private let removeButton: UIButton = {
-    let button = UIButton()
-    let config = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
-    button.setImage(UIImage(systemName: "xmark", withConfiguration: config), for: .normal)
-    button.tintColor = .white
-    button.backgroundColor = UIColor.black.withAlphaComponent(0.55)
-    button.layer.cornerRadius = 11
-    return button
-  }()
+    private let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 8
 
-  override func constructSubviews() {
-    super.constructSubviews()
-    contentView.addAutolayoutSubviews([
-      imageView,
-      removeButton
-    ])
+        return imageView
+    }()
 
-    removeButton.addTarget(self, action: #selector(handleRemoveButtonTap), for: .touchUpInside)
-  }
+    private let removeButton: UIButton = {
+        let button = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
+        button.setImage(UIImage(systemName: "xmark", withConfiguration: config), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.black.withAlphaComponent(0.55)
+        button.layer.cornerRadius = 11
+        return button
+    }()
 
-  override func constructSubviewLayoutConstraints() {
-    super.constructSubviewLayoutConstraints()
-    NSLayoutConstraint.activate([
-      imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-      imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+    override func constructSubviews() {
+        super.constructSubviews()
+        contentView.addAutolayoutSubviews([
+            imageView,
+            removeButton
+        ])
 
-      removeButton.topAnchor.constraint(equalTo: topAnchor, constant: 6),
-      removeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-      removeButton.widthAnchor.constraint(equalToConstant: 22),
-      removeButton.heightAnchor.constraint(equalTo: removeButton.widthAnchor)
-    ])
-  }
+        removeButton.addTarget(self, action: #selector(handleRemoveButtonTap), for: .touchUpInside)
+    }
 
-  private func applyModel() {
-    guard let model else { return }
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
-    imageView.image = model.image
-  }
+            removeButton.topAnchor.constraint(equalTo: topAnchor, constant: 6),
+            removeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
+            removeButton.widthAnchor.constraint(equalToConstant: 22),
+            removeButton.heightAnchor.constraint(equalTo: removeButton.widthAnchor)
+        ])
+    }
 
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    imageView.image = nil
-  }
+    private func applyModel() {
+        guard let model else { return }
+
+        imageView.image = model.image
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
 }
 
 extension PhotoSelectionCollectionViewCell {
-  @objc private func handleRemoveButtonTap() {
-    onRemoveButtonTap?()
-  }
+    @objc private func handleRemoveButtonTap() {
+        onRemoveButtonTap?()
+    }
 }

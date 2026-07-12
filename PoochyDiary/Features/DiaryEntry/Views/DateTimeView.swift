@@ -8,75 +8,75 @@
 import UIKit
 
 class DateTimeView: DiaryEntryFormBaseView {
-  struct Model {
-    let dateTime: Date?
-  }
-
-  var model: Model? {
-    didSet {
-      applyModel()
+    struct Model {
+        let dateTime: Date?
     }
-  }
 
-  var onDateSelectionLabelTapped: (() -> Void)?
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
 
-  // MARK: - UI Components
+    var onDateSelectionLabelTapped: (() -> Void)?
 
-  private let stackView = UIStackView(
-    axis: .vertical,
-    alignment: .fill,
-    distribution: .fill,
-    spacing: 12
-  )
+    // MARK: - UI Components
 
-  private let label: PDLabel = {
-    let label = PDLabel()
-    label.model = PDLabel.Model(title: Strings.DiaryEntry.dateAndTime, isOptional: false)
-    return label
-  }()
+    private let stackView = UIStackView(
+        axis: .vertical,
+        alignment: .fill,
+        distribution: .fill,
+        spacing: 12
+    )
 
-  private let dateSelectionLabel: PDSelectionView = {
-    let selectionLabel = PDSelectionView()
-    return selectionLabel
-  }()
+    private let label: PDLabel = {
+        let label = PDLabel()
+        label.model = PDLabel.Model(title: Strings.DiaryEntry.dateAndTime, isOptional: false)
+        return label
+    }()
 
-  override func constructSubviews() {
-    super.constructSubviews()
-    stackView.addArrangedSubviews([
-      label,
-      dateSelectionLabel,
-      errorMessageView
-    ])
-    addAutolayoutSubview(stackView)
-    dateSelectionLabel
-      .addGestureRecognizer(
-        UITapGestureRecognizer(
-          target: self,
-          action: #selector(handleDateSelectionLabelTap)))
-  }
+    private let dateSelectionLabel: PDSelectionView = {
+        let selectionLabel = PDSelectionView()
+        return selectionLabel
+    }()
 
-  override func constructSubviewLayoutConstraints() {
-    super.constructSubviewLayoutConstraints()
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
-  }
+    override func constructSubviews() {
+        super.constructSubviews()
+        stackView.addArrangedSubviews([
+            label,
+            dateSelectionLabel,
+            errorMessageView
+        ])
+        addAutolayoutSubview(stackView)
+        dateSelectionLabel
+            .addGestureRecognizer(
+                UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(handleDateSelectionLabelTap)))
+    }
 
-  private func applyModel() {
-    guard let model else { return }
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+    }
 
-    dateSelectionLabel.model = PDSelectionView.Model(
-      text: model.dateTime?.formatted(date: .complete, time: .shortened)
-        ?? Strings.DiaryEntry.selectDate,
-      image: UIImage(systemName: "calendar.badge.clock"))
-  }
+    private func applyModel() {
+        guard let model else { return }
+
+        dateSelectionLabel.model = PDSelectionView.Model(
+            text: model.dateTime?.formatted(date: .complete, time: .shortened)
+                ?? Strings.DiaryEntry.selectDate,
+            image: UIImage(systemName: "calendar.badge.clock"))
+    }
 }
 
 extension DateTimeView {
-  @objc private func handleDateSelectionLabelTap() {
-    onDateSelectionLabelTapped?()
-  }
+    @objc private func handleDateSelectionLabelTap() {
+        onDateSelectionLabelTapped?()
+    }
 }
