@@ -83,8 +83,7 @@ extension DiaryCoordinator: DiaryViewControllerDelegate {
         datePickerViewController.onCancel = { [weak sheetNavigationController] in
             sheetNavigationController?.dismiss(animated: true)
         }
-        datePickerViewController.onDateSelect = {
-            [weak viewController, weak sheetNavigationController] date in
+        datePickerViewController.onDateSelect = { [weak viewController, weak sheetNavigationController] date in
             viewController?.selectDate(date)
             sheetNavigationController?.dismiss(animated: true)
         }

@@ -185,8 +185,7 @@ class DiaryEntryViewModel {
                 guard let image = photo.image else { return }
 
                 if let savedURL = try? self.imageFileManager.saveImage(
-                    image: image, fileName: photo.fileName)
-                {
+                    image: image, fileName: photo.fileName) {
                     var photo = photo
                     photo.imageURL = savedURL
                     photos[index] = photo

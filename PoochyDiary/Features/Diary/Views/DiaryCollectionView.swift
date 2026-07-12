@@ -86,8 +86,7 @@ class DiaryCollectionView: BaseView {
 
 extension DiaryCollectionView {
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: collectionView) {
-            collectionView, indexPath, item in
+        let dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             switch item {
             case .entry(let diary):
                 let cell =

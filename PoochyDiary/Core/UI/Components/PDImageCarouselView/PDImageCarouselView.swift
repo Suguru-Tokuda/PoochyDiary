@@ -107,8 +107,7 @@ class PDImageCarouselView: BaseView {
     }
 
     private func makeDataSource() -> DataSource {
-        DataSource(collectionView: collectionView) {
-            [weak self] collectionView, indexPath, itemIdentifier in
+        DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, itemIdentifier in
             guard let self,
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: PDImageCarouselViewCell.reuseIdentifer,

@@ -25,8 +25,7 @@ final class ZoomTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
     var dismissImage: UIImage?
 
     func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?)
-        -> TimeInterval
-    {
+        -> TimeInterval {
         0.38
     }
 
@@ -68,8 +67,7 @@ final class ZoomTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
         if let zoomTransitionSupport = toVC as? ZoomTransitionSupporting,
             let imageFrame = zoomTransitionSupport.startItemImageFrame(
                 in: container,
-                fallbackImageSize: presentImage?.size)
-        {
+                fallbackImageSize: presentImage?.size) {
             flyingTargetFrame = imageFrame
         } else {
             flyingTargetFrame = finalFrame
@@ -109,8 +107,7 @@ final class ZoomTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
         // Start from the exact rendered position of the currently visible image.
         let startFrame: CGRect
         if let fsVC = fromVC as? FullScreenImageViewController,
-            let imageFrame = fsVC.currentItemImageFrame(in: container)
-        {
+            let imageFrame = fsVC.currentItemImageFrame(in: container) {
             startFrame = imageFrame
         } else {
             startFrame = fromVC.view.frame

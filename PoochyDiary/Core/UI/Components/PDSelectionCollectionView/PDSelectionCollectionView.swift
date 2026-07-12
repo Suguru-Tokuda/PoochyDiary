@@ -118,8 +118,7 @@ class PDSelectionCollectionView: BaseView {
         visibleCells.forEach {
             if let indexPath = collectionView.indexPath(for: $0),
                 let item = model.items[safe: indexPath.row],
-                item.id == selectedId
-            {
+                item.id == selectedId {
                 $0.isSelected = true
             } else {
                 $0.isSelected = false

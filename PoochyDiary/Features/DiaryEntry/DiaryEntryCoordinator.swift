@@ -23,8 +23,7 @@ final class DiaryEntryCoordinator: BaseCoordinator {
         self.dependencies = dependencies
         super.init(navigationController)
         if let imageFileManager = dependencies.imageFileManager,
-            let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager
-        {
+            let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager {
             viewModel = DiaryEntryViewModel(
                 pet: pet,
                 diary: diary,
