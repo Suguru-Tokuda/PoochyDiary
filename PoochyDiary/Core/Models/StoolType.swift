@@ -8,53 +8,53 @@
 import UIKit
 
 enum StoolType: String, CaseIterable, Codable {
-    case extraFirm
-    case firm
-    case normal
-    case soft
-    case mushy
-    case watery
+  case extraFirm
+  case firm
+  case normal
+  case soft
+  case mushy
+  case watery
 
-    var id: String {
-        switch self {
-        case .extraFirm:
-            return "0"
-        case .firm:
-            return "1"
-        case .normal:
-            return "2"
-        case .soft:
-            return "3"
-        case .mushy:
-            return "4"
-        case .watery:
-            return "5"
-        }
+  var id: String {
+    switch self {
+    case .extraFirm:
+      return "0"
+    case .firm:
+      return "1"
+    case .normal:
+      return "2"
+    case .soft:
+      return "3"
+    case .mushy:
+      return "4"
+    case .watery:
+      return "5"
     }
+  }
 
-    var name: String {
-        switch self {
-        case .extraFirm:
-            return "Extra Firm"
-        default:
-            return rawValue.firstLetterUppercased()
-        }
+  var name: String {
+    switch self {
+    case .extraFirm:
+      return "Extra Firm"
+    default:
+      return rawValue.firstLetterUppercased()
     }
+  }
 
-    var imageName: PDIcons {
-        switch self {
-        case .extraFirm:
-            return .stoolExtraFirm
-        case .firm:
-            return .stoolFirm
-        case .normal:
-            return .stoolNormal
-        case .soft:
-            return .stoolSoft
-        case .mushy:
-            return .stoolMushy
-        case .watery:
-            return .stoolWatery
-        }
+  var imageName: PDIcons {
+    switch self {
+    case .extraFirm:
+      return .stoolExtraFirm
+    case .firm:
+      return .stoolFirm
+    case .normal:
+      return .stoolNormal
+    case .soft:
+      return .stoolSoft
+    case .mushy:
+      return .stoolMushy
+    case .watery:
+      return .stoolWatery
     }
+  }
 }

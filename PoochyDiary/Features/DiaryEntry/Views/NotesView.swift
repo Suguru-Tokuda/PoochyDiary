@@ -9,116 +9,122 @@ import UIKit
 
 class NotesView: BaseView {
 
-    struct Model {
-        let notes: String?
+  struct Model {
+    let notes: String?
+  }
+
+  var model: Model? {
+    didSet {
+      applyModel()
     }
+  }
 
-    var model: Model? {
-        didSet {
-            applyModel()
-        }
-    }
+  var onTextChange: ((String) -> Void)?
 
-    var onTextChange: ((String) -> Void)?
+  private enum Constants {
+    static let cornerRadius: CGFloat = 12
+    static let borderWidth: CGFloat = 1
+    static let padding: CGFloat = 12
+  }
 
-    private enum Constants {
-        static let cornerRadius: CGFloat = 12
-        static let borderWidth: CGFloat = 1
-        static let padding: CGFloat = 12
-    }
+  // MARK: UI Components
 
-    // MARK: UI Components
+  private let titleLabel: PDLabel = {
+    let label = PDLabel()
+    label.model = PDLabel.Model(title: Strings.DiaryEntry.notes, isOptional: true)
+    return label
+  }()
 
-    private let titleLabel: PDLabel = {
-        let label = PDLabel()
-        label.model = PDLabel.Model(title: Strings.DiaryEntry.notes, isOptional: true)
-        return label
-    }()
+  private let containerView: UIView = {
+    let view = UIView()
+    view.layer.cornerRadius = Constants.cornerRadius
+    view.layer.borderWidth = Constants.borderWidth
+    view.layer.borderColor = PoochyTheme.outline.cgColor
+    return view
+  }()
 
-    private let containerView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = Constants.cornerRadius
-        view.layer.borderWidth = Constants.borderWidth
-        view.layer.borderColor = UIColor.systemGray5.cgColor
-        return view
-    }()
+  private let textView: UITextView = {
+    let textView = UITextView()
+    textView.font = .themedFont(.body)
+    textView.backgroundColor = .clear
+    textView.textContainerInset = .zero
+    textView.textContainer.lineFragmentPadding = 0
+    textView.returnKeyType = .done
+    return textView
+  }()
 
-    private let textView: UITextView = {
-        let textView = UITextView()
-        textView.font = .themedFont(.body)
-        textView.backgroundColor = .clear
-        textView.textContainerInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
-        textView.returnKeyType = .done
-        return textView
-    }()
+  private let placeholderLabel: UILabel = {
+    let label = UILabel()
+    label.text = Strings.DiaryEntry.notesPlaceholder
+    label.textColor = .placeholderText
+    label.font = .themedFont(.body)
+    return label
+  }()
 
-    private let placeholderLabel: UILabel = {
-        let label = UILabel()
-        label.text = Strings.DiaryEntry.notesPlaceholder
-        label.textColor = .placeholderText
-        label.font = .themedFont(.body)
-        return label
-    }()
+  override func constructSubviews() {
+    super.constructSubviews()
+    textView.delegate = self
 
-    override func constructSubviews() {
-        super.constructSubviews()
-        textView.delegate = self
+    addAutolayoutSubviews([
+      titleLabel,
+      containerView,
+    ])
 
-        addAutolayoutSubviews([
-            titleLabel,
-            containerView
-        ])
+    containerView.addAutolayoutSubviews([
+      textView,
+      placeholderLabel,
+    ])
+  }
 
-        containerView.addAutolayoutSubviews([
-            textView,
-            placeholderLabel
-        ])
-    }
+  override func constructSubviewLayoutConstraints() {
+    super.constructSubviewLayoutConstraints()
+    NSLayoutConstraint.activate([
+      titleLabel.topAnchor.constraint(equalTo: topAnchor),
+      titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+      titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
 
-    override func constructSubviewLayoutConstraints() {
-        super.constructSubviewLayoutConstraints()
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+      containerView.topAnchor.constraint(
+        equalTo: titleLabel.bottomAnchor, constant: Spacing.space8),
+      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      containerView.heightAnchor.constraint(equalToConstant: 120),
 
-            containerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.space8),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 120),
+      textView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
+      textView.bottomAnchor.constraint(
+        equalTo: containerView.bottomAnchor, constant: -Constants.padding),
+      textView.leadingAnchor.constraint(
+        equalTo: containerView.leadingAnchor, constant: Constants.padding),
+      textView.trailingAnchor.constraint(
+        equalTo: containerView.trailingAnchor, constant: -Constants.padding),
 
-            textView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.padding),
-            textView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.padding),
-            textView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.padding),
-            textView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.padding),
+      placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor),
+      placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
+    ])
+  }
 
-            placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor),
-            placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
-        ])
-    }
+  private func applyModel() {
+    guard let model else { return }
 
-    private func applyModel() {
-        guard let model else { return }
-
-        textView.text = model.notes
-        placeholderLabel.isHidden = !(model.notes?.isEmpty ?? true)
-    }
+    textView.text = model.notes
+    placeholderLabel.isHidden = !(model.notes?.isEmpty ?? true)
+  }
 }
 
 extension NotesView: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        placeholderLabel.isHidden = !textView.text.isEmpty
-        onTextChange?(textView.text)
+  func textViewDidChange(_ textView: UITextView) {
+    placeholderLabel.isHidden = !textView.text.isEmpty
+    onTextChange?(textView.text)
+  }
+
+  func textView(
+    _ textView: UITextView, shouldChangeTextInRanges ranges: [NSValue], replacementText text: String
+  ) -> Bool {
+    if text == "\n" {
+      textView.resignFirstResponder()
+      return false
     }
 
-    func textView(_ textView: UITextView, shouldChangeTextInRanges ranges: [NSValue], replacementText text: String) -> Bool {
-        if text == "\n" {
-            textView.resignFirstResponder()
-            return false
-        }
-
-        return true
-    }
+    return true
+  }
 }

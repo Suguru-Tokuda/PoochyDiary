@@ -8,20 +8,20 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    let viewModel: ProfileViewModel
+  let viewModel: ProfileViewModel
 
-    init(viewModel: ProfileViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
+  init(viewModel: ProfileViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        nil
-    }
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    nil
+  }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .accent
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    view.backgroundColor = .accent
+  }
 }

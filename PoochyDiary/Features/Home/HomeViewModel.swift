@@ -8,5 +8,5 @@
 import Foundation
 
 class HomeViewModel {
-    var activePet: Pet = Pet(id: UUID(), name: "Leo", dateOfBirth: Date(), gender: .male, type: .dog)
+  var activePet: Pet = Pet(id: UUID(), name: "Leo", dateOfBirth: Date(), gender: .male, type: .dog)
 }

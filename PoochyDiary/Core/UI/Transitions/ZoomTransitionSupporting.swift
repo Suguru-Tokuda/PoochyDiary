@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ZoomTransitionSupporting {
-    var currentDisplayedImage: UIImage? { get }
-    func startItemImageFrame(in targetView: UIView, fallbackImageSize: CGSize?) -> CGRect?
-    func currentItemImageFrame(in targetView: UIView) -> CGRect?
+  var currentDisplayedImage: UIImage? { get }
+  func startItemImageFrame(in targetView: UIView, fallbackImageSize: CGSize?) -> CGRect?
+  func currentItemImageFrame(in targetView: UIView) -> CGRect?
 }

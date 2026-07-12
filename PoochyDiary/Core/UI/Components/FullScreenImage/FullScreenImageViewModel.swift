@@ -8,11 +8,11 @@
 import Foundation
 
 class FullScreenImageViewModel {
-    let photos: [Photo]
-    let startIndex: Int
+  let photos: [Photo]
+  let startIndex: Int
 
-    init(photos: [Photo], startIndex: Int) {
-        self.photos = photos
-        self.startIndex = startIndex
-    }
+  init(photos: [Photo], startIndex: Int) {
+    self.photos = photos
+    self.startIndex = startIndex
+  }
 }

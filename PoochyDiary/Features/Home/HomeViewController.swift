@@ -8,61 +8,61 @@
 import UIKit
 
 final class HomeViewController: UIViewController {
-    // Closures
-    var onAddDiaryButtonTap: (() -> Void)?
-    let viewModel: HomeViewModel
-    let homeView = HomeView()
+  // Closures
+  var onAddDiaryButtonTap: (() -> Void)?
+  let viewModel: HomeViewModel
+  let homeView = HomeView()
 
-    init(viewModel: HomeViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
+  init(viewModel: HomeViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        nil
-    }
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    nil
+  }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: animated)
+  }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    navigationController?.setNavigationBarHidden(false, animated: animated)
+  }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        setupConstraints()
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupUI()
+    setupConstraints()
+  }
 
-    private func setupUI() {
-        homeView.delegate = self
-        homeView.model = .mock(petName: viewModel.activePet.name)
-        view.addAutolayoutSubview(homeView)
-    }
+  private func setupUI() {
+    homeView.delegate = self
+    homeView.model = .mock(petName: viewModel.activePet.name)
+    view.addAutolayoutSubview(homeView)
+  }
 
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            homeView.topAnchor.constraint(equalTo: view.topAnchor),
-            homeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            homeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            homeView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
+  private func setupConstraints() {
+    NSLayoutConstraint.activate([
+      homeView.topAnchor.constraint(equalTo: view.topAnchor),
+      homeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      homeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      homeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
+  }
 }
 
 extension HomeViewController: HomeViewDelegate {
-    func onAddDiaryEntryButtonTapped() {
-        onAddDiaryButtonTap?()
-    }
+  func onAddDiaryEntryButtonTapped() {
+    onAddDiaryButtonTap?()
+  }
 }
 
 extension HomeViewController: NavigationBarConfigurable {
-    var prefersNavigationBarHidden: Bool {
-        true
-    }
+  var prefersNavigationBarHidden: Bool {
+    true
+  }
 }

@@ -8,108 +8,109 @@
 import UIKit
 
 class TagOptionsCollectionViewCell: BaseCollectionViewCell {
-    var onAddButtonTap: (() -> Void)?
+  var onAddButtonTap: (() -> Void)?
 
-    struct Model {
-        let tag: Tag
+  struct Model {
+    let tag: Tag
+  }
+
+  var model: Model? {
+    didSet {
+      applyModel()
     }
+  }
 
-    var model: Model? {
-        didSet {
-            applyModel()
-        }
-    }
+  class var reuseIdentifier: String {
+    "TagOptionsCollectionViewCell"
+  }
 
-    class var reuseIdentifier: String {
-        "TagOptionsCollectionViewCell"
-    }
+  private let stackView = UIStackView(
+    axis: .horizontal,
+    alignment: .fill,
+    distribution: .fill,
+    spacing: Spacing.space8
+  )
 
-    private let stackView = UIStackView(
-        axis: .horizontal,
-        alignment: .fill,
-        distribution: .fill,
-        spacing: Spacing.space8
+  private let label: UILabel = {
+    let label = UILabel()
+    label.font = .themedFont(.caption)
+    label.textColor = .accent
+    return label
+  }()
+
+  private let addButton: UIButton = {
+    let removeButton = UIButton()
+    let image = UIImage(
+      systemName: "plus",
+      withConfiguration: UIImage.SymbolConfiguration(
+        pointSize: 12,
+        weight: .bold
+      )
+    )
+    removeButton.setImage(image, for: .normal)
+    removeButton.tintColor = .accent
+    return removeButton
+  }()
+
+  override func preferredLayoutAttributesFitting(
+    _ layoutAttributes: UICollectionViewLayoutAttributes
+  ) -> UICollectionViewLayoutAttributes {
+    let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+
+    let size = contentView.systemLayoutSizeFitting(
+      UIView.layoutFittingExpandedSize,
+      withHorizontalFittingPriority: .fittingSizeLevel,
+      verticalFittingPriority: .required
     )
 
-    private let label: UILabel = {
-        let label = UILabel()
-        label.font = .themedFont(.caption)
-        label.textColor = .accent
-        return label
-    }()
+    attributes.size = CGSize(
+      width: ceil(size.width),
+      height: 36
+    )
+    return attributes
+  }
 
-    private let addButton: UIButton = {
-        let removeButton = UIButton()
-        let image = UIImage(
-            systemName: "plus",
-            withConfiguration: UIImage.SymbolConfiguration(
-                pointSize: 12,
-                weight: .bold
-            )
-        )
-        removeButton.setImage(image, for: .normal)
-        removeButton.tintColor = .accent
-        return removeButton
-    }()
+  override func constructView() {
+    super.constructView()
+    layer.cornerRadius = 18
+    backgroundColor = .accent.withAlphaComponent(0.18)
+  }
 
-    override func preferredLayoutAttributesFitting(
-        _ layoutAttributes: UICollectionViewLayoutAttributes
-    ) -> UICollectionViewLayoutAttributes {
-        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+  override func constructSubviews() {
+    super.constructSubviews()
+    stackView.addArrangedSubviews([
+      addButton,
+      label,
+    ])
+    contentView.addAutolayoutSubview(stackView)
 
-        let size = contentView.systemLayoutSizeFitting(
-            UIView.layoutFittingExpandedSize,
-            withHorizontalFittingPriority: .fittingSizeLevel,
-            verticalFittingPriority: .required
-        )
+    addButton.addTarget(
+      self,
+      action: #selector(handleAddButtonTap),
+      for: .touchUpInside
+    )
+  }
 
-        attributes.size = CGSize(
-            width: ceil(size.width),
-            height: 36
-        )
-        return attributes
-    }
+  override func constructSubviewLayoutConstraints() {
+    super.constructSubviewLayoutConstraints()
+    NSLayoutConstraint.activate([
+      stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
+      stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
+      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.space4),
+      stackView.bottomAnchor.constraint(
+        equalTo: contentView.bottomAnchor, constant: -Spacing.space4),
+    ])
+  }
 
-    override func constructView() {
-        super.constructView()
-        layer.cornerRadius = 18
-        backgroundColor = .accent.withAlphaComponent(0.18)
-    }
+  private func applyModel() {
+    guard let model else { return }
 
-    override func constructSubviews() {
-        super.constructSubviews()
-        stackView.addArrangedSubviews([
-            addButton,
-            label
-        ])
-        contentView.addAutolayoutSubview(stackView)
-
-        addButton.addTarget(
-            self,
-            action: #selector(handleAddButtonTap),
-            for: .touchUpInside
-        )
-    }
-
-    override func constructSubviewLayoutConstraints() {
-        super.constructSubviewLayoutConstraints()
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.space4),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Spacing.space4)
-        ])
-    }
-
-    private func applyModel() {
-        guard let model else { return }
-
-        label.text = model.tag.name
-    }
+    label.text = model.tag.name
+  }
 }
 
 extension TagOptionsCollectionViewCell {
-    @objc private func handleAddButtonTap() {
-        onAddButtonTap?()
-    }
+  @objc private func handleAddButtonTap() {
+    onAddButtonTap?()
+  }
 }

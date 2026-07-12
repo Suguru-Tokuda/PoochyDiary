@@ -8,14 +8,14 @@
 import UIKit
 
 class DiaryEntryFormBaseView: BaseView {
-    private(set) var errorMessageView = PDErrorMessageView(isHidden: true)
+  private(set) var errorMessageView = PDErrorMessageView(isHidden: true)
 
-    func setErrorMessage(_ errorMessage: String?) {
-        guard let errorMessage else {
-            errorMessageView.isHidden = true
-            return
-        }
-
-        errorMessageView.setErrorMessage(errorMessage)
+  func setErrorMessage(_ errorMessage: String?) {
+    guard let errorMessage else {
+      errorMessageView.isHidden = true
+      return
     }
+
+    errorMessageView.setErrorMessage(errorMessage)
+  }
 }

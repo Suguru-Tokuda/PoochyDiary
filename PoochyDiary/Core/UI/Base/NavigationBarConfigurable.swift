@@ -8,5 +8,5 @@
 import Foundation
 
 protocol NavigationBarConfigurable {
-    var prefersNavigationBarHidden: Bool { get }
+  var prefersNavigationBarHidden: Bool { get }
 }

@@ -8,21 +8,21 @@
 import UIKit
 
 extension UIStackView {
-    convenience init(
-        _ frame: CGRect = .zero,
-        axis: NSLayoutConstraint.Axis,
-        alignment: Alignment = .fill,
-        distribution: Distribution = .equalCentering,
-        spacing: CGFloat = 0
-    ) {
-        self.init(frame: frame)
-        self.axis = axis
-        self.alignment = alignment
-        self.distribution = distribution
-        self.spacing = spacing
-    }
+  convenience init(
+    _ frame: CGRect = .zero,
+    axis: NSLayoutConstraint.Axis,
+    alignment: Alignment = .fill,
+    distribution: Distribution = .equalCentering,
+    spacing: CGFloat = 0
+  ) {
+    self.init(frame: frame)
+    self.axis = axis
+    self.alignment = alignment
+    self.distribution = distribution
+    self.spacing = spacing
+  }
 
-    func addArrangedSubviews(_ views: [UIView]) {
-        views.forEach { addArrangedSubview($0) }
-    }
+  func addArrangedSubviews(_ views: [UIView]) {
+    views.forEach { addArrangedSubview($0) }
+  }
 }

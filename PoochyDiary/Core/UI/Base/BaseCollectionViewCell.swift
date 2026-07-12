@@ -8,22 +8,22 @@
 import UIKit
 
 class BaseCollectionViewCell: UICollectionViewCell, Constructable {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        construct()
-    }
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    construct()
+  }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
-    private func construct() {
-        constructView()
-        constructSubviews()
-        constructSubviewLayoutConstraints()
-    }
+  private func construct() {
+    constructView()
+    constructSubviews()
+    constructSubviewLayoutConstraints()
+  }
 
-    func constructView() {}
-    func constructSubviews() {}
-    func constructSubviewLayoutConstraints() {}
+  func constructView() {}
+  func constructSubviews() {}
+  func constructSubviewLayoutConstraints() {}
 }

@@ -8,11 +8,11 @@
 import UIKit
 
 extension NSLayoutConstraint {
-    func activate() {
-        self.isActive = true
-    }
+  func activate() {
+    self.isActive = true
+  }
 
-    func deactivate() {
-        self.isActive = false
-    }
+  func deactivate() {
+    self.isActive = false
+  }
 }

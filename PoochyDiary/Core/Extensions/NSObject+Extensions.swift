@@ -8,9 +8,7 @@
 import Foundation
 
 extension NSObject {
-    var className: String {
-        get {
-            NSStringFromClass(type(of: self))
-        }
-    }
+  var className: String {
+    NSStringFromClass(type(of: self))
+  }
 }
