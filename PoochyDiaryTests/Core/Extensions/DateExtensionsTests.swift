@@ -39,6 +39,6 @@ struct DateExtensionsTests {
 
   @Test func formatted_withEmptyFormat_returnsEmptyString() {
     let date = Date()
-    #expect(date.formatted(with: "") == "")
+    #expect(date.formatted(with: "").isEmpty)
   }
 }

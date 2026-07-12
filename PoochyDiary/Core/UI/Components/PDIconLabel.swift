@@ -44,7 +44,7 @@ class PDIconLabel: BaseView {
     super.constructSubviews()
     stackView.addArrangedSubviews([
       iconView,
-      label,
+      label
     ])
     addAutolayoutSubview(stackView)
   }
@@ -57,7 +57,7 @@ class PDIconLabel: BaseView {
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
       iconView.heightAnchor.constraint(equalToConstant: 12),
-      iconView.widthAnchor.constraint(equalToConstant: 12),
+      iconView.widthAnchor.constraint(equalToConstant: 12)
     ])
   }
 

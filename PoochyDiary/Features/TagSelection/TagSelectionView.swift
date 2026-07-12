@@ -94,18 +94,18 @@ class TagSelectionView: BaseView {
     scrollView.addAutolayoutSubview(stackView)
     headerStackView.addArrangedSubviews([
       titleLabel,
-      subTitles,
+      subTitles
     ])
     stackView.addArrangedSubviews([
       headerStackView,
       searchTextField,
       newTagSectionView,
       selectedTagsView,
-      tagOptionsView,
+      tagOptionsView
     ])
     addAutolayoutSubviews([
       scrollView,
-      actionBarView,
+      actionBarView
     ])
     searchTextField.delegate = self
 
@@ -142,7 +142,7 @@ class TagSelectionView: BaseView {
       actionBarView.heightAnchor.constraint(equalToConstant: Spacing.space48),
 
       stackView.widthAnchor.constraint(
-        equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -Spacing.space48),
+        equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -Spacing.space48)
     ])
   }
 

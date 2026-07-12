@@ -23,8 +23,7 @@ final class DiaryEntryCoordinator: BaseCoordinator {
     self.dependencies = dependencies
     super.init(navigationController)
     if let imageFileManager = dependencies.imageFileManager,
-      let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager
-    {
+      let poochyDiaryCoreDataManager = dependencies.poochyDiaryCoreDataManager {
       viewModel = DiaryEntryViewModel(
         pet: pet,
         diary: diary,
@@ -154,7 +153,7 @@ extension DiaryEntryCoordinator: UIImagePickerControllerDelegate & UINavigationC
 extension DiaryEntryCoordinator: PHPickerViewControllerDelegate {
   func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
     results.forEach { result in
-      result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] object, error in
+      result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] object, _ in
         guard let self,
           let viewModel,
           let image = object as? UIImage

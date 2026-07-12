@@ -70,7 +70,7 @@ class NewTagSectionView: BaseView {
     addAutolayoutSubviews([
       label,
       createButton,
-      subTitleView,
+      subTitleView
     ])
     createButton.addAutolayoutSubview(chevronImageView)
     createButton.addTarget(self, action: #selector(handleCreateButtonTap), for: .touchUpInside)
@@ -93,7 +93,7 @@ class NewTagSectionView: BaseView {
       subTitleView.bottomAnchor.constraint(equalTo: bottomAnchor),
       chevronImageView.centerYAnchor.constraint(equalTo: createButton.centerYAnchor),
       chevronImageView.trailingAnchor.constraint(
-        equalTo: createButton.trailingAnchor, constant: -Spacing.space16),
+        equalTo: createButton.trailingAnchor, constant: -Spacing.space16)
     ])
   }
 

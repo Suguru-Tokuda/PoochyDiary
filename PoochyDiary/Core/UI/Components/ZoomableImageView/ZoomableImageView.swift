@@ -77,7 +77,7 @@ class ZoomableImageView: BaseView {
       imageView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
 
       imageView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
-      imageView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor),
+      imageView.heightAnchor.constraint(equalTo: scrollView.frameLayoutGuide.heightAnchor)
     ])
   }
 

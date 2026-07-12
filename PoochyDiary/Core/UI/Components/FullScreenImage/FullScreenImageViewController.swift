@@ -53,7 +53,7 @@ class FullScreenImageViewController: BaseViewController {
     super.constructSubviews()
     view.addAutolayoutSubviews([
       fullScreenImageView,
-      closeButton,
+      closeButton
     ])
   }
 
@@ -70,7 +70,7 @@ class FullScreenImageViewController: BaseViewController {
       closeButton.trailingAnchor.constraint(
         equalTo: view.trailingAnchor, constant: -Spacing.space16),
       closeButton.widthAnchor.constraint(equalToConstant: Spacing.space32),
-      closeButton.heightAnchor.constraint(equalToConstant: Spacing.space32),
+      closeButton.heightAnchor.constraint(equalToConstant: Spacing.space32)
     ])
   }
 

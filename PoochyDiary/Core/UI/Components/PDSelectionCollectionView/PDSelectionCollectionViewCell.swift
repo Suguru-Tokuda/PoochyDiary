@@ -73,7 +73,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
   override func constructSubviews() {
     stackView.addArrangedSubviews([
       imageView,
-      label,
+      label
     ])
     contentView.addAutolayoutSubview(stackView)
   }
@@ -90,7 +90,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         equalTo: contentView.trailingAnchor, constant: -Constants.padding),
 
       imageView.widthAnchor.constraint(equalToConstant: 50),
-      imageView.heightAnchor.constraint(equalToConstant: 50),
+      imageView.heightAnchor.constraint(equalToConstant: 50)
     ])
   }
 
@@ -120,7 +120,7 @@ class PDSelectionCollectionViewCell: BaseCollectionViewCell {
         .layerMinXMinYCorner,
         .layerMaxXMinYCorner,
         .layerMinXMaxYCorner,
-        .layerMaxXMaxYCorner,
+        .layerMaxXMaxYCorner
       ]
     }
   }

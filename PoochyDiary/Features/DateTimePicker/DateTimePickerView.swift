@@ -34,7 +34,7 @@ class DateTimePickerView: BaseView {
     super.constructSubviews()
     addAutolayoutSubviews([
       datePicker,
-      actionBarView,
+      actionBarView
     ])
     actionBarView.onCancel = { [weak self] in
       self?.onCancel?()
@@ -56,7 +56,7 @@ class DateTimePickerView: BaseView {
       datePicker.bottomAnchor.constraint(equalTo: actionBarView.topAnchor),
       actionBarView.heightAnchor.constraint(equalToConstant: Spacing.space48),
       actionBarView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
-      actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
+      actionBarView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16)
     ])
   }
 

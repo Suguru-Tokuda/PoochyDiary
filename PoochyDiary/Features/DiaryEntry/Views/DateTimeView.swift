@@ -45,7 +45,7 @@ class DateTimeView: DiaryEntryFormBaseView {
     stackView.addArrangedSubviews([
       label,
       dateSelectionLabel,
-      errorMessageView,
+      errorMessageView
     ])
     addAutolayoutSubview(stackView)
     dateSelectionLabel
@@ -61,7 +61,7 @@ class DateTimeView: DiaryEntryFormBaseView {
       stackView.topAnchor.constraint(equalTo: topAnchor),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
   }
 

@@ -67,12 +67,12 @@ class NotesView: BaseView {
 
     addAutolayoutSubviews([
       titleLabel,
-      containerView,
+      containerView
     ])
 
     containerView.addAutolayoutSubviews([
       textView,
-      placeholderLabel,
+      placeholderLabel
     ])
   }
 
@@ -99,7 +99,7 @@ class NotesView: BaseView {
         equalTo: containerView.trailingAnchor, constant: -Constants.padding),
 
       placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor),
-      placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
+      placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor)
     ])
   }
 

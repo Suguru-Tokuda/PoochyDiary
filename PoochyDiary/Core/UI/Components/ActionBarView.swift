@@ -43,7 +43,7 @@ class ActionBarView: BaseView {
     super.constructSubviews()
     buttonStackView.addArrangedSubviews([
       cancelButton,
-      doneButton,
+      doneButton
     ])
     addAutolayoutSubview(buttonStackView)
     cancelButton.addTarget(
@@ -64,7 +64,7 @@ class ActionBarView: BaseView {
       buttonStackView.topAnchor.constraint(equalTo: topAnchor),
       buttonStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
       buttonStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      buttonStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      buttonStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
     ])
   }
 }

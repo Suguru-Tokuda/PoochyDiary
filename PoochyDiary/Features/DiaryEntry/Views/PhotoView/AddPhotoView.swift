@@ -59,7 +59,7 @@ class AddPhotoView: BaseView {
     stackView.addArrangedSubviews([
       imageView,
       label,
-      subTitle,
+      subTitle
     ])
     addAutolayoutSubview(stackView)
   }
@@ -76,7 +76,7 @@ class AddPhotoView: BaseView {
         lessThanOrEqualTo: trailingAnchor, constant: -Spacing.space16),
 
       imageView.widthAnchor.constraint(equalToConstant: 40),
-      imageView.heightAnchor.constraint(equalToConstant: 40),
+      imageView.heightAnchor.constraint(equalToConstant: 40)
     ])
   }
 

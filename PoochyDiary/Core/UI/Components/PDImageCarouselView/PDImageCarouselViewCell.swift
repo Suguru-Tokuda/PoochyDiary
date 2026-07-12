@@ -55,7 +55,7 @@ class PDImageCarouselViewCell: BaseCollectionViewCell {
       imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
       imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+      imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
     ])
   }
 

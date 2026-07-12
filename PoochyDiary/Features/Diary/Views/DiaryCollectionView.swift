@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct DateGroup: Hashable {
+nonisolated struct DateGroup: Hashable {
   let date: Date
 }
 
@@ -77,7 +77,7 @@ class DiaryCollectionView: BaseView {
       collectionView.topAnchor.constraint(equalTo: topAnchor),
       collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
       collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
   }
 }
@@ -123,7 +123,7 @@ extension DiaryCollectionView {
   }
 
   private func makeLayout() -> UICollectionViewCompositionalLayout {
-    UICollectionViewCompositionalLayout { _, layoutEnvironment in
+    UICollectionViewCompositionalLayout { _, _ in
       let itemSize = NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1.0),
         heightDimension: .estimated(80)
@@ -186,7 +186,7 @@ extension DiaryCollectionView {
 
     let dates = itemsDict.keys.sorted(by: { $0 > $1 })
 
-    dates.enumerated().forEach { (index, date) in
+    dates.enumerated().forEach { (_, date) in
       let section = Section.group(DateGroup(date: date))
       snapshot.appendSections([section])
       let entries = (itemsDict[date] ?? []).map { Item.entry($0) }

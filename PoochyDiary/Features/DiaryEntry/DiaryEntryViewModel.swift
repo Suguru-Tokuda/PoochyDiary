@@ -105,11 +105,12 @@ class DiaryEntryViewModel {
   func addPhoto(image: UIImage) {
     var state = state
     let createdAt = Date()
+    let timestamp = createdAt.description.replacingOccurrences(of: " ", with: "_")
+    let fileName = "\(pet.id.uuidString)-\(state.diaryId.uuidString)-photo-\(timestamp)"
     state.photos.append(
       Photo(
         id: UUID(),
-        fileName:
-          "\(pet.id.uuidString)-\(state.diaryId.uuidString)-photo-\(createdAt.description.replacingOccurrences(of: " ", with: "_"))",
+        fileName: fileName,
         image: image,
         createdAt: createdAt,
         sortOrder: state.photos.count
@@ -184,8 +185,7 @@ class DiaryEntryViewModel {
         guard let image = photo.image else { return }
 
         if let savedURL = try? self.imageFileManager.saveImage(
-          image: image, fileName: photo.fileName)
-        {
+          image: image, fileName: photo.fileName) {
           var photo = photo
           photo.imageURL = savedURL
           photos[index] = photo

@@ -51,7 +51,7 @@ class DiaryDetailsView: BaseView {
     stackView.addArrangedSubviews([
       headerView,
       detailsListView,
-      photoViews,
+      photoViews
     ])
     addAutolayoutSubview(scrollView)
   }
@@ -70,7 +70,7 @@ class DiaryDetailsView: BaseView {
       stackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
       stackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
 
-      stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+      stackView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
     ])
   }
 

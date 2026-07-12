@@ -71,20 +71,20 @@ class DiaryDetailsListView: BaseView {
     headerRow.addArrangedSubviews([
       titleLabel,
       UIView(),
-      checkCountLabel,
+      checkCountLabel
     ])
 
     signalsStack.addArrangedSubviews([
       stoolCard,
       mucusCard,
-      bloodCard,
+      bloodCard
     ])
 
     contentStack.addArrangedSubviews([
       headerRow,
       signalsStack,
       notesCard,
-      tagsCard,
+      tagsCard
     ])
 
     addAutolayoutSubview(contentStack)
@@ -101,7 +101,7 @@ class DiaryDetailsListView: BaseView {
 
       stoolCard.heightAnchor.constraint(equalToConstant: 112),
       mucusCard.heightAnchor.constraint(equalTo: stoolCard.heightAnchor),
-      bloodCard.heightAnchor.constraint(equalTo: stoolCard.heightAnchor),
+      bloodCard.heightAnchor.constraint(equalTo: stoolCard.heightAnchor)
     ])
   }
 

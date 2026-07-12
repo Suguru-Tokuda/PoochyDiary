@@ -43,7 +43,7 @@ class DiarySectionHeaderView: BaseCollectionReusableView {
     super.constructSubviews()
     stackView.addArrangedSubviews([
       calendarImageView,
-      dateLabel,
+      dateLabel
     ])
 
     addAutolayoutSubview(stackView)
@@ -58,7 +58,7 @@ class DiarySectionHeaderView: BaseCollectionReusableView {
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
       calendarImageView.widthAnchor.constraint(equalToConstant: 16),
-      calendarImageView.heightAnchor.constraint(equalToConstant: 16),
+      calendarImageView.heightAnchor.constraint(equalToConstant: 16)
     ])
   }
 

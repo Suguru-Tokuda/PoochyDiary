@@ -32,7 +32,7 @@ final class NotesCardView: BaseView {
     super.constructSubviews()
     addAutolayoutSubviews([
       titleLabel,
-      bodyLabel,
+      bodyLabel
     ])
   }
 
@@ -47,7 +47,7 @@ final class NotesCardView: BaseView {
       bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.space12),
       bodyLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
       bodyLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-      bodyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space20),
+      bodyLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space20)
     ])
   }
 

@@ -36,7 +36,7 @@ class PDErrorMessageView: BaseView {
     super.constructSubviews()
     addAutolayoutSubviews([
       imageView,
-      errorMessageLabel,
+      errorMessageLabel
     ])
   }
 
@@ -49,7 +49,7 @@ class PDErrorMessageView: BaseView {
       imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
       errorMessageLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
       errorMessageLabel.leadingAnchor.constraint(
-        equalTo: imageView.trailingAnchor, constant: Spacing.space4),
+        equalTo: imageView.trailingAnchor, constant: Spacing.space4)
     ])
   }
 

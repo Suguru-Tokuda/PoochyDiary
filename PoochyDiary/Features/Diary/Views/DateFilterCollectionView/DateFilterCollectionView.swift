@@ -79,7 +79,7 @@ class DateFilterCollectionView: BaseView {
     vStack.addArrangedSubviews([
       headerView,
       horizontalDivider,
-      collectionContainerView,
+      collectionContainerView
     ])
     collectionContainerView.addAutolayoutSubview(collectionView)
     addAutolayoutSubview(vStack)
@@ -107,7 +107,7 @@ class DateFilterCollectionView: BaseView {
         equalTo: collectionContainerView.trailingAnchor,
         constant: -Spacing.space8
       ),
-      collectionView.heightAnchor.constraint(equalToConstant: 80),
+      collectionView.heightAnchor.constraint(equalToConstant: 80)
     ])
 
     vStack.setCustomSpacing(Spacing.space16, after: horizontalDivider)

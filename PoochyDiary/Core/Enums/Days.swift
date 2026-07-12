@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Days {
+nonisolated enum Days: Hashable {
   case sunday
   case monday
   case tuesday

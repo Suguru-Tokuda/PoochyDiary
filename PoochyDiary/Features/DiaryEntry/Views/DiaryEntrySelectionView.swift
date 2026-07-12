@@ -59,7 +59,7 @@ class DiaryEntrySelectionView: DiaryEntryFormBaseView {
     stackView.addArrangedSubviews([
       label,
       errorMessageView,
-      selectionView,
+      selectionView
     ])
     addAutolayoutSubview(stackView)
   }
@@ -70,7 +70,7 @@ class DiaryEntrySelectionView: DiaryEntryFormBaseView {
       stackView.topAnchor.constraint(equalTo: topAnchor),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
   }
 

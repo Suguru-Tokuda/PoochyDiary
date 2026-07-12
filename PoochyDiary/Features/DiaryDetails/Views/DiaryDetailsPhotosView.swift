@@ -69,7 +69,7 @@ class DiaryDetailsPhotosView: BaseView {
     cardView.addAutolayoutSubviews([
       titleLabel,
       countLabel,
-      carouselView,
+      carouselView
     ])
     addAutolayoutSubview(cardView)
   }
@@ -98,7 +98,7 @@ class DiaryDetailsPhotosView: BaseView {
       carouselView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
       carouselView.bottomAnchor.constraint(
         equalTo: cardView.bottomAnchor, constant: -Spacing.space16),
-      carouselView.heightAnchor.constraint(equalToConstant: Constants.thumbnailSize),
+      carouselView.heightAnchor.constraint(equalToConstant: Constants.thumbnailSize)
     ])
   }
 

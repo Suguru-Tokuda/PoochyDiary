@@ -17,12 +17,12 @@ class PDImageCarouselView: BaseView {
     let photos: [Photo]
   }
 
-  struct Configuration {
-    enum Style: Equatable {
-      case carousel
-      case thumbnails(size: CGFloat, spacing: CGFloat, sectionInset: CGFloat)
-    }
+  enum Style: Equatable {
+    case carousel
+    case thumbnails(size: CGFloat, spacing: CGFloat, sectionInset: CGFloat)
+  }
 
+  struct Configuration {
     let style: Style
 
     static let `default` = Configuration(style: .carousel)
@@ -102,13 +102,12 @@ class PDImageCarouselView: BaseView {
       collectionView.topAnchor.constraint(equalTo: topAnchor),
       collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
       collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
   }
 
   private func makeDataSource() -> DataSource {
-    DataSource(collectionView: collectionView) {
-      [weak self] collectionView, indexPath, itemIdentifier in
+    DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, itemIdentifier in
       guard let self,
         let cell = collectionView.dequeueReusableCell(
           withReuseIdentifier: PDImageCarouselViewCell.reuseIdentifer,

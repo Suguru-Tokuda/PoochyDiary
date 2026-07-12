@@ -56,7 +56,7 @@ final class PDSelectionView: BaseView {
     super.constructSubviews()
     stackView.addArrangedSubviews([
       titleLabel,
-      imageView,
+      imageView
     ])
     titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     imageView.setContentHuggingPriority(.required, for: .horizontal)
@@ -74,7 +74,7 @@ final class PDSelectionView: BaseView {
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
 
       imageView.widthAnchor.constraint(equalToConstant: Spacing.space24),
-      imageView.heightAnchor.constraint(equalToConstant: Spacing.space24),
+      imageView.heightAnchor.constraint(equalToConstant: Spacing.space24)
     ])
   }
 

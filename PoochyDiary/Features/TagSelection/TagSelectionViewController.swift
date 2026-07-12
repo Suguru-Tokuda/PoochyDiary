@@ -46,7 +46,7 @@ class TagSelectionViewController: BaseViewController {
         equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spacing.space24),
       tagSelectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tagSelectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      tagSelectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      tagSelectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
   }
 

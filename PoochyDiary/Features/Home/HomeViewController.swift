@@ -50,7 +50,7 @@ final class HomeViewController: UIViewController {
       homeView.topAnchor.constraint(equalTo: view.topAnchor),
       homeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       homeView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      homeView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      homeView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
   }
 }

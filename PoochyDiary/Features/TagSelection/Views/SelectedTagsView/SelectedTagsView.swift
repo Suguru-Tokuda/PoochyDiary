@@ -55,7 +55,7 @@ class SelectedTagsView: BaseTagOptionsView {
     addAutolayoutSubviews([
       label,
       collectionView,
-      configureTagsButton,
+      configureTagsButton
     ])
     collectionView.isScrollEnabled = false
     collectionView.clipsToBounds = false
@@ -82,7 +82,7 @@ class SelectedTagsView: BaseTagOptionsView {
       configureTagsButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
       configureTagsButton.bottomAnchor.constraint(equalTo: bottomAnchor),
       configureTagsButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-      configureTagsButton.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
+      configureTagsButton.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
     ])
     collectionViewHeightConstraint?.activate()
     configureTagsButtonHeightConstraint?.activate()

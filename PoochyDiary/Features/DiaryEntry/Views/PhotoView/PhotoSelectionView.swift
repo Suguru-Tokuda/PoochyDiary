@@ -107,17 +107,17 @@ class PhotoSelectionView: BaseView {
     stackView.addArrangedSubviews([
       collectionView,
       addPhotoView,
-      buttonStackView,
+      buttonStackView
     ])
     buttonStackView.addArrangedSubviews([
       cameraButton,
       imageGalleryButton,
-      UIView(),
+      UIView()
     ])
 
     addAutolayoutSubviews([
       label,
-      stackView,
+      stackView
     ])
 
     cameraButton.addTarget(self, action: #selector(handleCameraButtonTap), for: .touchUpInside)
@@ -140,7 +140,7 @@ class PhotoSelectionView: BaseView {
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-      buttonStackView.heightAnchor.constraint(equalToConstant: 44),
+      buttonStackView.heightAnchor.constraint(equalToConstant: 44)
     ])
     collectionViewHeightConstraint?.activate()
     addPhotoViewHeightConstraint?.activate()

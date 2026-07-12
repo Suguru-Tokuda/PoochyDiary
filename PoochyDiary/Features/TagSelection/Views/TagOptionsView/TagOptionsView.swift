@@ -24,7 +24,7 @@ class TagOptionsView: BaseTagOptionsView {
       forCellWithReuseIdentifier: TagOptionsCollectionViewCell.reuseIdentifier)
     addAutolayoutSubviews([
       label,
-      collectionView,
+      collectionView
     ])
     collectionView.isScrollEnabled = false
     collectionView.clipsToBounds = false
@@ -41,7 +41,7 @@ class TagOptionsView: BaseTagOptionsView {
       collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: Spacing.space8),
       collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
       collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
     collectionViewHeightConstraint?.activate()
   }

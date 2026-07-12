@@ -10,7 +10,7 @@ import Testing
 struct StringExtensionsTests {
 
   @Test func firstLetterUppercased_emptyString_returnsEmpty() {
-    #expect("".firstLetterUppercased() == "")
+    #expect("".firstLetterUppercased().isEmpty)
   }
 
   @Test func firstLetterUppercased_singleLowercase_returnsUppercase() {

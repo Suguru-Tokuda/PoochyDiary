@@ -86,7 +86,7 @@ class SelectedTagCollectionViewCell: BaseCollectionViewCell {
     super.constructSubviews()
     stackView.addArrangedSubviews([
       label,
-      removeButton,
+      removeButton
     ])
     contentView.addAutolayoutSubview(stackView)
 
@@ -104,7 +104,7 @@ class SelectedTagCollectionViewCell: BaseCollectionViewCell {
       stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
       stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Spacing.space4),
       stackView.bottomAnchor.constraint(
-        equalTo: contentView.bottomAnchor, constant: -Spacing.space4),
+        equalTo: contentView.bottomAnchor, constant: -Spacing.space4)
     ])
   }
 

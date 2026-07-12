@@ -57,7 +57,7 @@ class StoolStatusView: BaseView {
       divider1,
       mucusLevelLabel,
       divider2,
-      bloodLevelLabel,
+      bloodLevelLabel
     ])
 
     [stoolTypeLabel, mucusLevelLabel, bloodLevelLabel].forEach {
@@ -77,7 +77,7 @@ class StoolStatusView: BaseView {
       divider1.widthAnchor.constraint(equalToConstant: 0.5),
       divider1.heightAnchor.constraint(equalToConstant: 12),
       divider2.widthAnchor.constraint(equalToConstant: 0.5),
-      divider2.heightAnchor.constraint(equalToConstant: 12),
+      divider2.heightAnchor.constraint(equalToConstant: 12)
     ])
   }
 

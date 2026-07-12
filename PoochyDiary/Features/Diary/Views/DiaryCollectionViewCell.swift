@@ -60,14 +60,14 @@ class DiaryCollectionViewCell: BaseCollectionViewCell {
 
     verticalStackView.addArrangedSubviews([
       timeLabel,
-      stoolStatusView,
+      stoolStatusView
     ])
 
     outerStackView.addArrangedSubviews([
       imageCarouselView,
       verticalStackView,
       spacer,
-      chevron,
+      chevron
     ])
 
     contentView.addAutolayoutSubview(outerStackView)
@@ -94,7 +94,7 @@ class DiaryCollectionViewCell: BaseCollectionViewCell {
       outerStackView.bottomAnchor.constraint(
         equalTo: contentView.bottomAnchor, constant: -Spacing.space8),
       carouselHeight,
-      carouselWidth,
+      carouselWidth
     ])
   }
 

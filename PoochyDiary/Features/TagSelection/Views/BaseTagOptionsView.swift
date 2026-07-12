@@ -53,7 +53,7 @@ class BaseTagOptionsView: BaseView {
   // MARK: - CollectionView
 
   func makeDataSource() -> DataSource {
-    DataSource(collectionView: collectionView) { collectionView, indexPath, item in
+    DataSource(collectionView: collectionView) { _, _, _ in
       return UICollectionViewCell()
     }
   }

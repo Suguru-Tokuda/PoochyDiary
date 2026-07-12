@@ -61,7 +61,7 @@ final class DiaryViewController: BaseViewController {
         image: UIImage(systemName: "line.3.horizontal.decrease"),
         style: .plain,
         target: self,
-        action: #selector(handleFilterButtonTap)),
+        action: #selector(handleFilterButtonTap))
     ]
 
     view.addAutolayoutSubview(diaryView)
@@ -74,7 +74,7 @@ final class DiaryViewController: BaseViewController {
       diaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       diaryView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       diaryView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Spacing.space16),
-      diaryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.space16),
+      diaryView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Spacing.space16)
     ])
   }
 

@@ -7,6 +7,9 @@
 
 import UIKit
 
+// This file contains the Home screen and its small, screen-specific component views.
+// swiftlint:disable file_length
+
 protocol HomeViewDelegate: AnyObject {
   func onAddDiaryEntryButtonTapped()
 }
@@ -183,34 +186,34 @@ class HomeView: UIView {
     headerTextStack.addArrangedSubviews([
       eyebrowLabel,
       titleLabel,
-      subtitleLabel,
+      subtitleLabel
     ])
     headerRow.addArrangedSubviews([
       headerTextStack,
-      avatarView,
+      avatarView
     ])
 
     statusCard.applyPoochyCardStyle(cornerRadius: 24)
     statusTextStack.addArrangedSubviews([
       statusEyebrowLabel,
       statusTitleLabel,
-      statusDetailLabel,
+      statusDetailLabel
     ])
     statusTopRow.addArrangedSubviews([
       statusTextStack,
-      statusPill,
+      statusPill
     ])
     statusStack.addArrangedSubviews([
       statusTopRow,
       lastDiaryRow,
-      addDiaryEntryButton,
+      addDiaryEntryButton
     ])
     statusCard.addAutolayoutSubview(statusStack)
 
     metricsStack.addArrangedSubviews([
       weeklyMetricView,
       normalMetricView,
-      watchMetricView,
+      watchMetricView
     ])
 
     stackView.addArrangedSubviews([
@@ -218,7 +221,7 @@ class HomeView: UIView {
       statusCard,
       metricsStack,
       insightCard,
-      recentDiaryCard,
+      recentDiaryCard
     ])
     stackView.setCustomSpacing(Spacing.space24, after: headerRow)
 
@@ -262,7 +265,7 @@ class HomeView: UIView {
       addDiaryEntryButton.heightAnchor.constraint(equalToConstant: 52),
       weeklyMetricView.heightAnchor.constraint(equalToConstant: 112),
       normalMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor),
-      watchMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor),
+      watchMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor)
     ])
   }
 
@@ -352,7 +355,7 @@ private final class HomeMetricView: BaseView {
     stackView.addArrangedSubviews([
       valueLabel,
       titleLabel,
-      captionLabel,
+      captionLabel
     ])
     addAutolayoutSubview(stackView)
   }
@@ -365,7 +368,7 @@ private final class HomeMetricView: BaseView {
       stackView.bottomAnchor.constraint(
         lessThanOrEqualTo: bottomAnchor, constant: -Spacing.space16),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space12),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space12),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space12)
     ])
   }
 
@@ -406,7 +409,7 @@ private final class HomePillView: BaseView {
 
     stackView.addArrangedSubviews([
       imageView,
-      label,
+      label
     ])
     addAutolayoutSubview(stackView)
   }
@@ -420,7 +423,7 @@ private final class HomePillView: BaseView {
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space10),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space10),
       imageView.heightAnchor.constraint(equalToConstant: 14),
-      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
     ])
   }
 
@@ -476,11 +479,11 @@ private final class HomeKeyValueRowView: BaseView {
     iconContainer.addAutolayoutSubview(imageView)
     textStack.addArrangedSubviews([
       titleLabel,
-      valueLabel,
+      valueLabel
     ])
     stackView.addArrangedSubviews([
       iconContainer,
-      textStack,
+      textStack
     ])
     addAutolayoutSubview(stackView)
   }
@@ -499,7 +502,7 @@ private final class HomeKeyValueRowView: BaseView {
       imageView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
       imageView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
       imageView.heightAnchor.constraint(equalToConstant: 16),
-      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
     ])
   }
 
@@ -554,11 +557,11 @@ private final class HomeInsightCardView: BaseView {
     iconContainer.addAutolayoutSubview(imageView)
     textStack.addArrangedSubviews([
       titleLabel,
-      detailLabel,
+      detailLabel
     ])
     stackView.addArrangedSubviews([
       iconContainer,
-      textStack,
+      textStack
     ])
     addAutolayoutSubview(stackView)
   }
@@ -577,7 +580,7 @@ private final class HomeInsightCardView: BaseView {
       imageView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
       imageView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
       imageView.heightAnchor.constraint(equalToConstant: 18),
-      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
     ])
   }
 
@@ -630,16 +633,16 @@ private final class HomeRecentDiaryCardView: BaseView {
 
     titleRow.addArrangedSubviews([
       titleLabel,
-      timeLabel,
+      timeLabel
     ])
     chipStack.addArrangedSubviews([
       stoolChip,
       mucusChip,
-      bloodChip,
+      bloodChip
     ])
     stackView.addArrangedSubviews([
       titleRow,
-      chipStack,
+      chipStack
     ])
     addAutolayoutSubview(stackView)
   }
@@ -652,7 +655,7 @@ private final class HomeRecentDiaryCardView: BaseView {
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space16),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space16),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space16),
-      stoolChip.heightAnchor.constraint(equalToConstant: 64),
+      stoolChip.heightAnchor.constraint(equalToConstant: 64)
     ])
   }
 
@@ -700,7 +703,7 @@ private final class HomeStatusChipView: BaseView {
     stackView.addArrangedSubviews([
       imageView,
       titleLabel,
-      valueLabel,
+      valueLabel
     ])
     addAutolayoutSubview(stackView)
   }
@@ -715,7 +718,7 @@ private final class HomeStatusChipView: BaseView {
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Spacing.space10),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Spacing.space10),
       imageView.heightAnchor.constraint(equalToConstant: 14),
-      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+      imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
     ])
   }
 

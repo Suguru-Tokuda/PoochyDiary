@@ -40,16 +40,7 @@ final class DiaryEntryViewController: BaseViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    diaryEntryView.configure(
-      dateTime: viewModel.dateTime,
-      stoolType: viewModel.stoolType,
-      mucusLevel: viewModel.mucusLevel,
-      bloodAmount: viewModel.bloodAmount,
-      photos: viewModel.photos,
-      notes: viewModel.notes,
-      tags: viewModel.tags
-    )
+    configureDiaryEntryView(with: viewModel.state)
   }
 
   override func constructView() {
@@ -73,7 +64,7 @@ final class DiaryEntryViewController: BaseViewController {
       diaryEntryView.topAnchor.constraint(equalTo: view.topAnchor),
       diaryEntryView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       diaryEntryView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      diaryEntryView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      diaryEntryView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
   }
 
@@ -96,16 +87,7 @@ final class DiaryEntryViewController: BaseViewController {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] state in
         guard let self else { return }
-
-        diaryEntryView.configure(
-          dateTime: state.dateTime,
-          stoolType: state.stoolType,
-          mucusLevel: state.mucusLevel,
-          bloodAmount: state.bloodAmount,
-          photos: state.photos,
-          notes: state.notes,
-          tags: state.tags
-        )
+        configureDiaryEntryView(with: state)
       }
       .store(in: &subscriptions)
 
@@ -123,10 +105,32 @@ final class DiaryEntryViewController: BaseViewController {
       .saveErrorPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] error in
-        guard let self else { return }
-        // TODO: Show a pop up for the error.
+        self?.presentSaveError(error)
       }
       .store(in: &subscriptions)
+  }
+
+  private func configureDiaryEntryView(with state: DiaryEntryViewModel.State) {
+    diaryEntryView.configure(
+      model: DiaryEntryView.Model(
+        dateTime: state.dateTime,
+        stoolType: state.stoolType,
+        mucusLevel: state.mucusLevel,
+        bloodAmount: state.bloodAmount,
+        photos: state.photos,
+        notes: state.notes,
+        tags: state.tags
+      ))
+  }
+
+  private func presentSaveError(_ error: Error) {
+    let alert = UIAlertController(
+      title: "Unable to Save",
+      message: error.localizedDescription,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: "OK", style: .default))
+    present(alert, animated: true)
   }
 
   private func removeSubscriptions() {
@@ -160,9 +164,9 @@ extension DiaryEntryViewController {
       guard let self else { return }
 
       switch result {
-      case .success(_):
+      case .success:
         delegate?.onCancelButtonTap()
-      case .failure(_):
+      case .failure:
         // Show error
         break
       }

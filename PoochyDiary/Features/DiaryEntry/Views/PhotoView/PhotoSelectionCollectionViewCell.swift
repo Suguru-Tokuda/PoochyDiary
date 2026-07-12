@@ -49,7 +49,7 @@ class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
     super.constructSubviews()
     contentView.addAutolayoutSubviews([
       imageView,
-      removeButton,
+      removeButton
     ])
 
     removeButton.addTarget(self, action: #selector(handleRemoveButtonTap), for: .touchUpInside)
@@ -66,7 +66,7 @@ class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
       removeButton.topAnchor.constraint(equalTo: topAnchor, constant: 6),
       removeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
       removeButton.widthAnchor.constraint(equalToConstant: 22),
-      removeButton.heightAnchor.constraint(equalTo: removeButton.widthAnchor),
+      removeButton.heightAnchor.constraint(equalTo: removeButton.widthAnchor)
     ])
   }
 

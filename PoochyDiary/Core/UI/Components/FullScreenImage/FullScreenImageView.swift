@@ -74,7 +74,7 @@ class FullScreenImageView: BaseView {
     super.constructSubviews()
     addAutolayoutSubviews([
       collectionView,
-      pageLabel,
+      pageLabel
     ])
   }
 
@@ -88,7 +88,7 @@ class FullScreenImageView: BaseView {
 
       pageLabel.bottomAnchor.constraint(
         equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Spacing.space16),
-      pageLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+      pageLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
     ])
   }
 

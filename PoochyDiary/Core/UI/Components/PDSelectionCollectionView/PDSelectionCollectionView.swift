@@ -94,7 +94,7 @@ class PDSelectionCollectionView: BaseView {
       collectionView.topAnchor.constraint(equalTo: topAnchor),
       collectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
       collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
 
     collectionHeightConstraint?.activate()
@@ -118,8 +118,7 @@ class PDSelectionCollectionView: BaseView {
     visibleCells.forEach {
       if let indexPath = collectionView.indexPath(for: $0),
         let item = model.items[safe: indexPath.row],
-        item.id == selectedId
-      {
+        item.id == selectedId {
         $0.isSelected = true
       } else {
         $0.isSelected = false
@@ -187,7 +186,7 @@ extension PDSelectionCollectionView {
       let columns: Int
 
       switch cellStyle {
-      case .customHeight(_):
+      case .customHeight:
         columns = itemCount
       case .square(let numberOfColumns):
         columns = numberOfColumns
@@ -200,7 +199,7 @@ extension PDSelectionCollectionView {
       switch cellStyle {
       case .customHeight(let height):
         cellHeight = height
-      case .square(_):
+      case .square:
         cellHeight = cellWidth
       }
 

@@ -21,6 +21,15 @@ protocol DiaryEntryViewDelegate: AnyObject {
 }
 
 final class DiaryEntryView: BaseView {
+  struct Model {
+    let dateTime: Date?
+    let stoolType: StoolType?
+    let mucusLevel: MucusLevel?
+    let bloodAmount: BloodAmount?
+    let photos: [Photo]
+    let notes: String?
+    let tags: [Tag]
+  }
 
   weak var delegate: DiaryEntryViewDelegate?
 
@@ -96,7 +105,7 @@ final class DiaryEntryView: BaseView {
       bloodAmountView,
       photoSelectionView,
       notesView,
-      tagsView,
+      tagsView
     ])
 
     addAutolayoutSubview(scrollView)
@@ -122,27 +131,19 @@ final class DiaryEntryView: BaseView {
         equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -Spacing.space24),
 
       stackView.widthAnchor.constraint(
-        equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -Spacing.space48),
+        equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -Spacing.space48)
     ])
   }
 
-  func configure(
-    dateTime: Date?,
-    stoolType: StoolType?,
-    mucusLevel: MucusLevel?,
-    bloodAmount: BloodAmount?,
-    photos: [Photo],
-    notes: String?,
-    tags: [Tag]
-  ) {
-    dateTimeView.model = DateTimeView.Model(dateTime: dateTime)
-    stoolTypeView.model = DiaryEntrySelectionView.Model(selectedId: stoolType?.id)
-    mucusLevelView.model = DiaryEntrySelectionView.Model(selectedId: mucusLevel?.id)
-    bloodAmountView.model = DiaryEntrySelectionView.Model(selectedId: bloodAmount?.id)
-    photoSelectionView.model = PhotoSelectionView.Model(selectedPhotos: photos)
-    notesView.model = NotesView.Model(notes: notes)
-    tagsView.model = SelectedTagsView.Model(tags: tags)
-    tagsView.setConfigureButtonVisibility(isHidden: !tags.isEmpty)
+  func configure(model: Model) {
+    dateTimeView.model = DateTimeView.Model(dateTime: model.dateTime)
+    stoolTypeView.model = DiaryEntrySelectionView.Model(selectedId: model.stoolType?.id)
+    mucusLevelView.model = DiaryEntrySelectionView.Model(selectedId: model.mucusLevel?.id)
+    bloodAmountView.model = DiaryEntrySelectionView.Model(selectedId: model.bloodAmount?.id)
+    photoSelectionView.model = PhotoSelectionView.Model(selectedPhotos: model.photos)
+    notesView.model = NotesView.Model(notes: model.notes)
+    tagsView.model = SelectedTagsView.Model(tags: model.tags)
+    tagsView.setConfigureButtonVisibility(isHidden: !model.tags.isEmpty)
   }
 
   func configure(errors: [DiaryEntryValidationError]) {
@@ -151,7 +152,7 @@ final class DiaryEntryView: BaseView {
       dateTimeView,
       stoolTypeView,
       mucusLevelView,
-      bloodAmountView,
+      bloodAmountView
     ]
 
     formBaseViews.forEach {

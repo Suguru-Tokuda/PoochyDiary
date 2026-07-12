@@ -50,7 +50,7 @@ class FullScreenImageViewCell: BaseCollectionViewCell {
       zoomableImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
       zoomableImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       zoomableImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      zoomableImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+      zoomableImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
     ])
   }
 

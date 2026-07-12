@@ -54,7 +54,7 @@ final class SignalCardView: BaseView {
     addAutolayoutSubviews([
       iconContainerView,
       titleLabel,
-      valueLabel,
+      valueLabel
     ])
   }
 
@@ -80,7 +80,7 @@ final class SignalCardView: BaseView {
       valueLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
       valueLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
       valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Spacing.space4),
-      valueLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space12),
+      valueLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Spacing.space12)
     ])
   }
 

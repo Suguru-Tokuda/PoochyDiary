@@ -33,7 +33,7 @@ class DiaryView: BaseView {
 
     addAutolayoutSubviews([
       dateFilterView,
-      diaryCollectionView,
+      diaryCollectionView
     ])
 
     addEventHandlers()
@@ -51,7 +51,7 @@ class DiaryView: BaseView {
         equalTo: dateFilterView.bottomAnchor, constant: Spacing.space16),
       diaryCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
       diaryCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      diaryCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      diaryCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
     ])
   }
 

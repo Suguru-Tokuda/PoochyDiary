@@ -122,8 +122,10 @@ extension DiaryViewModel {
     }
   }
 
-  /// Generates roughly 6 months of diary: 2-3 entries per logged day, with
-  /// most weeks having a full 7 logged days and some weeks skipping 1 day.
+  // Generates roughly 6 months of diary: 2-3 entries per logged day, with
+  // most weeks having a full 7 logged days and some weeks skipping 1 day.
+  // The mock fixture definition intentionally remains together.
+  // swiftlint:disable:next function_body_length
   static func generateMockData() -> [Diary] {
     var rng = SeededGenerator(seed: 20_260_711)
     let calendar = Calendar.current
@@ -142,21 +144,21 @@ extension DiaryViewModel {
       (.soft, 20),
       (.mushy, 8),
       (.extraFirm, 4),
-      (.watery, 3),
+      (.watery, 3)
     ]
     let mucusWeights: [(MucusLevel, Int)] = [
       (.none, 70),
       (.trace, 15),
       (.mild, 10),
       (.moderate, 4),
-      (.heavy, 1),
+      (.heavy, 1)
     ]
     let bloodWeights: [(BloodAmount, Int)] = [
       (.none, 80),
       (.speck, 10),
       (.streak, 6),
       (.moderate, 3),
-      (.large, 1),
+      (.large, 1)
     ]
 
     func weightedPick<T>(_ weights: [(T, Int)], using rng: inout SeededGenerator) -> T {
@@ -173,37 +175,37 @@ extension DiaryViewModel {
       .extraFirm: [
         "Very hard and dry today, she seemed to strain a bit getting it out.",
         "Small hard pellets, harder than her usual. Adding more water to her bowl.",
-        "Straining more than normal, stool was quite dry and compact.",
+        "Straining more than normal, stool was quite dry and compact."
       ],
       .firm: [
         "Firm and well-formed, no straining. Good easy walk this morning.",
         "Solid stool, picked up easily. Normal color and consistency.",
         "Firm but not hard, everything looked routine.",
-        "A little firmer than usual but no signs of discomfort.",
+        "A little firmer than usual but no signs of discomfort."
       ],
       .normal: [
         "Solid and well-formed, no straining. Back to her normal routine.",
         "Normal morning routine. Quick and easy, no issues.",
         "Good color and consistency, nothing unusual to note.",
         "Textbook normal stool today, she seemed happy on the walk.",
-        "Everything looked great, easy pickup, good shape.",
+        "Everything looked great, easy pickup, good shape."
       ],
       .soft: [
         "Softer than usual this evening. Might be from the new treats.",
         "A bit loose today, no blood or mucus though. Will monitor.",
         "Soft serve consistency, still held together okay.",
-        "Slightly soft, maybe from all the water she drank after the park.",
+        "Slightly soft, maybe from all the water she drank after the park."
       ],
       .mushy: [
         "Mushy and harder to pick up today. She got into some grass on the walk.",
         "Loose and mushy, no blood or mucus present. Watching her diet today.",
-        "Not fully formed, a little concerning but she's acting normal otherwise.",
+        "Not fully formed, a little concerning but she's acting normal otherwise."
       ],
       .watery: [
         "Watery stool, definitely upset stomach. Keeping her hydrated and monitoring closely.",
         "Very loose and watery this time. Will call the vet if it continues past tomorrow.",
-        "Runny and hard to clean up. She seems a little low energy today too.",
-      ],
+        "Runny and hard to clean up. She seems a little low energy today too."
+      ]
     ]
 
     func note(
@@ -229,7 +231,7 @@ extension DiaryViewModel {
     let timeWindows: [(hourRange: ClosedRange<Int>, minuteRange: ClosedRange<Int>)] = [
       (6...9, 0...59),
       (11...15, 0...59),
-      (17...21, 0...59),
+      (17...21, 0...59)
     ]
 
     var diaries: [Diary] = []
@@ -253,8 +255,8 @@ extension DiaryViewModel {
         var usedWindows = Array(timeWindows.indices)
         usedWindows.shuffle(using: &rng)
 
-        for i in 0..<entryCount {
-          let window = timeWindows[usedWindows[i % usedWindows.count]]
+        for entryIndex in 0..<entryCount {
+          let window = timeWindows[usedWindows[entryIndex % usedWindows.count]]
           let hour = Int.random(in: window.hourRange, using: &rng)
           let minute = Int.random(in: window.minuteRange, using: &rng)
           let stoolType = weightedPick(stoolWeights, using: &rng)

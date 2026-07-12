@@ -46,7 +46,7 @@ class DateTimePickerViewController: BaseViewController {
       datePickerView.topAnchor.constraint(equalTo: view.topAnchor),
       datePickerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       datePickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      datePickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      datePickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
   }
 }

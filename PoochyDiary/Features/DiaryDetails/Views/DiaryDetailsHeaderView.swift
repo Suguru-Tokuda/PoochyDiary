@@ -50,6 +50,7 @@ class DiaryDetailsHeaderView: BaseView {
     label.text = "No concerns"
     label.font = .themedFont(.pill)
     label.textColor = PoochyTheme.accent
+    label.setContentCompressionResistancePriority(.required, for: .horizontal)
     return label
   }()
 
@@ -86,19 +87,19 @@ class DiaryDetailsHeaderView: BaseView {
 
     statusPillView.addAutolayoutSubviews([
       statusDotView,
-      statusLabel,
+      statusLabel
     ])
 
     vStack.addArrangedSubviews([
       statusPillView,
       titleLabel,
       dateTimeLabel,
-      petNameLabel,
+      petNameLabel
     ])
 
     cardView.addAutolayoutSubviews([
       imageView,
-      vStack,
+      vStack
     ])
 
     addAutolayoutSubview(cardView)
@@ -120,7 +121,6 @@ class DiaryDetailsHeaderView: BaseView {
       imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
 
       statusPillView.heightAnchor.constraint(equalToConstant: 30),
-      statusPillView.widthAnchor.constraint(equalToConstant: 106),
       statusDotView.widthAnchor.constraint(equalToConstant: 6),
       statusDotView.heightAnchor.constraint(equalTo: statusDotView.widthAnchor),
       statusDotView.centerYAnchor.constraint(equalTo: statusPillView.centerYAnchor),
@@ -136,7 +136,7 @@ class DiaryDetailsHeaderView: BaseView {
       vStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -Spacing.space16),
       vStack.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Spacing.space16),
       vStack.trailingAnchor.constraint(
-        equalTo: cardView.trailingAnchor, constant: -Spacing.space16),
+        equalTo: cardView.trailingAnchor, constant: -Spacing.space16)
     ])
   }
 

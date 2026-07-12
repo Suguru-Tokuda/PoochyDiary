@@ -60,7 +60,7 @@ final class DiaryDatePickerViewController: BaseViewController {
         equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Spacing.space8),
       datePicker.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Spacing.space16),
       datePicker.trailingAnchor.constraint(
-        equalTo: view.trailingAnchor, constant: -Spacing.space16),
+        equalTo: view.trailingAnchor, constant: -Spacing.space16)
     ])
   }
 

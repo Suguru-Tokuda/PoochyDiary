@@ -62,7 +62,7 @@ class DateFilterCollectionViewCell: BaseCollectionViewCell {
     vStack.addArrangedSubviews([
       dateLabel,
       dateNumberLabel,
-      circleView,
+      circleView
     ])
     contentView.addAutolayoutSubview(vStack)
   }
@@ -79,7 +79,7 @@ class DateFilterCollectionViewCell: BaseCollectionViewCell {
       vStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
       circleView.widthAnchor.constraint(equalToConstant: Spacing.space4),
-      circleView.heightAnchor.constraint(equalToConstant: Spacing.space4),
+      circleView.heightAnchor.constraint(equalToConstant: Spacing.space4)
     ])
   }
 

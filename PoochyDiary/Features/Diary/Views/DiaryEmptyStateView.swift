@@ -65,7 +65,7 @@ final class DiaryEmptyStateView: UIView {
       leadingConstraint,
       trailingConstraint,
       imageView.widthAnchor.constraint(equalToConstant: Spacing.space48),
-      imageView.heightAnchor.constraint(equalToConstant: Spacing.space48),
+      imageView.heightAnchor.constraint(equalToConstant: Spacing.space48)
     ])
   }
 

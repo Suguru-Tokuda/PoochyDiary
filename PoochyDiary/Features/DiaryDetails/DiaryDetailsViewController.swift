@@ -69,7 +69,7 @@ class DiaryDetailsViewController: BaseViewController {
       diaryDetailsView.topAnchor.constraint(equalTo: view.topAnchor),
       diaryDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       diaryDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      diaryDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      diaryDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
   }
 

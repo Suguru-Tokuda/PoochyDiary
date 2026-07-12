@@ -52,13 +52,13 @@ class DateFilterHeaderView: BaseView {
 
     vStack.addArrangedSubviews([
       selectedDateLabel,
-      dateTitleLabel,
+      dateTitleLabel
     ])
     hStack.addArrangedSubviews([
       leftArrowButton,
       vStack,
       UIView(),
-      rightArrowButton,
+      rightArrowButton
     ])
     addAutolayoutSubview(hStack)
     leftArrowButton.addTarget(self, action: #selector(handleLeftButtonTap), for: .touchUpInside)
@@ -77,7 +77,7 @@ class DateFilterHeaderView: BaseView {
       leftArrowButton.heightAnchor.constraint(equalToConstant: Spacing.space48),
 
       rightArrowButton.widthAnchor.constraint(equalToConstant: Spacing.space48),
-      rightArrowButton.heightAnchor.constraint(equalToConstant: Spacing.space48),
+      rightArrowButton.heightAnchor.constraint(equalToConstant: Spacing.space48)
     ])
   }
 
