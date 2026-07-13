@@ -26,12 +26,26 @@ class FullScreenImageView: BaseView {
 
     // MARK: - Properties
 
-    private var dataSource: DataSource?
+    private lazy var dataSource = makeDataSource()
     private var hasScrolledToStart = false
 
     // MARK: - UI Components
 
-    private let collectionView: UICollectionView
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: FullScreenImageView.makeLayout()
+        )
+        collectionView.backgroundColor = PoochyTheme.black
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.register(
+            FullScreenImageViewCell.self,
+            forCellWithReuseIdentifier: FullScreenImageViewCell.reuseIdentifier
+        )
+        return collectionView
+    }()
 
     private let pageLabel: UILabel = {
         let label = UILabel()
@@ -44,14 +58,6 @@ class FullScreenImageView: BaseView {
     // MARK: - Init
 
     init() {
-        collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: Self.makeLayout()
-        )
-        collectionView.backgroundColor = PoochyTheme.black
-        collectionView.isPagingEnabled = true
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInsetAdjustmentBehavior = .never
         super.init(frame: .zero)
     }
 
@@ -61,13 +67,9 @@ class FullScreenImageView: BaseView {
 
     override func constructView() {
         super.constructView()
-        backgroundColor = .black
-        collectionView.register(
-            FullScreenImageViewCell.self,
-            forCellWithReuseIdentifier: FullScreenImageViewCell.reuseIdentifier
-        )
+        backgroundColor = PoochyTheme.black
         collectionView.delegate = self
-        dataSource = makeDataSource()
+        _ = dataSource
     }
 
     override func constructSubviews() {
@@ -197,7 +199,7 @@ class FullScreenImageView: BaseView {
     }
 
     private func applySnapshot() {
-        guard let model, let dataSource else { return }
+        guard let model else { return }
         var snapshot = Snapshot()
         snapshot.appendSections([0])
         snapshot.appendItems(model.photos, toSection: 0)

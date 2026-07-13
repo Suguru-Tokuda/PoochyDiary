@@ -29,7 +29,7 @@ class PhotoSelectionView: BaseView {
         }
     }
 
-    private var dataSource: DataSource?
+    private lazy var dataSource = makeDataSource()
     private var collectionViewHeightConstraint: NSLayoutConstraint?
     private var addPhotoViewHeightConstraint: NSLayoutConstraint?
 
@@ -42,7 +42,21 @@ class PhotoSelectionView: BaseView {
         return label
     }()
 
-    private let collectionView: UICollectionView
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: PhotoSelectionView.makeLayout()
+        )
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isHidden = true
+        collectionView.backgroundColor = .clear
+        collectionView.register(
+            PhotoSelectionCollectionViewCell.self,
+            forCellWithReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier
+        )
+        return collectionView
+    }()
     private let addPhotoView = AddPhotoView()
     private let buttonStackView = UIStackView(
         axis: .horizontal,
@@ -83,27 +97,9 @@ class PhotoSelectionView: BaseView {
         return button
     }()
 
-    override init(frame: CGRect) {
-        collectionView = UICollectionView(
-            frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        super.init(frame: frame)
-        collectionView.collectionViewLayout = Self.makeLayout()
-        dataSource = makeDataSource()
-    }
-
-    required init?(coder: NSCoder) {
-        nil
-    }
-
     override func constructSubviews() {
         super.constructSubviews()
-        collectionView.alwaysBounceHorizontal = true
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isHidden = true
-        collectionView.register(
-            PhotoSelectionCollectionViewCell.self,
-            forCellWithReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier)
-        collectionView.backgroundColor = .clear
+        _ = dataSource
         stackView.addArrangedSubviews([
             collectionView,
             addPhotoView,
@@ -157,8 +153,6 @@ class PhotoSelectionView: BaseView {
 
         collectionView.isHidden = selectedPhotos.isEmpty
         addPhotoView.isHidden = !selectedPhotos.isEmpty
-
-        guard let dataSource else { return }
 
         dataSource.apply(makeSnapshot(photos: selectedPhotos))
     }

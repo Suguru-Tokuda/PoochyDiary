@@ -29,26 +29,34 @@ class DiaryCollectionView: BaseView {
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
 
-    private let collectionView: UICollectionView
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: DiaryCollectionView.makeLayout()
+        )
+        collectionView.backgroundColor = .clear
+        collectionView.register(
+            DiarySectionHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: DiarySectionHeaderView.reuseIdentifier
+        )
+        collectionView.register(
+            DiaryCollectionViewCell.self,
+            forCellWithReuseIdentifier: DiaryCollectionViewCell.reuseIdentifier
+        )
+        collectionView.register(
+            DiaryWeightCollectionViewCell.self,
+            forCellWithReuseIdentifier: DiaryWeightCollectionViewCell.reuseIdentifier
+        )
+        return collectionView
+    }()
     private let emptyStateView = DiaryEmptyStateView()
-    private var diffableDataSource: DataSource?
+    private lazy var diffableDataSource = makeDataSource()
 
     var model: Model? {
         didSet {
             applyModel()
         }
-    }
-
-    override init(frame: CGRect) {
-        collectionView = UICollectionView(
-            frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        super.init(frame: frame)
-        collectionView.collectionViewLayout = makeLayout()
-        diffableDataSource = makeDataSource()
-    }
-
-    @MainActor required init?(coder: NSCoder) {
-        nil
     }
 
     override func constructView() {
@@ -58,20 +66,8 @@ class DiaryCollectionView: BaseView {
 
     override func constructSubviews() {
         super.constructSubviews()
-        collectionView.register(
-            DiarySectionHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: DiarySectionHeaderView.reuseIdentifier
-        )
-        collectionView.register(
-            DiaryCollectionViewCell.self,
-            forCellWithReuseIdentifier: DiaryCollectionViewCell.reuseIdentifier)
-        collectionView.register(
-            DiaryWeightCollectionViewCell.self,
-            forCellWithReuseIdentifier: DiaryWeightCollectionViewCell.reuseIdentifier
-        )
+        _ = diffableDataSource
         addAutolayoutSubview(collectionView)
-        collectionView.backgroundColor = .clear
         collectionView.backgroundView = emptyStateView
     }
 
@@ -138,7 +134,7 @@ extension DiaryCollectionView {
         return dataSource
     }
 
-    private func makeLayout() -> UICollectionViewCompositionalLayout {
+    private static func makeLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, _ in
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -180,8 +176,6 @@ extension DiaryCollectionView {
     }
 
     private func applyModel() {
-        guard let diffableDataSource else { return }
-
         var items = model?.items ?? []
         emptyStateView.isHidden = !items.isEmpty
         items = items.sorted(by: { $0.date > $1.date })

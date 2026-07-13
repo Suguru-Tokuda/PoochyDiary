@@ -47,24 +47,32 @@ class PDImageCarouselView: BaseView {
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, PhotoWrapper>
 
     private let configuration: Configuration
-    private let collectionView: UICollectionView
-    private var dataSource: DataSource?
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: PDImageCarouselView.makeLayout(configuration: .default)
+        )
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(
+            PDImageCarouselViewCell.self,
+            forCellWithReuseIdentifier: PDImageCarouselViewCell.reuseIdentifer
+        )
+        return collectionView
+    }()
+    private lazy var dataSource = makeDataSource()
 
     init(configuration: Configuration = .default) {
         self.configuration = configuration
-        collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: Self.makeLayout(configuration: configuration)
-        )
         super.init(frame: .zero)
+        collectionView.setCollectionViewLayout(
+            Self.makeLayout(configuration: configuration),
+            animated: false
+        )
     }
 
     override init(frame: CGRect) {
         configuration = .default
-        collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: Self.makeLayout(configuration: .default)
-        )
         super.init(frame: frame)
     }
 
@@ -74,19 +82,10 @@ class PDImageCarouselView: BaseView {
 
     override func constructView() {
         super.constructView()
-        dataSource = makeDataSource()
-        collectionView.register(
-            PDImageCarouselViewCell.self,
-            forCellWithReuseIdentifier: PDImageCarouselViewCell.reuseIdentifer
-        )
-        collectionView.backgroundColor = .clear
+        _ = dataSource
         collectionView.delegate = self
 
-        switch configuration.style {
-        case .carousel:
-            collectionView.showsHorizontalScrollIndicator = false
-        case .thumbnails:
-            collectionView.showsHorizontalScrollIndicator = false
+        if case .thumbnails = configuration.style {
             collectionView.showsVerticalScrollIndicator = false
         }
     }
@@ -187,7 +186,7 @@ class PDImageCarouselView: BaseView {
     }
 
     private func applySnapshot(photos: [Photo]) {
-        guard let dataSource, !photos.isEmpty else { return }
+        guard !photos.isEmpty else { return }
 
         var snapshot = Snapshot()
         snapshot.appendSections([0])

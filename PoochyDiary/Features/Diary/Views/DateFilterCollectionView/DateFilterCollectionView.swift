@@ -40,25 +40,27 @@ class DateFilterCollectionView: BaseView {
         return view
     }()
     private let collectionContainerView = UIView()
-    private let collectionView: UICollectionView
-
-    private var dataSource: DataSource?
-
-    override init(frame: CGRect) {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: Self.makeLayout())
-        super.init(frame: frame)
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: DateFilterCollectionView.makeLayout()
+        )
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceHorizontal = true
+        collectionView.alwaysBounceVertical = false
+        collectionView.isDirectionalLockEnabled = true
+        collectionView.isScrollEnabled = true
+        collectionView.isPagingEnabled = true
         collectionView.register(
             DateFilterCollectionViewCell.self,
-            forCellWithReuseIdentifier: DateFilterCollectionViewCell.reuseIdentifier)
-        collectionView.delegate = self
-        collectionView.backgroundColor = .clear
-        dataSource = makeDataSource()
-        addEventHandlers()
-    }
+            forCellWithReuseIdentifier: DateFilterCollectionViewCell.reuseIdentifier
+        )
+        return collectionView
+    }()
 
-    @MainActor required init?(coder: NSCoder) {
-        nil
-    }
+    private lazy var dataSource = makeDataSource()
 
     override func constructView() {
         super.constructView()
@@ -70,13 +72,9 @@ class DateFilterCollectionView: BaseView {
 
     override func constructSubviews() {
         super.constructSubviews()
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.alwaysBounceHorizontal = true
-        collectionView.alwaysBounceVertical = false
-        collectionView.isDirectionalLockEnabled = true
-        collectionView.isScrollEnabled = true
-        collectionView.isPagingEnabled = true
+        collectionView.delegate = self
+        _ = dataSource
+        addEventHandlers()
 
         vStack.addArrangedSubviews([
             headerView,
@@ -172,7 +170,6 @@ class DateFilterCollectionView: BaseView {
     }
 
     private func applySnapshot(items: [DateFilterCollectionViewCell.Model]) {
-        guard let dataSource else { return }
         var snapshot = Snapshot()
         snapshot.appendSections([0])
         snapshot.appendItems(items, toSection: 0)
@@ -196,8 +193,8 @@ class DateFilterCollectionView: BaseView {
 
 extension DateFilterCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let snapshot = dataSource?.snapshot(),
-            let selectedItem = snapshot.itemIdentifiers[safe: indexPath.item]
+        let snapshot = dataSource.snapshot()
+        guard let selectedItem = snapshot.itemIdentifiers[safe: indexPath.item]
         else { return }
 
         onDataSelect?(selectedItem.date)
