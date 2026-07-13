@@ -103,7 +103,7 @@ class PhotoSelectionView: BaseView {
         collectionView.register(
             PhotoSelectionCollectionViewCell.self,
             forCellWithReuseIdentifier: PhotoSelectionCollectionViewCell.reuseIdentifier)
-        collectionView.backgroundColor = PoochyTheme.background
+        collectionView.backgroundColor = .clear
         stackView.addArrangedSubviews([
             collectionView,
             addPhotoView,

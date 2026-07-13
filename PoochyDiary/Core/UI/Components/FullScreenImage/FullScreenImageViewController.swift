@@ -18,7 +18,7 @@ class FullScreenImageViewController: BaseViewController {
         let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .semibold)
         button.setImage(UIImage(systemName: "xmark", withConfiguration: config), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        button.backgroundColor = PoochyTheme.black.withAlphaComponent(0.5)
         button.layer.cornerRadius = 16
         return button
     }()
@@ -41,7 +41,7 @@ class FullScreenImageViewController: BaseViewController {
 
     override func constructView() {
         super.constructView()
-        view.backgroundColor = .black
+        view.backgroundColor = PoochyTheme.black
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
 
         let dismissPan = UIPanGestureRecognizer(target: self, action: #selector(handleDismissPan))

@@ -67,7 +67,7 @@ class DiaryCollectionView: BaseView {
             DiaryCollectionViewCell.self,
             forCellWithReuseIdentifier: DiaryCollectionViewCell.reuseIdentifier)
         addAutolayoutSubview(collectionView)
-        collectionView.backgroundColor = PoochyTheme.background
+        collectionView.backgroundColor = .clear
         collectionView.backgroundView = emptyStateView
     }
 

@@ -18,7 +18,7 @@ class PDButton: BaseButton {
 
     override func constructView() {
         super.constructView()
-        layer.borderColor = UIColor.black.withAlphaComponent(0.8).cgColor
+        layer.borderColor = PoochyTheme.black.withAlphaComponent(0.8).cgColor
         layer.cornerRadius = 24
     }
 

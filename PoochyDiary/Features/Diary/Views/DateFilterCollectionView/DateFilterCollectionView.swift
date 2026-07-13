@@ -51,7 +51,7 @@ class DateFilterCollectionView: BaseView {
             DateFilterCollectionViewCell.self,
             forCellWithReuseIdentifier: DateFilterCollectionViewCell.reuseIdentifier)
         collectionView.delegate = self
-        collectionView.backgroundColor = PoochyTheme.background
+        collectionView.backgroundColor = .clear
         dataSource = makeDataSource()
         addEventHandlers()
     }

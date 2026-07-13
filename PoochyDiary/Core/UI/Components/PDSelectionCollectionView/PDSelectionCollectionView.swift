@@ -79,7 +79,7 @@ class PDSelectionCollectionView: BaseView {
 
     override func constructSubviews() {
         super.constructSubviews()
-        collectionView.backgroundColor = PoochyTheme.background
+        collectionView.backgroundColor = .clear
         collectionView.register(
             PDSelectionCollectionViewCell.self,
             forCellWithReuseIdentifier: PDSelectionCollectionViewCell.reuseIdentifier)

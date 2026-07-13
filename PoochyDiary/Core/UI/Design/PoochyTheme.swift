@@ -42,6 +42,8 @@ enum PoochyTheme {
     static let accentSoft = UIColor.accent.withAlphaComponent(0.14)
     static let attention = UIColor(hex: 0xB7782D)
     static let danger = UIColor(hex: 0xB95B56)
+    static let black = UIColor.black
+    static let white = UIColor.white
     static let outline = UIColor.separator.withAlphaComponent(0.35)
     static let shadow = UIColor.black.withAlphaComponent(0.08)
 }

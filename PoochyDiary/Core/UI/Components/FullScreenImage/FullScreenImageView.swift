@@ -35,7 +35,7 @@ class FullScreenImageView: BaseView {
 
     private let pageLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = PoochyTheme.white
         label.font = .themedFont(.bodyEmphasized)
         label.textAlignment = .center
         return label
@@ -48,7 +48,7 @@ class FullScreenImageView: BaseView {
             frame: .zero,
             collectionViewLayout: Self.makeLayout()
         )
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = PoochyTheme.black
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInsetAdjustmentBehavior = .never

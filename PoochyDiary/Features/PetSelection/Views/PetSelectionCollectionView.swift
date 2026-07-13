@@ -8,9 +8,16 @@
 import UIKit
 
 final class PetSelectionCollectionView: BaseView {
+    nonisolated private enum Section: Hashable {
+        case main
+    }
+
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, UUID>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, UUID>
+
     var onPetSelect: ((Pet) -> Void)?
 
-    private var pets: [Pet] = []
+    private var petsById: [UUID: Pet] = [:]
     private var selectedPetId: UUID?
 
     private lazy var collectionView: UICollectionView = {
@@ -22,7 +29,6 @@ final class PetSelectionCollectionView: BaseView {
         collectionView.backgroundColor = .clear
         collectionView.alwaysBounceVertical = true
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(
             PetSelectionCollectionViewCell.self,
@@ -31,8 +37,30 @@ final class PetSelectionCollectionView: BaseView {
         return collectionView
     }()
 
+    private lazy var dataSource = DataSource(
+        collectionView: collectionView
+    ) { [weak self] collectionView, indexPath, petId in
+        guard
+            let self,
+            let pet = petsById[petId],
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: PetSelectionCollectionViewCell.reuseIdentifier,
+                for: indexPath
+            ) as? PetSelectionCollectionViewCell
+        else {
+            return UICollectionViewCell()
+        }
+
+        cell.model = PetSelectionCollectionViewCell.Model(
+            pet: pet,
+            isSelected: pet.id == selectedPetId
+        )
+        return cell
+    }
+
     override func constructSubviews() {
         super.constructSubviews()
+        _ = dataSource
         addAutolayoutSubview(collectionView)
     }
 
@@ -47,40 +75,14 @@ final class PetSelectionCollectionView: BaseView {
     }
 
     func configure(pets: [Pet], selectedPet: Pet?) {
-        self.pets = pets
+        petsById = Dictionary(uniqueKeysWithValues: pets.map { ($0.id, $0) })
         selectedPetId = selectedPet?.id
-        collectionView.reloadData()
-    }
-}
 
-extension PetSelectionCollectionView: UICollectionViewDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
-        pets.count
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
-        guard
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: PetSelectionCollectionViewCell.reuseIdentifier,
-                for: indexPath
-            ) as? PetSelectionCollectionViewCell
-        else {
-            return UICollectionViewCell()
-        }
-
-        if let pet = pets[safe: indexPath.item] {
-            cell.model = PetSelectionCollectionViewCell.Model(
-                pet: pet,
-                isSelected: pet.id == selectedPetId
-            )
-        }
-        return cell
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(pets.map(\.id), toSection: .main)
+        snapshot.reconfigureItems(pets.map(\.id))
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -94,6 +96,13 @@ extension PetSelectionCollectionView: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        onPetSelect?(pets[indexPath.item])
+        guard
+            let petId = dataSource.itemIdentifier(for: indexPath),
+            let pet = petsById[petId]
+        else {
+            return
+        }
+
+        onPetSelect?(pet)
     }
 }

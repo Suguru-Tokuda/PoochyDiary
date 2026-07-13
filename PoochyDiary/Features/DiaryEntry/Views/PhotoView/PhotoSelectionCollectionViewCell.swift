@@ -40,7 +40,7 @@ class PhotoSelectionCollectionViewCell: BaseCollectionViewCell {
         let config = UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold)
         button.setImage(UIImage(systemName: "xmark", withConfiguration: config), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = UIColor.black.withAlphaComponent(0.55)
+        button.backgroundColor = PoochyTheme.black.withAlphaComponent(0.55)
         button.layer.cornerRadius = 11
         return button
     }()
