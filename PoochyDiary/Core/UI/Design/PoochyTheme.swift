@@ -2,7 +2,7 @@
 //  PoochyTheme.swift
 //  PoochyDiary
 //
-//  Created by Codex on 7/10/26.
+//  Created by Suguru Tokuda on 7/10/26.
 //
 
 import UIKit

@@ -45,4 +45,24 @@ extension Pet {
     static func mock() -> Pet {
         Pet(id: UUID(), name: "Leo", dateOfBirth: Date("2019-06-19"), gender: .male, type: .dog)
     }
+
+    static func mockPets() -> [Pet] {
+        [
+            mock(),
+            Pet(
+                id: UUID(),
+                name: "Taiga",
+                dateOfBirth: Date("2021-03-08"),
+                gender: .female,
+                type: .cat
+            ),
+            Pet(
+                id: UUID(),
+                name: "Jin",
+                dateOfBirth: Date("2020-09-14"),
+                gender: .female,
+                type: .cat
+            )
+        ]
+    }
 }

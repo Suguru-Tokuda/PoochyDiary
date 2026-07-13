@@ -20,11 +20,18 @@ final class DiaryCoordinator: BaseCoordinator {
 
     override func start() {
         let viewModel = DiaryViewModel()
+        let petName = dependencies.petStore?.currentPet?.name ?? ""
         let viewController = DiaryViewController(
             viewModel: viewModel,
+            petName: petName,
             onDiarySelect: { [weak self] selectedDiary in
                 self?.openDiaryDetails(for: selectedDiary)
             })
+
+        viewController.onPetSelectorTap = { [weak self, weak viewController] in
+            guard let self, let viewController else { return }
+            openPetSelection(from: viewController)
+        }
 
         viewController.delegate = self
 
@@ -33,6 +40,19 @@ final class DiaryCoordinator: BaseCoordinator {
 }
 
 extension DiaryCoordinator {
+    private func openPetSelection(from viewController: DiaryViewController) {
+        let coordinator = PetSelectionCoordinator(
+            navigationController: navigationController,
+            dependencies: dependencies
+        )
+        coordinator.onPetSelected = { [weak viewController] pet in
+            viewController?.updatePet(pet)
+        }
+
+        addChild(coordinator)
+        coordinator.start()
+    }
+
     private func openDiaryDetails(for diary: Diary) {
         guard let petStore = dependencies.petStore,
             let currentPet = petStore.currentPet

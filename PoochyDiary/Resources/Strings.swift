@@ -15,6 +15,36 @@ enum Strings {
         static let profile = "Profile"
     }
 
+    enum Diary {
+        static let title = "Diary"
+        static let selectDateAccessibilityLabel = "Select diary date"
+        static let addEntryAccessibilityLabel = "Add diary entry"
+    }
+
+    enum PetSelector {
+        static let accessibilityHint = "Double tap to switch pets"
+
+        static func accessibilityLabel(petName: String) -> String {
+            "Current pet, \(petName)"
+        }
+    }
+
+    enum PetSelection {
+        static let title = "Switch Pet"
+        static let subtitle = "Choose whose diary you want to view"
+        static let addPet = "Add a Pet"
+        static let closeAccessibilityLabel = "Close pet selection"
+
+        static func animalType(_ type: AnimalType) -> String {
+            switch type {
+            case .cat:
+                return "Cat"
+            case .dog:
+                return "Dog"
+            }
+        }
+    }
+
     enum DiaryEntry {
         static let title = "Diary Poop"
 

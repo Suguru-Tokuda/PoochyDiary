@@ -18,16 +18,23 @@ protocol DiaryViewControllerDelegate: AnyObject {
 
 final class DiaryViewController: BaseViewController {
     weak var delegate: DiaryViewControllerDelegate?
+    var onPetSelectorTap: (() -> Void)?
 
     private let viewModel: DiaryViewModel
     private var subscriptions = Set<AnyCancellable>()
 
     // MARK: UI Components
 
+    private let headerView = DiaryHeaderView()
     private let diaryView = DiaryView()
 
-    init(viewModel: DiaryViewModel, onDiarySelect: ((Diary) -> Void)?) {
+    init(
+        viewModel: DiaryViewModel,
+        petName: String,
+        onDiarySelect: ((Diary) -> Void)?
+    ) {
         self.viewModel = viewModel
+        headerView.petName = petName
         diaryView.onDiarySelect = onDiarySelect
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,20 +57,16 @@ final class DiaryViewController: BaseViewController {
     override func constructSubviews() {
         super.constructSubviews()
 
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(
-                image: UIImage(systemName: "plus"),
-                style: .plain,
-                target: self,
-                action: #selector(handleAddButtonTap)
-            ),
-            UIBarButtonItem(
-                image: UIImage(systemName: "line.3.horizontal.decrease"),
-                style: .plain,
-                target: self,
-                action: #selector(handleFilterButtonTap))
-        ]
-
+        headerView.onAddButtonTap = { [weak self] in
+            self?.handleAddButtonTap()
+        }
+        headerView.onPetSelectorTap = { [weak self] in
+            self?.onPetSelectorTap?()
+        }
+        headerView.onCalendarButtonTap = { [weak self] in
+            self?.handleCalendarButtonTap()
+        }
+        view.addAutolayoutSubview(headerView)
         view.addAutolayoutSubview(diaryView)
     }
 
@@ -71,7 +74,19 @@ final class DiaryViewController: BaseViewController {
         super.constructSubviewLayoutConstraints()
 
         NSLayoutConstraint.activate([
-            diaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: Spacing.space16
+            ),
+            headerView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -Spacing.space16
+            ),
+            diaryView.topAnchor.constraint(
+                equalTo: headerView.bottomAnchor,
+                constant: Spacing.space16
+            ),
             diaryView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             diaryView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor, constant: Spacing.space16),
@@ -126,11 +141,11 @@ final class DiaryViewController: BaseViewController {
         }
     }
 
-    @objc private func handleAddButtonTap() {
+    private func handleAddButtonTap() {
         delegate?.onAddButtonTap()
     }
 
-    @objc private func handleFilterButtonTap() {
+    private func handleCalendarButtonTap() {
         delegate?.diaryViewController(
             self,
             didRequestDateSelectionFrom: viewModel.visibleWeekDate
@@ -139,5 +154,15 @@ final class DiaryViewController: BaseViewController {
 
     func selectDate(_ date: Date) {
         viewModel.selectDate(date)
+    }
+
+    func updatePet(_ pet: Pet) {
+        headerView.petName = pet.name
+    }
+}
+
+extension DiaryViewController: NavigationBarConfigurable {
+    var prefersNavigationBarHidden: Bool {
+        true
     }
 }
