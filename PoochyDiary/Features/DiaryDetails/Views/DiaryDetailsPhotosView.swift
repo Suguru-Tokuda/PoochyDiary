@@ -108,7 +108,7 @@ class DiaryDetailsPhotosView: BaseView {
         guard let model else { return }
         let photos = model.photos
         isHidden = photos.isEmpty
-        countLabel.text = "\(photos.count) photo\(photos.count == 1 ? "" : "s")"
+        countLabel.text = Strings.DiaryDetails.photoCount(photos.count)
         carouselView.model = PDImageCarouselView.Model(photos: photos)
     }
 }

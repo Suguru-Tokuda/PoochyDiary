@@ -35,9 +35,17 @@ enum StoolType: String, CaseIterable, Codable {
     var name: String {
         switch self {
         case .extraFirm:
-            return "Extra Firm"
-        default:
-            return rawValue.firstLetterUppercased()
+            return Strings.HealthValue.extraFirm
+        case .firm:
+            return Strings.HealthValue.firm
+        case .normal:
+            return Strings.HealthValue.normal
+        case .soft:
+            return Strings.HealthValue.soft
+        case .mushy:
+            return Strings.HealthValue.mushy
+        case .watery:
+            return Strings.HealthValue.watery
         }
     }
 

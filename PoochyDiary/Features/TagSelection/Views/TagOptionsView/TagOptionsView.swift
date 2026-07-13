@@ -13,7 +13,7 @@ class TagOptionsView: BaseTagOptionsView {
 
     private let label: PDLabel = {
         let label = PDLabel()
-        label.model = PDLabel.Model(title: "Tag Options", isOptional: false)
+        label.model = PDLabel.Model(title: Strings.TagSelection.tagOptions, isOptional: false)
         return label
     }()
 

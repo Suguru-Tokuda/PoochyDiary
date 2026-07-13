@@ -30,7 +30,18 @@ enum BloodAmount: String, CaseIterable, Codable {
     }
 
     var name: String {
-        rawValue.firstLetterUppercased()
+        switch self {
+        case .none:
+            return Strings.HealthValue.none
+        case .speck:
+            return Strings.HealthValue.speck
+        case .streak:
+            return Strings.HealthValue.streak
+        case .moderate:
+            return Strings.HealthValue.moderate
+        case .large:
+            return Strings.HealthValue.large
+        }
     }
 
     var imageName: PDIcons {

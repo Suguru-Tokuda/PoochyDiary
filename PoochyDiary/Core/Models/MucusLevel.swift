@@ -30,7 +30,18 @@ enum MucusLevel: String, CaseIterable, Codable {
     }
 
     var name: String {
-        rawValue.firstLetterUppercased()
+        switch self {
+        case .none:
+            return Strings.HealthValue.none
+        case .trace:
+            return Strings.HealthValue.trace
+        case .mild:
+            return Strings.HealthValue.mild
+        case .moderate:
+            return Strings.HealthValue.moderate
+        case .heavy:
+            return Strings.HealthValue.heavy
+        }
     }
 
     var imageName: PDIcons {

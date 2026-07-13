@@ -20,7 +20,7 @@ class SelectedTagsView: BaseTagOptionsView {
     private let configureTagsButton: UIButton = {
         let button = UIButton(type: .system)
         var configuration = UIButton.Configuration.plain()
-        configuration.title = "Add tags"
+        configuration.title = Strings.TagSelection.addTags
         configuration.image = UIImage(systemName: "plus.circle")
         configuration.imagePadding = Spacing.space4
         configuration.baseForegroundColor = PoochyTheme.accent
@@ -33,7 +33,7 @@ class SelectedTagsView: BaseTagOptionsView {
 
     init(
         frame: CGRect = .zero,
-        labelTitle: String = "Selected Tags",
+        labelTitle: String = Strings.TagSelection.selectedTags,
         isOptional: Bool = false,
         shouldShowRemoveButton: Bool = true,
         shouldShowConfigureTagsButton: Bool = false

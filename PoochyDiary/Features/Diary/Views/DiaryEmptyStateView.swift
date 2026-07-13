@@ -20,7 +20,7 @@ final class DiaryEmptyStateView: UIView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "No diary entries for this day"
+        label.text = Strings.Diary.emptyTitle
         label.font = .themedFont(.bodyEmphasized)
         label.textColor = PoochyTheme.primaryText
         label.textAlignment = .center
@@ -29,7 +29,7 @@ final class DiaryEmptyStateView: UIView {
 
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tap the + button in the top-right corner to add an entry."
+        label.text = Strings.Diary.emptyMessage
         label.font = .themedFont(.caption)
         label.textColor = PoochyTheme.secondaryText
         label.textAlignment = .center

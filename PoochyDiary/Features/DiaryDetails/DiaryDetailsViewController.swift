@@ -53,7 +53,7 @@ class DiaryDetailsViewController: BaseViewController {
     override func constructSubviews() {
         super.constructSubviews()
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Edit",
+            title: Strings.Common.edit,
             style: .plain,
             target: self,
             action: #selector(handleEditButtonTap)

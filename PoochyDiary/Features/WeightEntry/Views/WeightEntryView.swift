@@ -63,7 +63,7 @@ final class WeightEntryView: BaseView {
 
     private let cancelButton: PDButton = {
         let button = PDButton()
-        button.setTitle(Strings.WeightEntry.cancel, for: .normal)
+        button.setTitle(Strings.Common.cancel, for: .normal)
         button.setTitleColor(PoochyTheme.primaryText, for: .normal)
         button.backgroundColor = PoochyTheme.surface
         return button
@@ -71,7 +71,7 @@ final class WeightEntryView: BaseView {
 
     private let saveButton: PDButton = {
         let button = PDButton()
-        button.setTitle(Strings.WeightEntry.save, for: .normal)
+        button.setTitle(Strings.Common.save, for: .normal)
         button.setTitleColor(PoochyTheme.white, for: .normal)
         button.backgroundColor = PoochyTheme.accent
         return button

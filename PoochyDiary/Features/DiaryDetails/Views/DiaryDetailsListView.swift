@@ -31,7 +31,7 @@ class DiaryDetailsListView: BaseView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Health Signals"
+        label.text = Strings.DiaryDetails.healthSignals
         label.font = .themedFont(.sectionTitle)
         label.textColor = PoochyTheme.primaryText
         return label
@@ -39,7 +39,7 @@ class DiaryDetailsListView: BaseView {
 
     private let checkCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "3 checks"
+        label.text = Strings.DiaryDetails.checkCount
         label.font = .themedFont(.captionEmphasized)
         label.textColor = PoochyTheme.secondaryText
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -111,21 +111,21 @@ class DiaryDetailsListView: BaseView {
         guard let model else { return }
 
         stoolCard.configure(
-            title: "Stool type",
+            title: Strings.DiaryDetails.stoolType,
             value: model.stoolType.name,
             systemImageName: "circle.fill",
             iconTintColor: PoochyTheme.accent,
             iconBackgroundColor: PoochyTheme.elevatedSurface
         )
         mucusCard.configure(
-            title: "Mucus level",
+            title: Strings.DiaryDetails.mucusLevel,
             value: model.mucusLevel.name,
             systemImageName: "circle.lefthalf.filled",
             iconTintColor: PoochyTheme.accent,
             iconBackgroundColor: PoochyTheme.elevatedSurface
         )
         bloodCard.configure(
-            title: "Blood amount",
+            title: Strings.DiaryDetails.bloodAmount,
             value: model.bloodAmount.name,
             systemImageName: "minus.circle.fill",
             iconTintColor: PoochyTheme.attention,

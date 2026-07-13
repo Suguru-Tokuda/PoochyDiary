@@ -31,7 +31,7 @@ final class DiaryDatePickerViewController: BaseViewController {
 
     override func constructView() {
         super.constructView()
-        title = "Jump to Date"
+        title = Strings.Diary.jumpToDate
         view.backgroundColor = PoochyTheme.background
     }
 
@@ -39,13 +39,13 @@ final class DiaryDatePickerViewController: BaseViewController {
         super.constructSubviews()
         datePicker.date = selectedDate
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Cancel",
+            title: Strings.Common.cancel,
             style: .plain,
             target: self,
             action: #selector(handleCancel)
         )
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Jump",
+            title: Strings.Diary.jump,
             style: .prominent,
             target: self,
             action: #selector(handleDateSelect)

@@ -39,7 +39,7 @@ class PDLabel: BaseView {
     let optionalLabel: UILabel = {
         let label = UILabel()
         label.textColor = PoochyTheme.secondaryText
-        label.text = "(optional)"
+        label.text = Strings.Common.optional
         label.font = .themedFont(.pill)
         label.isHidden = true
         return label

@@ -17,13 +17,13 @@ enum DiaryEntryValidationError {
     var message: String {
         switch self {
         case .dateTimeRequired:
-            return "Select a date and time."
+            return Strings.DiaryEntry.dateTimeRequired
         case .stoolTypeRequired:
-            return "Select a stool type."
+            return Strings.DiaryEntry.stoolTypeRequired
         case .mucusLevelRequired:
-            return "Select a mucus level."
+            return Strings.DiaryEntry.mucusLevelRequired
         case .bloodAmountRequired:
-            return "Select a blood amount."
+            return Strings.DiaryEntry.bloodAmountRequired
         }
     }
 }

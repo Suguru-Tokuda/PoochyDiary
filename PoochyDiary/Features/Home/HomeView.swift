@@ -29,15 +29,14 @@ class HomeView: UIView {
         static func mock(petName: String) -> Model {
             Model(
                 petName: petName,
-                statusTitle: "Steady this week",
-                statusDetail: "Most recent diary is normal with no mucus or blood.",
-                lastDiaryText: "Today, 8:45 AM",
+                statusTitle: Strings.Home.mockStatusTitle,
+                statusDetail: Strings.Home.mockStatusDetail,
+                lastDiaryText: Strings.Home.mockLastDiary,
                 weeklyDiaries: "6",
                 normalDiaries: "4/6",
                 watchItems: "1",
-                insightTitle: "Keep an eye on one watch item",
-                insightDetail:
-                    "A small amount of blood appeared once this week. Track the next couple of diaries for a pattern."
+                insightTitle: Strings.Home.mockInsightTitle,
+                insightDetail: Strings.Home.mockInsightDetail
             )
         }
     }
@@ -110,7 +109,7 @@ class HomeView: UIView {
         spacing: Spacing.space4
     )
     private let statusEyebrowLabel = HomeView.makeLabel(
-        text: "CURRENT STATUS",
+        text: Strings.Home.currentStatus,
         font: .themedFont(.pill),
         color: PoochyTheme.secondaryText
     )
@@ -134,7 +133,7 @@ class HomeView: UIView {
         configuration.cornerStyle = .large
         configuration.image = UIImage(systemName: "plus.circle.fill")
         configuration.imagePadding = Spacing.space8
-        configuration.title = "Diary new entry"
+        configuration.title = Strings.Home.newDiaryEntryAccessibilityLabel
         configuration.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
             leading: Spacing.space20,
@@ -273,35 +272,44 @@ class HomeView: UIView {
     private func applyModel() {
         let model = model ?? .mock(petName: "Leo")
 
-        eyebrowLabel.text = "POOCHY DIARY"
-        titleLabel.text = "\(model.petName)'s health diary"
-        subtitleLabel.text = "A calm overview before the next walk."
+        eyebrowLabel.text = Strings.Home.brand
+        titleLabel.text = Strings.Home.healthDiaryTitle(petName: model.petName)
+        subtitleLabel.text = Strings.Home.subtitle
 
         statusTitleLabel.text = model.statusTitle
         statusDetailLabel.text = model.statusDetail
         statusPill.configure(
-            text: "On track", systemImageName: "checkmark.circle.fill",
+            text: Strings.Home.onTrack, systemImageName: "checkmark.circle.fill",
             tintColor: PoochyTheme.accent)
         lastDiaryRow.configure(
-            title: "Last diary",
+            title: Strings.Home.lastDiary,
             value: model.lastDiaryText,
             systemImageName: "clock.fill"
         )
 
         weeklyMetricView.configure(
-            value: model.weeklyDiaries, title: "Diaries", caption: "past 7 days")
+            value: model.weeklyDiaries,
+            title: Strings.Home.diaries,
+            caption: Strings.Home.pastSevenDays
+        )
         normalMetricView.configure(
-            value: model.normalDiaries, title: "Normal", caption: "healthy signs")
+            value: model.normalDiaries,
+            title: Strings.Home.normal,
+            caption: Strings.Home.healthySigns
+        )
         watchMetricView.configure(
             value: model.watchItems,
-            title: "Watch",
-            caption: "needs review",
+            title: Strings.Home.watch,
+            caption: Strings.Home.needsReview,
             valueColor: PoochyTheme.attention
         )
 
         insightCard.configure(title: model.insightTitle, detail: model.insightDetail)
         recentDiaryCard.configure(
-            timeText: model.lastDiaryText, stoolText: "Normal", mucusText: "None", bloodText: "None"
+            timeText: model.lastDiaryText,
+            stoolText: Strings.Home.normal,
+            mucusText: Strings.Home.none,
+            bloodText: Strings.Home.none
         )
     }
 
@@ -630,7 +638,7 @@ private final class HomeRecentDiaryCardView: BaseView {
     override func constructSubviews() {
         super.constructSubviews()
 
-        titleLabel.text = "Recent diary"
+        titleLabel.text = Strings.Home.recentDiary
         titleLabel.font = .themedFont(.cardTitle)
         titleLabel.textColor = PoochyTheme.primaryText
 
@@ -670,9 +678,20 @@ private final class HomeRecentDiaryCardView: BaseView {
     func configure(timeText: String, stoolText: String, mucusText: String, bloodText: String) {
         timeLabel.text = timeText
         stoolChip.configure(
-            title: "Stool", value: stoolText, systemImageName: "circle.hexagongrid.fill")
-        mucusChip.configure(title: "Mucus", value: mucusText, systemImageName: "drop.fill")
-        bloodChip.configure(title: "Blood", value: bloodText, systemImageName: "heart.fill")
+            title: Strings.Home.stool,
+            value: stoolText,
+            systemImageName: "circle.hexagongrid.fill"
+        )
+        mucusChip.configure(
+            title: Strings.Home.mucus,
+            value: mucusText,
+            systemImageName: "drop.fill"
+        )
+        bloodChip.configure(
+            title: Strings.Home.blood,
+            value: bloodText,
+            systemImageName: "heart.fill"
+        )
     }
 }
 

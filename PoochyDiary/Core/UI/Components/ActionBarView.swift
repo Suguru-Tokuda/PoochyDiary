@@ -25,7 +25,7 @@ class ActionBarView: BaseView {
 
     private let doneButton: PDButton = {
         let button = PDButton()
-        button.setTitle("Done", for: .normal)
+        button.setTitle(Strings.Common.done, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .accent
         return button
@@ -33,7 +33,7 @@ class ActionBarView: BaseView {
 
     private let cancelButton: PDButton = {
         let button = PDButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle(Strings.Common.cancel, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = PoochyTheme.secondaryText
         return button

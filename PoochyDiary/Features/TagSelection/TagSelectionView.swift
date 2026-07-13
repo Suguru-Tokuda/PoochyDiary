@@ -32,14 +32,14 @@ class TagSelectionView: BaseView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .themedFont(.sectionTitle)
-        label.text = "Tags"
+        label.text = Strings.TagSelection.title
         return label
     }()
     private let subTitles: UILabel = {
         let label = UILabel()
         label.font = .themedFont(.caption)
         label.textColor = PoochyTheme.secondaryText
-        label.text = "Add diet, medication, symptoms or custom tags."
+        label.text = Strings.TagSelection.subtitle
         return label
     }()
     private let newTagSectionView: NewTagSectionView = {
@@ -67,7 +67,7 @@ class TagSelectionView: BaseView {
         textField.leftView = paddingView
         textField.leftViewMode = .always
         textField.returnKeyType = .continue
-        textField.placeholder = "Search or create tag..."
+        textField.placeholder = Strings.TagSelection.searchPlaceholder
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
         textField.smartInsertDeleteType = .no

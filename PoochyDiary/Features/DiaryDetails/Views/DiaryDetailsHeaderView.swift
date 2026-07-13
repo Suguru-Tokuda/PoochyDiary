@@ -47,7 +47,7 @@ class DiaryDetailsHeaderView: BaseView {
 
     private let statusLabel: UILabel = {
         let label = UILabel()
-        label.text = "No concerns"
+        label.text = Strings.DiaryDetails.noConcerns
         label.font = .themedFont(.pill)
         label.textColor = PoochyTheme.accent
         label.setContentCompressionResistancePriority(.required, for: .horizontal)

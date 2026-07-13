@@ -32,19 +32,19 @@ nonisolated enum Days: Hashable {
     var short: String {
         switch self {
         case .sunday:
-            return "SUN"
+            return Strings.Weekday.sundayShort
         case .monday:
-            return "MON"
+            return Strings.Weekday.mondayShort
         case .tuesday:
-            return "TUE"
+            return Strings.Weekday.tuesdayShort
         case .wednesday:
-            return "WED"
+            return Strings.Weekday.wednesdayShort
         case .thursday:
-            return "THU"
+            return Strings.Weekday.thursdayShort
         case .friday:
-            return "FRI"
+            return Strings.Weekday.fridayShort
         case .saturday:
-            return "SAT"
+            return Strings.Weekday.saturdayShort
         }
     }
 }

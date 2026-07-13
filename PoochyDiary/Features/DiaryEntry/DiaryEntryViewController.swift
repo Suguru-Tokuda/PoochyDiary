@@ -45,11 +45,19 @@ final class DiaryEntryViewController: BaseViewController {
 
     override func constructView() {
         super.constructView()
-        navigationItem.title = "Diary Poop"
+        navigationItem.title = Strings.DiaryEntry.title
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Cancel", style: .plain, target: self, action: #selector(handleCancelButtonTap))
+            title: Strings.Common.cancel,
+            style: .plain,
+            target: self,
+            action: #selector(handleCancelButtonTap)
+        )
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Save", style: .prominent, target: self, action: #selector(handleSaveButtonTap))
+            title: Strings.Common.save,
+            style: .prominent,
+            target: self,
+            action: #selector(handleSaveButtonTap)
+        )
     }
 
     override func constructSubviews() {
@@ -125,11 +133,11 @@ final class DiaryEntryViewController: BaseViewController {
 
     private func presentSaveError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Unable to Save",
+            title: Strings.DiaryEntry.unableToSave,
             message: error.localizedDescription,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: Strings.Common.okay, style: .default))
         present(alert, animated: true)
     }
 

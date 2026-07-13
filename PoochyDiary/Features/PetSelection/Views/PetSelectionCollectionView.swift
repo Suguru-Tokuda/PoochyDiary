@@ -20,16 +20,14 @@ final class PetSelectionCollectionView: BaseView {
     private var petsById: [UUID: Pet] = [:]
     private var selectedPetId: UUID?
 
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = Spacing.space12
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: PetSelectionCollectionView.makeLayout()
+        )
         collectionView.backgroundColor = .clear
         collectionView.alwaysBounceVertical = true
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.delegate = self
         collectionView.register(
             PetSelectionCollectionViewCell.self,
             forCellWithReuseIdentifier: PetSelectionCollectionViewCell.reuseIdentifier
@@ -60,6 +58,7 @@ final class PetSelectionCollectionView: BaseView {
 
     override func constructSubviews() {
         super.constructSubviews()
+        collectionView.delegate = self
         _ = dataSource
         addAutolayoutSubview(collectionView)
     }
@@ -84,17 +83,28 @@ final class PetSelectionCollectionView: BaseView {
         snapshot.reconfigureItems(pets.map(\.id))
         dataSource.apply(snapshot, animatingDifferences: true)
     }
+
+    private static func makeLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(88)
+        )
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = Spacing.space12
+        return UICollectionViewCompositionalLayout(section: section)
+    }
 }
 
-extension PetSelectionCollectionView: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 88)
-    }
-
+extension PetSelectionCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
             let petId = dataSource.itemIdentifier(for: indexPath),

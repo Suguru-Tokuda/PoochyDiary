@@ -23,7 +23,7 @@ class NewTagSectionView: BaseView {
 
     private let label: PDLabel = {
         let label = PDLabel()
-        label.model = PDLabel.Model(title: "Create New Tag", isOptional: false)
+        label.model = PDLabel.Model(title: Strings.TagSelection.createNewTag, isOptional: false)
         return label
     }()
 
