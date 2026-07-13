@@ -148,6 +148,36 @@ extension Diary {
             }
         }
 
+        for (index, dayOffset) in stride(from: -(totalDays - 1), through: 0, by: 7).enumerated() {
+            guard
+                let measurementDay = calendar.date(
+                    byAdding: .day,
+                    value: dayOffset,
+                    to: today
+                ),
+                let measurementDate = calendar.date(
+                    bySettingHour: 10,
+                    minute: 0,
+                    second: 0,
+                    of: measurementDay
+                )
+            else {
+                continue
+            }
+
+            let weight = Decimal(420 + index) / 10
+            diaries.append(
+                Diary(
+                    id: UUID(),
+                    petId: petId,
+                    date: measurementDate,
+                    type: .weight(WeightDiaryData(weight: weight, unit: .pounds)),
+                    photos: [],
+                    tags: []
+                )
+            )
+        }
+
         return diaries.sorted { $0.date > $1.date }
     }
 }

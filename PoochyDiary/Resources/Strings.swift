@@ -17,6 +17,11 @@ enum Strings {
 
     enum Diary {
         static let title = "Diary"
+        static let trackPoop = "Track Poop"
+        static let trackWeight = "Track Weight"
+        static let weight = "Weight"
+        static let poundsAbbreviation = "lb"
+        static let kilogramsAbbreviation = "kg"
         static let selectDateAccessibilityLabel = "Select diary date"
         static let addEntryAccessibilityLabel = "Add diary entry"
     }
@@ -70,6 +75,19 @@ enum Strings {
 
         static let yesterday = "Yesterday"
         static let today = "Today"
+    }
+
+    enum WeightEntry {
+        static let title = "Log Weight"
+        static let weight = "Weight"
+        static let weightPlaceholder = "0.0"
+        static let dateAndTime = "Date & Time"
+        static let pounds = "lb"
+        static let kilograms = "kg"
+        static let cancel = "Cancel"
+        static let save = "Save"
+        static let invalidWeight = "Enter a weight greater than zero."
+        static let saveFailed = "Unable to save the weight entry."
     }
 
     enum TagSearch {

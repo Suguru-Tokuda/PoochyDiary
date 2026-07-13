@@ -194,11 +194,24 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
 
                 entity.id = diary.id
                 entity.petId = diary.petId
-                entity.bloodAmount = diary.bloodAmount.rawValue
-                entity.mucusLevel = diary.mucusLevel.rawValue
                 entity.note = diary.notes
                 entity.date = diary.date
-                entity.stoolType = diary.stoolType.rawValue
+                entity.type = diary.type.persistenceValue
+
+                switch diary.type {
+                case .poop(let data):
+                    entity.stoolType = data.stoolType.rawValue
+                    entity.mucusLevel = data.mucusLevel.rawValue
+                    entity.bloodAmount = data.bloodAmount.rawValue
+                    entity.weight = nil
+                    entity.weightUnit = nil
+                case .weight(let data):
+                    entity.stoolType = nil
+                    entity.mucusLevel = nil
+                    entity.bloodAmount = nil
+                    entity.weight = NSDecimalNumber(decimal: data.weight)
+                    entity.weightUnit = data.unit.rawValue
+                }
                 let tagEntities = try diary.tags.map {
                     try self.fetchOrCreateTag(tag: $0)
                 }
@@ -295,14 +308,39 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
     private func makeDiary(from entity: DiaryEntity) -> Diary? {
         guard let id = entity.id,
             let petId = entity.petId,
-            let date = entity.date,
-            let stoolTypeStr = entity.stoolType,
-            let stoolType = StoolType(rawValue: stoolTypeStr),
-            let mucusLevelStr = entity.mucusLevel,
-            let mucusLevel = MucusLevel(rawValue: mucusLevelStr),
-            let bloodAmountStr = entity.bloodAmount,
-            let bloodAmount = BloodAmount(rawValue: bloodAmountStr)
+            let date = entity.date
         else { return nil }
+
+        let type: DiaryType
+        switch entity.type ?? "poop" {
+        case "weight":
+            guard
+                let weight = entity.weight?.decimalValue,
+                let weightUnitValue = entity.weightUnit,
+                let unit = WeightUnit(rawValue: weightUnitValue)
+            else {
+                return nil
+            }
+            type = .weight(WeightDiaryData(weight: weight, unit: unit))
+        default:
+            guard
+                let stoolTypeValue = entity.stoolType,
+                let stoolType = StoolType(rawValue: stoolTypeValue),
+                let mucusLevelValue = entity.mucusLevel,
+                let mucusLevel = MucusLevel(rawValue: mucusLevelValue),
+                let bloodAmountValue = entity.bloodAmount,
+                let bloodAmount = BloodAmount(rawValue: bloodAmountValue)
+            else {
+                return nil
+            }
+            type = .poop(
+                PoopDiaryData(
+                    stoolType: stoolType,
+                    mucusLevel: mucusLevel,
+                    bloodAmount: bloodAmount
+                )
+            )
+        }
 
         let photoEntities = Array(entity.photos as? Set<DiaryPhotoEntity> ?? [])
         let tagEntities = Array(entity.tags as? Set<TagEntity> ?? [])
@@ -311,9 +349,7 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
             id: id,
             petId: petId,
             date: date,
-            stoolType: stoolType,
-            mucusLevel: mucusLevel,
-            bloodAmount: bloodAmount,
+            type: type,
             note: entity.note,
             photos: photoEntities.compactMap { makePhoto(form: $0) }.sorted(by: {
                 $0.sortOrder < $1.sortOrder

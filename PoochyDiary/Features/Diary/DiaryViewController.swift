@@ -9,7 +9,10 @@ import Combine
 import UIKit
 
 protocol DiaryViewControllerDelegate: AnyObject {
-    func onAddButtonTap()
+    func diaryViewController(
+        _ viewController: DiaryViewController,
+        didSelectTrackingOption option: DiaryTrackingOption
+    )
     func diaryViewController(
         _ viewController: DiaryViewController,
         didRequestDateSelectionFrom selectedDate: Date
@@ -57,8 +60,9 @@ final class DiaryViewController: BaseViewController {
     override func constructSubviews() {
         super.constructSubviews()
 
-        headerView.onAddButtonTap = { [weak self] in
-            self?.handleAddButtonTap()
+        headerView.onTrackingOptionSelect = { [weak self] option in
+            guard let self else { return }
+            delegate?.diaryViewController(self, didSelectTrackingOption: option)
         }
         headerView.onPetSelectorTap = { [weak self] in
             self?.onPetSelectorTap?()
@@ -141,10 +145,6 @@ final class DiaryViewController: BaseViewController {
         }
     }
 
-    private func handleAddButtonTap() {
-        delegate?.onAddButtonTap()
-    }
-
     private func handleCalendarButtonTap() {
         delegate?.diaryViewController(
             self,
@@ -158,6 +158,10 @@ final class DiaryViewController: BaseViewController {
 
     func updatePet(_ pet: Pet) {
         headerView.petName = pet.name
+    }
+
+    func addDiary(_ diary: Diary) {
+        viewModel.addDiary(diary)
     }
 }
 

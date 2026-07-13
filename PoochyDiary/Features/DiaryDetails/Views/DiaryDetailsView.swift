@@ -77,14 +77,14 @@ class DiaryDetailsView: BaseView {
     }
 
     private func applyModel() {
-        guard let model else { return }
+        guard let model, let poopData = model.diary.poopData else { return }
 
         headerView.model = DiaryDetailsHeaderView.Model(pet: model.pet, diary: model.diary)
 
         detailsListView.model = DiaryDetailsListView.Model(
-            stoolType: model.diary.stoolType,
-            mucusLevel: model.diary.mucusLevel,
-            bloodAmount: model.diary.bloodAmount,
+            stoolType: poopData.stoolType,
+            mucusLevel: poopData.mucusLevel,
+            bloodAmount: poopData.bloodAmount,
             note: model.diary.notes,
             tags: model.diary.tags
         )

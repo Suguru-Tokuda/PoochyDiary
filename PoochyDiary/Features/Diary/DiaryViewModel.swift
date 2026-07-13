@@ -41,6 +41,13 @@ class DiaryViewModel {
         updateDisplayedDates()
     }
 
+    func addDiary(_ diary: Diary) {
+        diaries.removeAll { $0.id == diary.id }
+        diaries.append(diary)
+        diaries.sort { $0.date > $1.date }
+        updateDisplayedDates()
+    }
+
     private func updateDisplayedDates() {
         let calendar = Calendar.current
 

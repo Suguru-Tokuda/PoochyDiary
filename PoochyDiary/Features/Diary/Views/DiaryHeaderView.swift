@@ -7,10 +7,15 @@
 
 import UIKit
 
+nonisolated enum DiaryTrackingOption {
+    case poop
+    case weight
+}
+
 final class DiaryHeaderView: BaseView {
     var onPetSelectorTap: (() -> Void)?
     var onCalendarButtonTap: (() -> Void)?
-    var onAddButtonTap: (() -> Void)?
+    var onTrackingOptionSelect: ((DiaryTrackingOption) -> Void)?
 
     var petName: String? {
         didSet {
@@ -57,15 +62,12 @@ final class DiaryHeaderView: BaseView {
 
         calendarButton.accessibilityLabel = Strings.Diary.selectDateAccessibilityLabel
         addButton.accessibilityLabel = Strings.Diary.addEntryAccessibilityLabel
+        addButton.menu = makeTrackingMenu()
+        addButton.showsMenuAsPrimaryAction = true
 
         calendarButton.addTarget(
             self,
             action: #selector(handleCalendarButtonTap),
-            for: .touchUpInside
-        )
-        addButton.addTarget(
-            self,
-            action: #selector(handleAddButtonTap),
             for: .touchUpInside
         )
     }
@@ -103,11 +105,23 @@ final class DiaryHeaderView: BaseView {
         petSelectorView.model = PetSelectorView.Model(name: petName, image: nil)
     }
 
-    @objc private func handleCalendarButtonTap() {
-        onCalendarButtonTap?()
+    private func makeTrackingMenu() -> UIMenu {
+        let poopAction = UIAction(
+            title: Strings.Diary.trackPoop,
+            image: UIImage(systemName: "toilet.fill")
+        ) { [weak self] _ in
+            self?.onTrackingOptionSelect?(.poop)
+        }
+        let weightAction = UIAction(
+            title: Strings.Diary.trackWeight,
+            image: UIImage(systemName: "scalemass.fill")
+        ) { [weak self] _ in
+            self?.onTrackingOptionSelect?(.weight)
+        }
+        return UIMenu(children: [poopAction, weightAction])
     }
 
-    @objc private func handleAddButtonTap() {
-        onAddButtonTap?()
+    @objc private func handleCalendarButtonTap() {
+        onCalendarButtonTap?()
     }
 }

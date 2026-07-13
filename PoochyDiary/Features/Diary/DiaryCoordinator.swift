@@ -54,6 +54,7 @@ extension DiaryCoordinator {
     }
 
     private func openDiaryDetails(for diary: Diary) {
+        guard diary.poopData != nil else { return }
         guard let petStore = dependencies.petStore,
             let currentPet = petStore.currentPet
         else { return }
@@ -71,19 +72,45 @@ extension DiaryCoordinator {
 }
 
 extension DiaryCoordinator: DiaryViewControllerDelegate {
-    func onAddButtonTap() {
+    func diaryViewController(
+        _ viewController: DiaryViewController,
+        didSelectTrackingOption option: DiaryTrackingOption
+    ) {
         guard let petStore = dependencies.petStore,
             let currentPet = petStore.currentPet
         else { return }
 
+        switch option {
+        case .poop:
+            openPoopEntry(for: currentPet)
+        case .weight:
+            openWeightEntry(for: currentPet, from: viewController)
+        }
+    }
+
+    private func openPoopEntry(for pet: Pet) {
         let diaryEntryCoordinator = DiaryEntryCoordinator(
             navigationController,
-            pet: currentPet,
+            pet: pet,
             dependencies: dependencies
         )
 
         addChild(diaryEntryCoordinator)
         diaryEntryCoordinator.start()
+    }
+
+    private func openWeightEntry(for pet: Pet, from viewController: DiaryViewController) {
+        let coordinator = WeightEntryCoordinator(
+            navigationController: navigationController,
+            pet: pet,
+            dependencies: dependencies
+        )
+        coordinator.onWeightSaved = { [weak viewController] diary in
+            viewController?.addDiary(diary)
+        }
+
+        addChild(coordinator)
+        coordinator.start()
     }
 
     func diaryViewController(

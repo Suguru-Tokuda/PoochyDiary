@@ -66,6 +66,10 @@ class DiaryCollectionView: BaseView {
         collectionView.register(
             DiaryCollectionViewCell.self,
             forCellWithReuseIdentifier: DiaryCollectionViewCell.reuseIdentifier)
+        collectionView.register(
+            DiaryWeightCollectionViewCell.self,
+            forCellWithReuseIdentifier: DiaryWeightCollectionViewCell.reuseIdentifier
+        )
         addAutolayoutSubview(collectionView)
         collectionView.backgroundColor = .clear
         collectionView.backgroundView = emptyStateView
@@ -89,15 +93,27 @@ extension DiaryCollectionView {
         let dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
             switch item {
             case .entry(let diary):
-                let cell =
-                    collectionView.dequeueReusableCell(
+                switch diary.type {
+                case .poop:
+                    let cell = collectionView.dequeueReusableCell(
                         withReuseIdentifier: DiaryCollectionViewCell.reuseIdentifier,
                         for: indexPath) as? DiaryCollectionViewCell
-                cell?.model = DiaryCollectionViewCell.Model(diary: diary)
-                cell?.onCellTap = { [weak self] in
-                    self?.onDiarySelect?(diary)
+                    cell?.model = DiaryCollectionViewCell.Model(diary: diary)
+                    cell?.onCellTap = { [weak self] in
+                        self?.onDiarySelect?(diary)
+                    }
+                    return cell
+                case .weight(let weightData):
+                    let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: DiaryWeightCollectionViewCell.reuseIdentifier,
+                        for: indexPath
+                    ) as? DiaryWeightCollectionViewCell
+                    cell?.model = DiaryWeightCollectionViewCell.Model(
+                        diary: diary,
+                        weightData: weightData
+                    )
+                    return cell
                 }
-                return cell
             }
         }
 

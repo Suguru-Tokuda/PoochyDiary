@@ -74,11 +74,12 @@ class DiaryEntryViewModel {
     ) {
         self.pet = pet
         if let diary {
+            let poopData = diary.poopData
             state = State(
                 dateTime: diary.date,
-                stoolType: diary.stoolType,
-                mucusLevel: diary.mucusLevel,
-                bloodAmount: diary.bloodAmount,
+                stoolType: poopData?.stoolType,
+                mucusLevel: poopData?.mucusLevel,
+                bloodAmount: poopData?.bloodAmount,
                 photos: diary.photos,
                 notes: diary.notes,
                 tags: diary.tags

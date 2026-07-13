@@ -15,6 +15,9 @@
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="petId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="stoolType" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String" defaultValueString="poop"/>
+        <attribute name="weight" optional="YES" attributeType="Decimal" defaultValueString="0"/>
+        <attribute name="weightUnit" optional="YES" attributeType="String"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiaryPhotoEntity" inverseName="diary" inverseEntity="DiaryPhotoEntity"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="diaries" inverseEntity="TagEntity"/>
     </entity>

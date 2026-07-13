@@ -143,10 +143,10 @@ class DiaryDetailsHeaderView: BaseView {
     }
 
     private func applyModel() {
-        guard let model else { return }
+        guard let model, let poopData = model.diary.poopData else { return }
 
-        imageView.image = UIImage(named: model.diary.stoolType.imageName.rawValue)
-        titleLabel.text = model.diary.stoolType.name
+        imageView.image = UIImage(named: poopData.stoolType.imageName.rawValue)
+        titleLabel.text = poopData.stoolType.name
         dateTimeLabel.text = model.diary.date.formatted(with: "MMM dd, yyyy | hh:mm a")
         petNameLabel.model = PDIconLabel.Model(
             labelText: model.pet.name,

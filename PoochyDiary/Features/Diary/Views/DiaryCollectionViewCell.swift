@@ -100,7 +100,7 @@ class DiaryCollectionViewCell: BaseCollectionViewCell {
     }
 
     private func applyModel() {
-        guard let model else { return }
+        guard let model, let poopData = model.diary.poopData else { return }
         let diary = model.diary
 
         timeLabel.text = diary.date.formatted(with: "hh:mm a")
@@ -110,9 +110,9 @@ class DiaryCollectionViewCell: BaseCollectionViewCell {
         )
 
         stoolStatusView.model = StoolStatusView.Model(
-            stoolType: diary.stoolType,
-            mucusLevel: diary.mucusLevel,
-            bloodAmount: diary.bloodAmount
+            stoolType: poopData.stoolType,
+            mucusLevel: poopData.mucusLevel,
+            bloodAmount: poopData.bloodAmount
         )
     }
 
