@@ -102,7 +102,11 @@ final class DiaryViewController: BaseViewController {
     private func addSubscriptions() {
         viewModel
             .$visibleWeekDate
-            .combineLatest(viewModel.$displayedDates, viewModel.$diaries)
+            .combineLatest(
+                viewModel.$displayedDates,
+                viewModel.$diaries,
+                viewModel.$weightUnit
+            )
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
                 guard let self else { return }
@@ -110,6 +114,7 @@ final class DiaryViewController: BaseViewController {
                 let visibleWeekDate = value.0
                 let displayedDates = value.1
                 let diaries = value.2
+                let weightUnit = value.3
                 let selectedDateDiaries = diaries.filter {
                     Calendar.current.isDate($0.date, inSameDayAs: visibleWeekDate)
                 }
@@ -131,7 +136,8 @@ final class DiaryViewController: BaseViewController {
                         headerModel: headerModel,
                         items: dateModels
                     ),
-                    items: selectedDateDiaries
+                    items: selectedDateDiaries,
+                    weightUnit: weightUnit
                 )
             }
             .store(in: &subscriptions)

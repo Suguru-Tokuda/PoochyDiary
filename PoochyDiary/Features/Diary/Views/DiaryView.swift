@@ -15,6 +15,7 @@ class DiaryView: BaseView {
     struct Model {
         let dateFilterModel: DateFilterCollectionView.Model
         let items: [Diary]
+        let weightUnit: WeightUnit
     }
 
     var model: Model? {
@@ -59,7 +60,10 @@ class DiaryView: BaseView {
         guard let model else { return }
 
         dateFilterView.model = model.dateFilterModel
-        diaryCollectionView.model = DiaryCollectionView.Model(items: model.items)
+        diaryCollectionView.model = DiaryCollectionView.Model(
+            items: model.items,
+            weightUnit: model.weightUnit
+        )
     }
 
     private func addEventHandlers() {

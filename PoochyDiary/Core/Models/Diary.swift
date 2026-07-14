@@ -16,11 +16,24 @@ nonisolated struct PoopDiaryData: Equatable, Hashable {
 nonisolated enum WeightUnit: String, Codable, Hashable {
     case kilograms
     case pounds
+
+    private static let kilogramsPerPound = Decimal(string: "0.45359237") ?? 0.45359237
+
+    func displayValue(fromPounds pounds: Decimal) -> Decimal {
+        self == .pounds ? pounds : pounds * Self.kilogramsPerPound
+    }
+
+    func poundsValue(fromDisplayValue value: Decimal) -> Decimal {
+        self == .pounds ? value : value / Self.kilogramsPerPound
+    }
 }
 
 nonisolated struct WeightDiaryData: Equatable, Hashable {
     let weight: Decimal
-    let unit: WeightUnit
+
+    func convertedWeight(weightUnit: WeightUnit) -> Decimal {
+        weightUnit.displayValue(fromPounds: weight)
+    }
 }
 
 nonisolated enum DiaryType: Equatable, Hashable {

@@ -16,6 +16,7 @@ class DiaryCollectionView: BaseView {
 
     struct Model {
         let items: [Diary]
+        let weightUnit: WeightUnit
     }
 
     nonisolated enum Item: Hashable {
@@ -86,7 +87,9 @@ class DiaryCollectionView: BaseView {
 
 extension DiaryCollectionView {
     private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: collectionView) { collectionView, indexPath, item in
+        let dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
+            guard let self else { return nil }
+
             switch item {
             case .entry(let diary):
                 switch diary.type {
@@ -106,8 +109,12 @@ extension DiaryCollectionView {
                     ) as? DiaryWeightCollectionViewCell
                     cell?.model = DiaryWeightCollectionViewCell.Model(
                         diary: diary,
-                        weightData: weightData
+                        weightData: weightData,
+                        weightUnit: model?.weightUnit ?? .pounds
                     )
+                    cell?.onCellTap = { [weak self] in
+                        self?.onDiarySelect?(diary)
+                    }
                     return cell
                 }
             }
@@ -203,6 +210,18 @@ extension DiaryCollectionView {
             let entries = (itemsDict[date] ?? []).map { Item.entry($0) }
             snapshot.appendItems(entries, toSection: section)
         }
+
+        let currentItems = Set(diffableDataSource.snapshot().itemIdentifiers)
+        let weightItemsToReconfigure = snapshot.itemIdentifiers.filter { item in
+            guard currentItems.contains(item),
+                  case .entry(let diary) = item,
+                  case .weight = diary.type else {
+                return false
+            }
+
+            return true
+        }
+        snapshot.reconfigureItems(weightItemsToReconfigure)
 
         diffableDataSource.apply(snapshot)
     }

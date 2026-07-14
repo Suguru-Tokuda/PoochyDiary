@@ -204,13 +204,11 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
                     entity.mucusLevel = data.mucusLevel.rawValue
                     entity.bloodAmount = data.bloodAmount.rawValue
                     entity.weight = nil
-                    entity.weightUnit = nil
                 case .weight(let data):
                     entity.stoolType = nil
                     entity.mucusLevel = nil
                     entity.bloodAmount = nil
                     entity.weight = NSDecimalNumber(decimal: data.weight)
-                    entity.weightUnit = data.unit.rawValue
                 }
                 let tagEntities = try diary.tags.map {
                     try self.fetchOrCreateTag(tag: $0)
@@ -315,13 +313,11 @@ final class PoochyDiaryCoreDataManager: PoochyDiaryCoreDataManaging {
         switch entity.type ?? "poop" {
         case "weight":
             guard
-                let weight = entity.weight?.decimalValue,
-                let weightUnitValue = entity.weightUnit,
-                let unit = WeightUnit(rawValue: weightUnitValue)
+                let weight = entity.weight?.decimalValue
             else {
                 return nil
             }
-            type = .weight(WeightDiaryData(weight: weight, unit: unit))
+            type = .weight(WeightDiaryData(weight: weight))
         default:
             guard
                 let stoolTypeValue = entity.stoolType,

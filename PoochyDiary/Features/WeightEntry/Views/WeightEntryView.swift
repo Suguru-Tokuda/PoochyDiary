@@ -14,6 +14,18 @@ final class WeightEntryView: BaseView {
     var onCancelButtonTap: (() -> Void)?
     var onSaveButtonTap: (() -> Void)?
 
+    struct Model {
+        let weightText: String
+        let unit: WeightUnit
+        let date: Date
+    }
+
+    var model: Model? {
+        didSet {
+            applyModel()
+        }
+    }
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = Strings.WeightEntry.title
@@ -99,6 +111,7 @@ final class WeightEntryView: BaseView {
     override func constructSubviews() {
         super.constructSubviews()
         unitControl.selectedSegmentIndex = 0
+        weightTextField.delegate = self
         weightStackView.addArrangedSubviews([weightTextField, unitControl])
         buttonStackView.addArrangedSubviews([cancelButton, saveButton])
 
@@ -161,6 +174,20 @@ final class WeightEntryView: BaseView {
         ])
     }
 
+    private func applyModel() {
+        guard let model else { return }
+
+        weightTextField.text = model.weightText
+        datePicker.date = model.date
+
+        switch model.unit {
+        case .pounds:
+            unitControl.selectedSegmentIndex = 0
+        case .kilograms:
+            unitControl.selectedSegmentIndex = 1
+        }
+    }
+
     func showError(_ message: String?) {
         errorLabel.text = message
         errorLabel.isHidden = message == nil
@@ -199,5 +226,35 @@ final class WeightEntryView: BaseView {
     @objc private func handleSaveButtonTap() {
         endEditing(true)
         onSaveButtonTap?()
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension WeightEntryView: UITextFieldDelegate {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard textField === weightTextField,
+              let currentText = textField.text,
+              let textRange = Range(range, in: currentText) else {
+            return false
+        }
+
+        let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
+        let components = updatedText.components(separatedBy: decimalSeparator)
+
+        guard components.count <= 2 else { return false }
+
+        if components.count == 2, components[1].count > 2 {
+            return false
+        }
+
+        return components.allSatisfy { component in
+            component.unicodeScalars.allSatisfy(CharacterSet.decimalDigits.contains)
+        }
     }
 }

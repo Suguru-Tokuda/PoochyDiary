@@ -10,9 +10,12 @@ import UIKit
 final class DiaryWeightCollectionViewCell: BaseCollectionViewCell {
     static let reuseIdentifier = "DiaryWeightCollectionViewCell"
 
+    var onCellTap: (() -> Void)?
+
     struct Model {
         let diary: Diary
         let weightData: WeightDiaryData
+        let weightUnit: WeightUnit
     }
 
     var model: Model? {
@@ -75,6 +78,9 @@ final class DiaryWeightCollectionViewCell: BaseCollectionViewCell {
 
     override func constructSubviews() {
         super.constructSubviews()
+        contentView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(handleCellTap))
+        )
         iconContainerView.addAutolayoutSubview(iconImageView)
         textStackView.addArrangedSubviews([titleLabel, timeLabel])
         contentView.addAutolayoutSubview(iconContainerView)
@@ -118,7 +124,10 @@ final class DiaryWeightCollectionViewCell: BaseCollectionViewCell {
         guard let model else { return }
 
         timeLabel.text = model.diary.date.formatted(with: "hh:mm a")
-        weightLabel.text = "\(formatted(model.weightData.weight)) \(abbreviation(model.weightData.unit))"
+        let weight = formatted(
+            model.weightData.convertedWeight(weightUnit: model.weightUnit)
+        )
+        weightLabel.text = "\(weight) \(abbreviation(model.weightUnit))"
     }
 
     private func formatted(_ weight: Decimal) -> String {
@@ -136,5 +145,9 @@ final class DiaryWeightCollectionViewCell: BaseCollectionViewCell {
         case .pounds:
             return Strings.Diary.poundsAbbreviation
         }
+    }
+
+    @objc private func handleCellTap() {
+        onCellTap?()
     }
 }

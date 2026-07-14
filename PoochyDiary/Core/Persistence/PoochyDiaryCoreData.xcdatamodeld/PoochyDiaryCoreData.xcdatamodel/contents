@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24901" systemVersion="25F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="PetEntity" representedClassName="PetEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="gender" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="type" optional="YES" attributeType="String"/>
-    </entity>
-    <entity name="DiaryEntity" representedClassName="DiaryEntity" renamingIdentifier="PoopLogEntity" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24902" systemVersion="25F84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="DiaryEntity" representedClassName="DiaryEntity" syncable="YES" codeGenerationType="class">
         <attribute name="bloodAmount" optional="YES" attributeType="String"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -17,21 +10,27 @@
         <attribute name="stoolType" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String" defaultValueString="poop"/>
         <attribute name="weight" optional="YES" attributeType="Decimal" defaultValueString="0"/>
-        <attribute name="weightUnit" optional="YES" attributeType="String"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiaryPhotoEntity" inverseName="diary" inverseEntity="DiaryPhotoEntity"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TagEntity" inverseName="diaries" inverseEntity="TagEntity"/>
     </entity>
-    <entity name="DiaryPhotoEntity" representedClassName="DiaryPhotoEntity" renamingIdentifier="PoopLogPhotoEntity" syncable="YES" codeGenerationType="class">
+    <entity name="DiaryPhotoEntity" representedClassName="DiaryPhotoEntity" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="diary" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DiaryEntity" inverseName="photos" inverseEntity="DiaryEntity" renamingIdentifier="poopLog"/>
+        <relationship name="diary" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DiaryEntity" inverseName="photos" inverseEntity="DiaryEntity"/>
+    </entity>
+    <entity name="PetEntity" representedClassName="PetEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="dateOfBirth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="gender" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
     </entity>
     <entity name="TagEntity" representedClassName="TagEntity" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="diaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DiaryEntity" inverseName="tags" inverseEntity="DiaryEntity" renamingIdentifier="poopLogs"/>
+        <relationship name="diaries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="DiaryEntity" inverseName="tags" inverseEntity="DiaryEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="name"/>

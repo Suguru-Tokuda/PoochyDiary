@@ -11,26 +11,35 @@ final class WeightEntryCoordinator: BaseCoordinator {
     var onWeightSaved: ((Diary) -> Void)?
 
     private let pet: Pet
+    private let diary: Diary?
     private let dependencies: AppDependency
     private weak var presentedViewController: UIViewController?
 
     init(
         navigationController: UINavigationController,
         pet: Pet,
+        diary: Diary? = nil,
         dependencies: AppDependency
     ) {
         self.pet = pet
+        self.diary = diary
         self.dependencies = dependencies
         super.init(navigationController)
     }
 
     override func start() {
-        guard let dataManager = dependencies.poochyDiaryCoreDataManager else {
+        guard let dataManager = dependencies.poochyDiaryCoreDataManager,
+              let appPreferences = dependencies.appPreferences else {
             finish()
             return
         }
 
-        let viewModel = WeightEntryViewModel(pet: pet, dataManager: dataManager)
+        let viewModel = WeightEntryViewModel(
+            diary: diary,
+            pet: pet,
+            dataManager: dataManager,
+            appPreferences: appPreferences
+        )
         let viewController = WeightEntryViewController(viewModel: viewModel)
         viewController.onSave = { [weak self] diary in
             self?.onWeightSaved?(diary)

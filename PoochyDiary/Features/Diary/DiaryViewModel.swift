@@ -12,12 +12,27 @@ class DiaryViewModel {
     @Published var visibleWeekDate = Date()
     @Published var displayedDates: [DisplayedDate] = []
     @Published var diaries: [Diary] = []
+    @Published private(set) var weightUnit: WeightUnit
 
-    init() {
+    private let appPreferences: AppPreferencing
+    private var subscriptions = Set<AnyCancellable>()
+
+    init(appPreferences: AppPreferencing) {
+        self.appPreferences = appPreferences
+        weightUnit = appPreferences.weightUnit
+
         if AppConfiguration.useMockData {
             diaries = Diary.mockData()
             displayedDates = DisplayedDate.mock(diaries: diaries)
         }
+
+        appPreferences.weightUnitPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] weightUnit in
+                self?.weightUnit = weightUnit
+            }
+            .store(in: &subscriptions)
+
         updateDisplayedDates()
     }
 

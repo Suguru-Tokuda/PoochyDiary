@@ -5,6 +5,7 @@
 //  Created by Suguru Tokuda on 7/13/26.
 //
 
+import Combine
 import UIKit
 
 final class WeightEntryViewController: BaseViewController {
@@ -13,6 +14,7 @@ final class WeightEntryViewController: BaseViewController {
 
     private let viewModel: WeightEntryViewModel
     private let weightEntryView = WeightEntryView()
+    private var subscriptions = Set<AnyCancellable>()
 
     init(viewModel: WeightEntryViewModel) {
         self.viewModel = viewModel
@@ -31,7 +33,9 @@ final class WeightEntryViewController: BaseViewController {
 
     override func constructSubviews() {
         super.constructSubviews()
+        updateView(weightText: viewModel.weightText)
         addBindings()
+        addSubscriptions()
         view.addAutolayoutSubview(weightEntryView)
     }
 
@@ -61,6 +65,26 @@ final class WeightEntryViewController: BaseViewController {
         weightEntryView.onSaveButtonTap = { [weak self] in
             self?.save()
         }
+    }
+
+    private func addSubscriptions() {
+        viewModel
+            .$weightText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newWeightText in
+                guard let self else { return }
+
+                updateView(weightText: newWeightText)
+            }
+            .store(in: &subscriptions)
+    }
+
+    private func updateView(weightText: String) {
+        weightEntryView.model = WeightEntryView.Model(
+            weightText: weightText,
+            unit: viewModel.unit,
+            date: viewModel.date
+        )
     }
 
     private func save() {

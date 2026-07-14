@@ -171,7 +171,7 @@ extension Diary {
                     id: UUID(),
                     petId: petId,
                     date: measurementDate,
-                    type: .weight(WeightDiaryData(weight: weight, unit: .pounds)),
+                    type: .weight(WeightDiaryData(weight: weight)),
                     photos: [],
                     tags: []
                 )

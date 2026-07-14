@@ -32,6 +32,7 @@ final class AppCoordinator: BaseCoordinator {
     }
 
     private func setupDependencies() {
+        dependencies.appPreferences = AppPreferences()
         dependencies.imageFileManager = ImageFileManager()
         dependencies.poochyDiaryCoreDataManager = PoochyDiaryCoreDataManager()
         dependencies.petStore = PetStore()
