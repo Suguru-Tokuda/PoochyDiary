@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrendsViewController: UIViewController {
+final class TrendsViewController: BaseViewController {
     let viewModel: TrendsViewModel
 
     init(viewModel: TrendsViewModel) {
@@ -20,8 +20,8 @@ final class TrendsViewController: UIViewController {
         nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func constructView() {
+        super.constructView()
         view.backgroundColor = PoochyTheme.background
     }
 }

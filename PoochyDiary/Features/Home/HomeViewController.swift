@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: BaseViewController {
     // Closures
     var onAddDiaryButtonTap: (() -> Void)?
     let viewModel: HomeViewModel
@@ -33,19 +33,15 @@ final class HomeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        setupConstraints()
-    }
-
-    private func setupUI() {
+    override func constructSubviews() {
+        super.constructSubviews()
         homeView.delegate = self
         homeView.model = .mock(petName: viewModel.activePet.name)
         view.addAutolayoutSubview(homeView)
     }
 
-    private func setupConstraints() {
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
         NSLayoutConstraint.activate([
             homeView.topAnchor.constraint(equalTo: view.topAnchor),
             homeView.bottomAnchor.constraint(equalTo: view.bottomAnchor),

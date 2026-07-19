@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: BaseViewController {
     let viewModel: ProfileViewModel
 
     init(viewModel: ProfileViewModel) {
@@ -20,8 +20,8 @@ final class ProfileViewController: UIViewController {
         nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func constructView() {
+        super.constructView()
         view.backgroundColor = .accent
     }
 }

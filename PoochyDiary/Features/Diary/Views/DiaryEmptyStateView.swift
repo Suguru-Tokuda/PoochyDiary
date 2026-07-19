@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DiaryEmptyStateView: UIView {
+final class DiaryEmptyStateView: BaseView {
     private let imageView: UIImageView = {
         let configuration = UIImage.SymbolConfiguration(pointSize: 32, weight: .regular)
         let imageView = UIImageView(
@@ -37,17 +37,20 @@ final class DiaryEmptyStateView: UIView {
         return label
     }()
 
-    private lazy var stackView = UIStackView(
-        arrangedSubviews: [imageView, titleLabel, messageLabel]
-    )
+    private let stackView = UIStackView(axis: .vertical, alignment: .center, spacing: Spacing.space8)
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Spacing.space8
+    override func constructSubviews() {
+        super.constructSubviews()
+        stackView.addArrangedSubviews([
+            imageView,
+            titleLabel,
+            messageLabel
+        ])
         addAutolayoutSubview(stackView)
+    }
 
+    override func constructSubviewLayoutConstraints() {
+        super.constructSubviewLayoutConstraints()
         let leadingConstraint = stackView.leadingAnchor.constraint(
             greaterThanOrEqualTo: leadingAnchor,
             constant: Spacing.space24
@@ -67,10 +70,5 @@ final class DiaryEmptyStateView: UIView {
             imageView.widthAnchor.constraint(equalToConstant: Spacing.space48),
             imageView.heightAnchor.constraint(equalToConstant: Spacing.space48)
         ])
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

@@ -55,14 +55,6 @@ class FullScreenImageView: BaseView {
         return label
     }()
 
-    // MARK: - Init
-
-    init() {
-        super.init(frame: .zero)
-    }
-
-    @MainActor required init?(coder: NSCoder) { nil }
-
     // MARK: - Constructable
 
     override func constructView() {
