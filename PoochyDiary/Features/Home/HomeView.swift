@@ -5,6 +5,7 @@
 //  Created by Suguru Tokuda on 5/10/26.
 //
 
+import SwiftUI
 import UIKit
 
 // This file contains the Home screen and its small, screen-specific component views.
@@ -25,9 +26,21 @@ class HomeView: UIView {
         let watchItems: String
         let insightTitle: String
         let insightDetail: String
+        let weeklyChartData: WeeklyChartData
 
         static func mock(petName: String) -> Model {
-            Model(
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date())
+            func points(_ counts: [Int]) -> [DailyCount] {
+                counts.enumerated().compactMap { index, count in
+                    guard let date = calendar.date(byAdding: .day, value: index - 6, to: today) else {
+                        return nil
+                    }
+                    return DailyCount(date: date, count: count)
+                }
+            }
+
+            return Model(
                 petName: petName,
                 statusTitle: Strings.Home.mockStatusTitle,
                 statusDetail: Strings.Home.mockStatusDetail,
@@ -36,7 +49,18 @@ class HomeView: UIView {
                 normalDiaries: "4/6",
                 watchItems: "1",
                 insightTitle: Strings.Home.mockInsightTitle,
-                insightDetail: Strings.Home.mockInsightDetail
+                insightDetail: Strings.Home.mockInsightDetail,
+                weeklyChartData: WeeklyChartData(dataSet: [
+                    ChartGroup(
+                        legendTitle: Strings.Home.poops,
+                        data: points([1, 1, 0, 1, 1, 1, 1]), color: .green),
+                    ChartGroup(
+                        legendTitle: Strings.Home.blood,
+                        data: points([0, 0, 0, 1, 0, 0, 0]), color: .red),
+                    ChartGroup(
+                        legendTitle: Strings.Home.mucus,
+                        data: points([0, 1, 0, 0, 0, 0, 0]), color: .purple)
+                ])
             )
         }
     }
@@ -156,6 +180,13 @@ class HomeView: UIView {
     private let watchMetricView = HomeMetricView()
 
     private let insightCard = HomeInsightCardView()
+    private let weeklyChartCard = UIView()
+    private let weeklyChartView = WeeklyChartUIView()
+    private let weeklyChartTitleLabel = HomeView.makeLabel(
+        text: Strings.Home.weeklyOverview,
+        font: .themedFont(.cardTitle),
+        color: PoochyTheme.primaryText
+    )
     private let recentDiaryCard = HomeRecentDiaryCardView()
 
     override init(frame: CGRect) {
@@ -215,10 +246,16 @@ class HomeView: UIView {
             watchMetricView
         ])
 
+        weeklyChartCard.applyPoochyCardStyle(cornerRadius: 18)
+        weeklyChartTitleLabel.accessibilityTraits.insert(.header)
+        weeklyChartCard.addAutolayoutSubview(weeklyChartTitleLabel)
+        weeklyChartCard.addAutolayoutSubview(weeklyChartView)
+
         stackView.addArrangedSubviews([
             headerRow,
             statusCard,
             metricsStack,
+            weeklyChartCard,
             insightCard,
             recentDiaryCard
         ])
@@ -265,7 +302,21 @@ class HomeView: UIView {
             addDiaryEntryButton.heightAnchor.constraint(equalToConstant: 52),
             weeklyMetricView.heightAnchor.constraint(equalToConstant: 112),
             normalMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor),
-            watchMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor)
+            watchMetricView.heightAnchor.constraint(equalTo: weeklyMetricView.heightAnchor),
+
+            weeklyChartTitleLabel.topAnchor.constraint(
+                equalTo: weeklyChartCard.topAnchor, constant: Spacing.space20),
+            weeklyChartTitleLabel.leadingAnchor.constraint(
+                equalTo: weeklyChartCard.leadingAnchor, constant: Spacing.space20),
+            weeklyChartTitleLabel.trailingAnchor.constraint(
+                equalTo: weeklyChartCard.trailingAnchor, constant: -Spacing.space20),
+            weeklyChartView.topAnchor.constraint(
+                equalTo: weeklyChartTitleLabel.bottomAnchor, constant: Spacing.space4),
+            weeklyChartView.leadingAnchor.constraint(equalTo: weeklyChartCard.leadingAnchor),
+            weeklyChartView.trailingAnchor.constraint(equalTo: weeklyChartCard.trailingAnchor),
+            weeklyChartView.bottomAnchor.constraint(equalTo: weeklyChartCard.bottomAnchor),
+            weeklyChartView.heightAnchor.constraint(
+                equalTo: weeklyChartView.widthAnchor, multiplier: 0.5)
         ])
     }
 
@@ -305,6 +356,7 @@ class HomeView: UIView {
         )
 
         insightCard.configure(title: model.insightTitle, detail: model.insightDetail)
+        weeklyChartView.data = model.weeklyChartData
         recentDiaryCard.configure(
             timeText: model.lastDiaryText,
             stoolText: Strings.Home.normal,

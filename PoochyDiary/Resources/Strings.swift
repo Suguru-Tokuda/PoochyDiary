@@ -150,6 +150,8 @@ nonisolated enum Strings {
         static let lastDiary = "Last diary"
         static let diaries = "Diaries"
         static let pastSevenDays = "past 7 days"
+        static let weeklyOverview = "Weekly Overview"
+        static let poops = "Poops"
         static let normal = "Normal"
         static let healthySigns = "healthy signs"
         static let needsReview = "needs review"
