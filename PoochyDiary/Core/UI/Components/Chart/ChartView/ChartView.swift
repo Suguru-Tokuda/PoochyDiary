@@ -1,5 +1,5 @@
 //
-//  WeeklyChartView.swift
+//  ChartView.swift
 //  PoochyDiary
 //
 //  Created by Suguru Tokuda on 9/24/26.
@@ -27,8 +27,14 @@ struct WeeklyChartData {
     let dataSet: [ChartGroup]
 }
 
-struct WeeklyChartView: View {
+enum WeeklyChartStyle {
+    case line
+    case bar
+}
+
+struct ChartView: View {
     let data: WeeklyChartData
+    var style: WeeklyChartStyle = .line
 
     var body: some View {
         Chart {
@@ -60,14 +66,25 @@ struct WeeklyChartView: View {
         name: String
     ) -> some ChartContent {
         ForEach(points.sorted { $0.date < $1.date }) { point in
-            LineMark(
-                x: .value("Day", point.date, unit: .day),
-                y: .value("Count", point.count)
-            )
-            .foregroundStyle(by: .value("Category", name))
-            .symbol(.circle)
-            .symbolSize(Spacing.space40)
-            .lineStyle(StrokeStyle(lineWidth: Spacing.space2))
+            switch style {
+            case .line:
+                LineMark(
+                    x: .value("Day", point.date, unit: .day),
+                    y: .value("Count", point.count)
+                )
+                .foregroundStyle(by: .value("Category", name))
+                .symbol(.circle)
+                .symbolSize(Spacing.space40)
+                .lineStyle(StrokeStyle(lineWidth: Spacing.space2))
+
+            case .bar:
+                BarMark(
+                    x: .value("Day", point.date, unit: .day),
+                    y: .value("Count", point.count),
+                    width: .ratio(0.3)
+                )
+                .foregroundStyle(by: .value("Category", name))
+            }
         }
     }
 }
@@ -108,7 +125,7 @@ struct WeeklyChartView: View {
         )
     ])
 
-    WeeklyChartView(data: data)
+    ChartView(data: data, style: .bar)
         .frame(height: 200)
         .background(
             Color(uiColor: .secondarySystemGroupedBackground),

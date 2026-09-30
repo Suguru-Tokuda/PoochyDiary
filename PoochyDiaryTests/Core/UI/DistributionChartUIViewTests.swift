@@ -5,7 +5,7 @@ import UIKit
 @testable import PoochyDiary
 
 @MainActor
-struct WeeklyChartUIViewTests {
+struct DistributionChartUIViewTests {
     private func makeWindow() throws -> UIWindow {
         let scene = try #require(
             UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
@@ -14,7 +14,7 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func attachesOnceAndFillsContainer() throws {
-        let chart = WeeklyChartUIView()
+        let chart = DistributionChartUIView()
         let parent = UIViewController()
         let window = try makeWindow()
         window.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
@@ -24,8 +24,9 @@ struct WeeklyChartUIViewTests {
         window.isHidden = false
         defer { window.isHidden = true }
 
-        let host = try #require(parent.children.first as? UIHostingController<ChartView>)
+        let host = try #require(parent.children.first as? UIHostingController<DistributionChartView>)
         #expect(parent.children.count == 1)
+        #expect(host.rootView.items.isEmpty)
         #expect(host.view.superview === chart)
         #expect(host.view.backgroundColor == .clear)
         chart.layoutIfNeeded()
@@ -37,11 +38,9 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func updatesHostedDataAndPreservesItWhenModelIsNil() throws {
-        let chart = WeeklyChartUIView()
-        let group = ChartGroup(legendTitle: "Poops", data: [
-            DailyCount(date: Date(timeIntervalSince1970: 0), count: 3)
-        ], color: .green)
-        chart.model = WeeklyChartData(dataSet: [group])
+        let chart = DistributionChartUIView()
+        let item = DistributionModel(title: "Type 1", count: 3, color: .green)
+        chart.model = [item]
         let parent = UIViewController()
         let window = try makeWindow()
         window.rootViewController = parent
@@ -49,18 +48,24 @@ struct WeeklyChartUIViewTests {
         window.isHidden = false
         defer { window.isHidden = true }
 
-        let host = try #require(parent.children.first as? UIHostingController<ChartView>)
-        #expect(host.rootView.data.dataSet.map(\.id) == [group.id])
-        let replacement = ChartGroup(legendTitle: "Blood", data: [], color: .red)
-        chart.model = WeeklyChartData(dataSet: [replacement])
-        #expect(host.rootView.data.dataSet.map(\.id) == [replacement.id])
+        let host = try #require(parent.children.first as? UIHostingController<DistributionChartView>)
+        #expect(host.rootView.items.map(\.title) == [item.title])
+        #expect(host.rootView.items.map(\.count) == [3])
+        #expect(host.rootView.items.map(\.color) == [.green])
+        let replacement = DistributionModel(title: "Type 2", count: 2, color: .red)
+        chart.model = [replacement]
+        #expect(host.rootView.items.map(\.title) == [replacement.title])
+        #expect(host.rootView.items.map(\.count) == [2])
+        #expect(host.rootView.items.map(\.color) == [.red])
         chart.model = nil
         #expect(chart.model == nil)
-        #expect(host.rootView.data.dataSet.map(\.id) == [replacement.id])
+        #expect(host.rootView.items.map(\.title) == [replacement.title])
+        chart.model = []
+        #expect(host.rootView.items.isEmpty)
     }
 
     @Test func detachesAndReattachesToAnotherController() throws {
-        let chart = WeeklyChartUIView()
+        let chart = DistributionChartUIView()
         let first = UIViewController()
         let window = try makeWindow()
         window.rootViewController = first
@@ -83,7 +88,7 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func windowWithoutControllerDoesNotAttachHost() throws {
-        let chart = WeeklyChartUIView()
+        let chart = DistributionChartUIView()
         let window = try makeWindow()
         window.addSubview(chart)
         #expect(chart.subviews.isEmpty)

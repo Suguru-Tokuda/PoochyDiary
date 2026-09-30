@@ -9,11 +9,11 @@ import UIKit
 import SwiftUI
 
 final class WeeklyChartUIView: BaseView {
-    private let host: UIHostingController<WeeklyChartView>
+    private let host: UIHostingController<ChartView>
 
     init() {
         host = UIHostingController(
-            rootView: WeeklyChartView(data: WeeklyChartData(dataSet: []))
+            rootView: ChartView(data: WeeklyChartData(dataSet: []))
         )
         super.init(frame: .zero)
     }
@@ -36,7 +36,7 @@ final class WeeklyChartUIView: BaseView {
         return nil
     }
 
-    var data: WeeklyChartData? {
+    var model: WeeklyChartData? {
         didSet {
             applyModel()
         }
@@ -58,7 +58,10 @@ final class WeeklyChartUIView: BaseView {
         detach()
         parent.addChild(host)
 
-        let hostedView = host.view!
+        guard let hostedView = host.view else {
+            detach()
+            return
+        }
         hostedView.backgroundColor = .clear
         addAutolayoutSubview(hostedView)
         NSLayoutConstraint.activate([
@@ -80,6 +83,8 @@ final class WeeklyChartUIView: BaseView {
     }
 
     private func applyModel() {
-        host.rootView = WeeklyChartView(data: data ?? WeeklyChartData(dataSet: []))
+        guard let model else { return }
+
+        host.rootView = ChartView(data: model)
     }
 }

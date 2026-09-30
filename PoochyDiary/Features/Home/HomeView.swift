@@ -356,7 +356,7 @@ class HomeView: UIView {
         )
 
         insightCard.configure(title: model.insightTitle, detail: model.insightDetail)
-        weeklyChartView.data = model.weeklyChartData
+        weeklyChartView.model = model.weeklyChartData
         recentDiaryCard.configure(
             timeText: model.lastDiaryText,
             stoolText: Strings.Home.normal,
