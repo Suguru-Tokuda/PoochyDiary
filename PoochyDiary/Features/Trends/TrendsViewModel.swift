@@ -11,20 +11,35 @@ import SwiftUI
 
 class TrendsViewModel {
     struct Model {
-        let totalPoops: Int
-        let averagePerDay: Float
         let chartData: ChartData
+        let weightChartData: WeightChartData
+        let summary: TrendsSummary
     }
 
     @Published private(set) var model: Model?
     @Published private(set) var timeFrame: TrendTimeFramesView.TimeFrame = .week
+    @Published private(set) var pet: Pet?
+    private(set) var weightUnit: WeightUnit
 
-    init() {
+    init(pet: Pet? = nil, weightUnit: WeightUnit = .pounds) {
+        self.pet = pet
+        self.weightUnit = weightUnit
+        loadData()
+    }
+
+    func updatePet(_ pet: Pet?) {
+        self.pet = pet
         loadData()
     }
 
     func selectTimeFrame(_ timeFrame: TrendTimeFramesView.TimeFrame) {
         self.timeFrame = timeFrame
+        loadData()
+    }
+
+    func updateWeightUnit(_ unit: WeightUnit) {
+        guard weightUnit != unit else { return }
+        weightUnit = unit
         loadData()
     }
 
@@ -58,18 +73,36 @@ class TrendsViewModel {
         }
 
         let poops = dailyCounts(poopCounts)
-        let totalPoops = poops.reduce(0) { $0 + $1.count }
+        let blood = dailyCounts(bloodCounts)
+        let mucus = dailyCounts(mucusCounts)
+        let startDate = calendar.date(byAdding: .day, value: -(timeFrame.rawValue - 1), to: today) ?? today
+        let weights = WeightChartData(
+            measurements: mockWeightMeasurements(calendar: calendar, today: today),
+            unit: weightUnit,
+            displaySettings: settings,
+            dateRange: startDate...today
+        )
+        let summary = TrendsSummary(poops: poops, blood: blood, mucus: mucus, weightData: weights)
         model = Model(
-            totalPoops: totalPoops,
-            averagePerDay: poops.isEmpty ? 0 : Float(totalPoops) / Float(poops.count),
             chartData: ChartData(
                 dataSet: [
-                    ChartGroup(legendTitle: "Poops", data: poops, color: .green),
-                    ChartGroup(legendTitle: "Blood", data: dailyCounts(bloodCounts), color: .red),
-                    ChartGroup(legendTitle: "Mucus", data: dailyCounts(mucusCounts), color: .purple)
+                    ChartGroup(legendTitle: Strings.Chart.poops, data: poops, color: .green),
+                    ChartGroup(legendTitle: Strings.Chart.blood, data: blood, color: .red),
+                    ChartGroup(legendTitle: Strings.Chart.mucus, data: mucus, color: .purple)
                 ],
                 displaySettings: settings
-            )
+            ),
+            weightChartData: weights,
+            summary: summary
         )
+    }
+
+    private func mockWeightMeasurements(calendar: Calendar, today: Date) -> [WeightMeasurement] {
+        stride(from: 0, to: timeFrame.rawValue, by: 3).compactMap { daysAgo in
+            guard let date = calendar.date(byAdding: .day, value: -daysAgo, to: today) else { return nil }
+            let fluctuations = [0, 2, -1, 1]
+            let tenthsOfPound = 446 + daysAgo / 6 + fluctuations[(daysAgo / 3) % fluctuations.count]
+            return WeightMeasurement(date: date, weight: Decimal(tenthsOfPound) / 10)
+        }
     }
 }

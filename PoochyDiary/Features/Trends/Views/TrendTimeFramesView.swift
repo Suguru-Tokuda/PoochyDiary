@@ -13,7 +13,7 @@ class TrendTimeFramesView: BaseView {
         case month = 30
         case quarter = 90
 
-        var title: String { "\(rawValue) days"}
+        var title: String { Strings.Trends.timeFrameTitle(days: rawValue) }
     }
 
     var onTimeFrameSelect: ((TimeFrame) -> Void)?

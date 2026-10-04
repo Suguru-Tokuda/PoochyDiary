@@ -164,7 +164,7 @@ struct ChartView: View {
 
     @ChartContentBuilder
     private func selectionMarks(_ selection: ChartData.Selection) -> some ChartContent {
-        RuleMark(x: .value("Selected date", selection.date, unit: dateUnit))
+        RuleMark(x: .value(Strings.Chart.selectedDate, selection.date, unit: dateUnit))
             .foregroundStyle(.secondary)
             .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
             // The annotation shares this mark's layer, so keep it above the data series.
@@ -179,8 +179,8 @@ struct ChartView: View {
 
         ForEach(selection.values) { value in
             PointMark(
-                x: .value("Selected date", selection.date, unit: dateUnit),
-                y: .value("Count", value.count)
+                x: .value(Strings.Chart.selectedDate, selection.date, unit: dateUnit),
+                y: .value(Strings.Chart.count, value.count)
             )
             .foregroundStyle(value.color)
             .symbolSize(Spacing.space40 * 2)
@@ -204,9 +204,10 @@ struct ChartView: View {
                 .font(.caption)
             }
         }
-        .padding(Spacing.space2 + Spacing.space8)
+        .padding(Spacing.space10)
         .frame(width: 160)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: Spacing.space2 + Spacing.space8))
+        .fixedSize(horizontal: true, vertical: true)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: Spacing.space10))
         .accessibilityElement(children: .combine)
         .allowsHitTesting(false)
     }
@@ -220,21 +221,21 @@ struct ChartView: View {
             switch style {
             case .line:
                 LineMark(
-                    x: .value("Day", point.date, unit: dateUnit),
-                    y: .value("Count", displayedCount(for: point))
+                    x: .value(Strings.Chart.day, point.date, unit: dateUnit),
+                    y: .value(Strings.Chart.count, displayedCount(for: point))
                 )
-                .foregroundStyle(by: .value("Category", name))
+                .foregroundStyle(by: .value(Strings.Chart.category, name))
                 .symbol(.circle)
                 .symbolSize(markerSize)
                 .lineStyle(StrokeStyle(lineWidth: Spacing.space2))
 
             case .bar:
                 BarMark(
-                    x: .value("Day", point.date, unit: dateUnit),
-                    y: .value("Count", displayedCount(for: point)),
+                    x: .value(Strings.Chart.day, point.date, unit: dateUnit),
+                    y: .value(Strings.Chart.count, displayedCount(for: point)),
                     width: .ratio(0.3)
                 )
-                .foregroundStyle(by: .value("Category", name))
+                .foregroundStyle(by: .value(Strings.Chart.category, name))
             }
         }
     }
@@ -278,21 +279,21 @@ struct ChartView: View {
 
     let data = ChartData(dataSet: [
         ChartGroup(
-            legendTitle: "Poops",
+            legendTitle: Strings.Chart.poops,
             data: dates.indices.map {
                 DailyCount(date: dates[$0], count: poopCounts[$0])
             },
             color: .green
         ),
         ChartGroup(
-            legendTitle: "Blood",
+            legendTitle: Strings.Chart.blood,
             data: dates.indices.map {
                 DailyCount(date: dates[$0], count: bloodCounts[$0])
             },
             color: .red
         ),
         ChartGroup(
-            legendTitle: "Mucus",
+            legendTitle: Strings.Chart.mucus,
             data: dates.indices.map {
                 DailyCount(date: dates[$0], count: mucusCounts[$0])
             },

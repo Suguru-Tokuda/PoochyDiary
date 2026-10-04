@@ -127,7 +127,7 @@ final class DiaryWeightCollectionViewCell: BaseCollectionViewCell {
         let weight = formatted(
             model.weightData.convertedWeight(weightUnit: model.weightUnit)
         )
-        weightLabel.text = "\(weight) \(abbreviation(model.weightUnit))"
+        weightLabel.text = Strings.Diary.weightValue(weight: weight, unit: abbreviation(model.weightUnit))
     }
 
     private func formatted(_ weight: Decimal) -> String {

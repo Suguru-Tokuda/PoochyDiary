@@ -81,7 +81,7 @@ struct TrendTimeFramesViewTests {
         }
     }
 
-    @Test func trendsScreenPositionsSelectorBelowSafeArea() throws {
+    @Test func trendsScreenPositionsSelectorBelowHeader() throws {
         let controller = TrendsViewController(viewModel: TrendsViewModel())
         controller.loadViewIfNeeded()
         controller.view.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
@@ -89,9 +89,11 @@ struct TrendTimeFramesViewTests {
         let selector = try #require(
             controller.view.subviews.compactMap { $0 as? TrendTimeFramesView }.first
         )
+        let header = try #require(controller.view.subviews.compactMap { $0 as? HeaderView }.first)
         #expect(selector.frame.minX == Spacing.space20)
         #expect(selector.frame.maxX == controller.view.bounds.width - Spacing.space20)
-        #expect(selector.frame.minY == controller.view.safeAreaLayoutGuide.layoutFrame.minY + Spacing.space20)
+        #expect(header.frame.minY == controller.view.safeAreaLayoutGuide.layoutFrame.minY)
+        #expect(selector.frame.minY == header.frame.maxY + Spacing.space20)
         #expect(selector.frame.height >= 44)
     }
 }

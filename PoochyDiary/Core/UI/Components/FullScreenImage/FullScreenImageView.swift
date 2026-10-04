@@ -232,7 +232,7 @@ class FullScreenImageView: BaseView {
         guard pageWidth > 0 else { return }
         let currentPage = Int((collectionView.contentOffset.x + pageWidth / 2) / pageWidth)
         let clamped = max(0, min(currentPage, model.photos.count - 1))
-        pageLabel.text = "\(clamped + 1) / \(model.photos.count)"
+        pageLabel.text = Strings.FullScreenImage.pageCount(current: clamped + 1, total: model.photos.count)
     }
 }
 

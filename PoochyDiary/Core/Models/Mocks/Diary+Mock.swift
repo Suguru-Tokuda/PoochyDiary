@@ -41,42 +41,6 @@ extension Diary {
         let bloodWeights: [(BloodAmount, Int)] = [
             (.none, 80), (.speck, 10), (.streak, 6), (.moderate, 3), (.large, 1)
         ]
-        let notesByStool: [StoolType: [String]] = [
-            .extraFirm: [
-                "Very hard and dry today, she seemed to strain a bit getting it out.",
-                "Small hard pellets, harder than her usual. Adding more water to her bowl.",
-                "Straining more than normal, stool was quite dry and compact."
-            ],
-            .firm: [
-                "Firm and well-formed, no straining. Good easy walk this morning.",
-                "Solid stool, picked up easily. Normal color and consistency.",
-                "Firm but not hard, everything looked routine.",
-                "A little firmer than usual but no signs of discomfort."
-            ],
-            .normal: [
-                "Solid and well-formed, no straining. Back to her normal routine.",
-                "Normal morning routine. Quick and easy, no issues.",
-                "Good color and consistency, nothing unusual to note.",
-                "Textbook normal stool today, she seemed happy on the walk.",
-                "Everything looked great, easy pickup, good shape."
-            ],
-            .soft: [
-                "Softer than usual this evening. Might be from the new treats.",
-                "A bit loose today, no blood or mucus though. Will monitor.",
-                "Soft serve consistency, still held together okay.",
-                "Slightly soft, maybe from all the water she drank after the park."
-            ],
-            .mushy: [
-                "Mushy and harder to pick up today. She got into some grass on the walk.",
-                "Loose and mushy, no blood or mucus present. Watching her diet today.",
-                "Not fully formed, a little concerning but she's acting normal otherwise."
-            ],
-            .watery: [
-                "Watery stool, definitely upset stomach. Keeping her hydrated and monitoring closely.",
-                "Very loose and watery this time. Will call the vet if it continues past tomorrow.",
-                "Runny and hard to clean up. She seems a little low energy today too."
-            ]
-        ]
         let timeWindows: [(ClosedRange<Int>, ClosedRange<Int>)] = [
             (6...9, 0...59), (11...15, 0...59), (17...21, 0...59)
         ]
@@ -94,13 +58,13 @@ extension Diary {
         }
 
         func note(for stoolType: StoolType, mucus: MucusLevel, blood: BloodAmount) -> String {
-            var parts = [notesByStool[stoolType]!.randomElement(using: &generator)!]
+            var parts = [Strings.Mock.notesByStool[stoolType]!.randomElement(using: &generator)!]
             if mucus != .none {
                 parts.append(
-                    "Noticed \(mucus.name.lowercased()) mucus coating, keeping an eye on it.")
+                    Strings.Mock.mucusNote(level: mucus.name.lowercased()))
             }
             if blood != .none {
-                parts.append("Saw a \(blood.name.lowercased()) amount of blood — will monitor it.")
+                parts.append(Strings.Mock.bloodNote(amount: blood.name.lowercased()))
             }
             return parts.joined(separator: " ")
         }

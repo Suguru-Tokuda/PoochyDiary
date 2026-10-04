@@ -12,7 +12,7 @@ struct DistributionModel: Identifiable {
     let title: String
     let count: Int
     let color: Color
-    
+
     var id: String { title }
 }
 
@@ -28,7 +28,7 @@ struct DistributionChartView: View {
             HStack(spacing: Spacing.space24) {
                 Chart(items) { item in
                     SectorMark(
-                        angle: .value("Count", item.count),
+                        angle: .value(Strings.Chart.count, item.count),
                         innerRadius: .ratio(0.65),
                         angularInset: 1
                     )
@@ -40,7 +40,7 @@ struct DistributionChartView: View {
                         Text("\(total)")
                             .font(.title2.bold())
 
-                        Text("Total Poops")
+                        Text(Strings.Chart.totalPoops)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -74,7 +74,7 @@ struct DistributionChartView: View {
     }
 
     func percentage(for count: Int) -> String {
-        guard total > 0 else { return "0%" }
+        guard total > 0 else { return Strings.Chart.zeroPercentage }
 
         return (Double(count) / Double(total))
             .formatted(.percent.precision(.fractionLength(0)))
@@ -83,11 +83,11 @@ struct DistributionChartView: View {
 
 #Preview {
     DistributionChartView(items: [
-        .init(title: "Type 1", count: 1, color: .teal),
-        .init(title: "Type 2", count: 2, color: .brown),
-        .init(title: "Type 3", count: 4, color: .green),
-        .init(title: "Type 4", count: 3, color: .purple),
-        .init(title: "Type 5", count: 1, color: .red),
-        .init(title: "Type 6", count: 1, color: .gray)
+        .init(title: Strings.Chart.stoolTypeTitle(number: 1), count: 1, color: .teal),
+        .init(title: Strings.Chart.stoolTypeTitle(number: 2), count: 2, color: .brown),
+        .init(title: Strings.Chart.stoolTypeTitle(number: 3), count: 4, color: .green),
+        .init(title: Strings.Chart.stoolTypeTitle(number: 4), count: 3, color: .purple),
+        .init(title: Strings.Chart.stoolTypeTitle(number: 5), count: 1, color: .red),
+        .init(title: Strings.Chart.stoolTypeTitle(number: 6), count: 1, color: .gray)
     ])
 }

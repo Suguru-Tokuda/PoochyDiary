@@ -45,9 +45,9 @@ class HomeView: UIView {
                 statusTitle: Strings.Home.mockStatusTitle,
                 statusDetail: Strings.Home.mockStatusDetail,
                 lastDiaryText: Strings.Home.mockLastDiary,
-                weeklyDiaries: "6",
-                normalDiaries: "4/6",
-                watchItems: "1",
+                weeklyDiaries: Strings.Home.mockWeeklyDiaries,
+                normalDiaries: Strings.Home.mockNormalDiaries,
+                watchItems: Strings.Home.mockWatchItems,
                 insightTitle: Strings.Home.mockInsightTitle,
                 insightDetail: Strings.Home.mockInsightDetail,
                 weeklyChartData: ChartData(dataSet: [
@@ -321,7 +321,7 @@ class HomeView: UIView {
     }
 
     private func applyModel() {
-        let model = model ?? .mock(petName: "Leo")
+        let model = model ?? .mock(petName: Strings.Mock.leo)
 
         eyebrowLabel.text = Strings.Home.brand
         titleLabel.text = Strings.Home.healthDiaryTitle(petName: model.petName)

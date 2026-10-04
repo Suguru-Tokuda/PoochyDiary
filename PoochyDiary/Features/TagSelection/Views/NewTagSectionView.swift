@@ -101,13 +101,13 @@ class NewTagSectionView: BaseView {
     private func applyModel() {
         guard let model else { return }
 
-        var attributedTitle = AttributedString("Create \"\(model.newTag)\"")
+        var attributedTitle = AttributedString(Strings.TagSelection.createTagTitle(name: model.newTag))
         attributedTitle.font = .themedFont(.button)
         attributedTitle.foregroundColor = .accent
 
         createButton.configuration?.attributedTitle = attributedTitle
 
-        subTitleView.text = "\(Strings.TagSearch.noMatchingTagFound(model.newTag).stringValue)"
+        subTitleView.text = Strings.TagSearch.noMatchingTagFound(model.newTag).stringValue
     }
 }
 

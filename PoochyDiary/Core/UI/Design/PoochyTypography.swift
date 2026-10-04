@@ -78,54 +78,54 @@ enum PoochyFontStyle: CaseIterable {
     var displayName: String {
         switch self {
         case .heroTitle:
-            return "Hero Title"
+            return Strings.Typography.heroTitle
         case .screenTitle:
-            return "Screen Title"
+            return Strings.Typography.screenTitle
         case .sectionTitle:
-            return "Section Title"
+            return Strings.Typography.sectionTitle
         case .cardTitle:
-            return "Card Title"
+            return Strings.Typography.cardTitle
         case .body:
-            return "Body"
+            return Strings.Typography.body
         case .bodyEmphasized:
-            return "Body Emphasized"
+            return Strings.Typography.bodyEmphasized
         case .caption:
-            return "Caption"
+            return Strings.Typography.caption
         case .captionEmphasized:
-            return "Caption Emphasized"
+            return Strings.Typography.captionEmphasized
         case .pill:
-            return "Pill"
+            return Strings.Typography.pill
         case .button:
-            return "Button"
+            return Strings.Typography.button
         case .metric:
-            return "Metric"
+            return Strings.Typography.metric
         }
     }
 
     var usage: String {
         switch self {
         case .heroTitle:
-            return "Primary status or detail titles."
+            return Strings.Typography.heroTitleUsage
         case .screenTitle:
-            return "Top-level page titles."
+            return Strings.Typography.screenTitleUsage
         case .sectionTitle:
-            return "Section headers such as Photos or Health Signals."
+            return Strings.Typography.sectionTitleUsage
         case .cardTitle:
-            return "Compact card headings and smaller modules."
+            return Strings.Typography.cardTitleUsage
         case .body:
-            return "Paragraphs, notes, and normal descriptive text."
+            return Strings.Typography.bodyUsage
         case .bodyEmphasized:
-            return "Important body values and short field values."
+            return Strings.Typography.bodyEmphasizedUsage
         case .caption:
-            return "Secondary timestamps and helper labels."
+            return Strings.Typography.captionUsage
         case .captionEmphasized:
-            return "Small metadata with extra emphasis."
+            return Strings.Typography.captionEmphasizedUsage
         case .pill:
-            return "Badges, chips, and overline labels."
+            return Strings.Typography.pillUsage
         case .button:
-            return "Primary and secondary button titles."
+            return Strings.Typography.buttonUsage
         case .metric:
-            return "Dashboard counts and prominent numeric values."
+            return Strings.Typography.metricUsage
         }
     }
 }

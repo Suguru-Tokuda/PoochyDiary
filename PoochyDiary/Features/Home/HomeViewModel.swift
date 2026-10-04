@@ -9,5 +9,5 @@ import Foundation
 
 class HomeViewModel {
     var activePet: Pet = Pet(
-        id: UUID(), name: "Leo", dateOfBirth: Date(), gender: .male, type: .dog)
+        id: UUID(), name: Strings.Mock.leo, dateOfBirth: Date(), gender: .male, type: .dog)
 }

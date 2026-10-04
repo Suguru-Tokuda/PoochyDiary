@@ -166,7 +166,10 @@ final class PetSelectionCollectionViewCell: BaseCollectionViewCell {
         contentView.layer.borderColor = model.isSelected
             ? PoochyTheme.accent.withAlphaComponent(0.45).cgColor
             : PoochyTheme.outline.cgColor
-        accessibilityLabel = "\(model.pet.name), \(Strings.PetSelection.animalType(model.pet.type))"
+        accessibilityLabel = Strings.PetSelection.accessibilityLabel(
+            petName: model.pet.name,
+            animalType: Strings.PetSelection.animalType(model.pet.type)
+        )
         accessibilityTraits = model.isSelected ? [.button, .selected] : .button
     }
 }

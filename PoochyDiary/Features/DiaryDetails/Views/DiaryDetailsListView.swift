@@ -142,7 +142,7 @@ class DiaryDetailsListView: BaseView {
         if !model.tags.isEmpty {
             tagsCard.isHidden = false
             tagsCard.configure(
-                title: Strings.DiaryEntry.tags, body: model.tags.map(\.name).joined(separator: ", ")
+                title: Strings.DiaryEntry.tags, body: Strings.Common.commaSeparated(model.tags.map(\.name))
             )
         } else {
             tagsCard.isHidden = true

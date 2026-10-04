@@ -66,16 +66,22 @@ class DiarySectionHeaderView: BaseCollectionReusableView {
         guard let model else { return }
 
         let date = model.date
+        let relativeDay: String?
 
         if Calendar.current.isDateInToday(date) {
             dateLabel.textColor = .accent
             calendarImageView.tintColor = .accent
-            dateLabel.text = "\(Strings.DiaryEntry.today) • "
+            relativeDay = Strings.DiaryEntry.today
         } else if Calendar.current.isDateInYesterday(date) {
-            dateLabel.text = "\(Strings.DiaryEntry.yesterday) • "
+            relativeDay = Strings.DiaryEntry.yesterday
+        } else {
+            relativeDay = nil
         }
 
-        dateLabel.text = "\(dateLabel.text ?? "")\(date.formatted(with: "MMM d, YYYY"))"
+        dateLabel.text = Strings.Diary.dateHeader(
+            date: date.formatted(with: "MMM d, YYYY"),
+            relativeDay: relativeDay
+        )
     }
 
     override func prepareForReuse() {
