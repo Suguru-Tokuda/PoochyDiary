@@ -12,8 +12,23 @@ class PDLabel: BaseView {
     struct Model {
         let title: String
         let isOptional: Bool
+
+        init(title: String, isOptional: Bool = false) {
+            self.title = title
+            self.isOptional = isOptional
+        }
     }
 
+    init(model: Model? = nil) {
+        self.model = model
+        super.init(frame: .zero)
+        applyModel()
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     var model: Model? {
         didSet {
             applyModel()

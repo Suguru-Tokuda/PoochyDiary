@@ -5,7 +5,20 @@ import UIKit
 @testable import PoochyDiary
 
 @MainActor
-struct WeeklyChartUIViewTests {
+struct ChartUIViewTests {
+    @Test func rebuildingSeriesPreservesIdentityForAnimation() {
+        let date = Date(timeIntervalSince1970: 0)
+        let original = ChartGroup(
+            legendTitle: "Poops", data: [DailyCount(date: date, count: 1)], color: .green
+        )
+        let updated = ChartGroup(
+            legendTitle: "Poops", data: [DailyCount(date: date, count: 3)], color: .green
+        )
+        #expect(original.id == updated.id)
+        #expect(original.data.first?.id == updated.data.first?.id)
+        #expect(ChartData(dataSet: [original]) != ChartData(dataSet: [updated]))
+    }
+
     private func makeWindow() throws -> UIWindow {
         let scene = try #require(
             UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
@@ -14,7 +27,7 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func attachesOnceAndFillsContainer() throws {
-        let chart = WeeklyChartUIView()
+        let chart = ChartUIView()
         let parent = UIViewController()
         let window = try makeWindow()
         window.frame = CGRect(x: 0, y: 0, width: 390, height: 844)
@@ -37,11 +50,11 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func updatesHostedDataAndPreservesItWhenModelIsNil() throws {
-        let chart = WeeklyChartUIView()
+        let chart = ChartUIView()
         let group = ChartGroup(legendTitle: "Poops", data: [
             DailyCount(date: Date(timeIntervalSince1970: 0), count: 3)
         ], color: .green)
-        chart.model = WeeklyChartData(dataSet: [group])
+        chart.model = ChartData(dataSet: [group])
         let parent = UIViewController()
         let window = try makeWindow()
         window.rootViewController = parent
@@ -52,7 +65,7 @@ struct WeeklyChartUIViewTests {
         let host = try #require(parent.children.first as? UIHostingController<ChartView>)
         #expect(host.rootView.data.dataSet.map(\.id) == [group.id])
         let replacement = ChartGroup(legendTitle: "Blood", data: [], color: .red)
-        chart.model = WeeklyChartData(dataSet: [replacement])
+        chart.model = ChartData(dataSet: [replacement])
         #expect(host.rootView.data.dataSet.map(\.id) == [replacement.id])
         chart.model = nil
         #expect(chart.model == nil)
@@ -60,7 +73,7 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func detachesAndReattachesToAnotherController() throws {
-        let chart = WeeklyChartUIView()
+        let chart = ChartUIView()
         let first = UIViewController()
         let window = try makeWindow()
         window.rootViewController = first
@@ -83,7 +96,7 @@ struct WeeklyChartUIViewTests {
     }
 
     @Test func windowWithoutControllerDoesNotAttachHost() throws {
-        let chart = WeeklyChartUIView()
+        let chart = ChartUIView()
         let window = try makeWindow()
         window.addSubview(chart)
         #expect(chart.subviews.isEmpty)

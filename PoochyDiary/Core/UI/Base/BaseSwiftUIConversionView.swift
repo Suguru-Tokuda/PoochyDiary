@@ -1,19 +1,19 @@
 //
-//  WeeklyChartUIView.swift
+//  BaseSwiftUIConversionView.swift
 //  PoochyDiary
 //
-//  Created by Suguru Tokuda on 9/24/26.
+//  Created by Suguru Tokuda on 10/1/26.
 //
 
 import UIKit
 import SwiftUI
 
-final class WeeklyChartUIView: BaseView {
-    private let host: UIHostingController<ChartView>
+class BaseSwiftUIConversionView<T: View>: BaseView {
+    let host: UIHostingController<T>
 
-    init() {
+    init(rootView: T) {
         host = UIHostingController(
-            rootView: ChartView(data: WeeklyChartData(dataSet: []))
+            rootView: rootView
         )
         super.init(frame: .zero)
     }
@@ -36,12 +36,6 @@ final class WeeklyChartUIView: BaseView {
         return nil
     }
 
-    var model: WeeklyChartData? {
-        didSet {
-            applyModel()
-        }
-    }
-
     override func didMoveToWindow() {
         super.didMoveToWindow()
 
@@ -62,6 +56,7 @@ final class WeeklyChartUIView: BaseView {
             detach()
             return
         }
+
         hostedView.backgroundColor = .clear
         addAutolayoutSubview(hostedView)
         NSLayoutConstraint.activate([
@@ -80,11 +75,5 @@ final class WeeklyChartUIView: BaseView {
         host.willMove(toParent: nil)
         host.view.removeFromSuperview()
         host.removeFromParent()
-    }
-
-    private func applyModel() {
-        guard let model else { return }
-
-        host.rootView = ChartView(data: model)
     }
 }

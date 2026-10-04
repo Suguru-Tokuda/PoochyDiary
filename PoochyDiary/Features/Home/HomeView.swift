@@ -26,7 +26,7 @@ class HomeView: UIView {
         let watchItems: String
         let insightTitle: String
         let insightDetail: String
-        let weeklyChartData: WeeklyChartData
+        let weeklyChartData: ChartData
 
         static func mock(petName: String) -> Model {
             let calendar = Calendar.current
@@ -50,7 +50,7 @@ class HomeView: UIView {
                 watchItems: "1",
                 insightTitle: Strings.Home.mockInsightTitle,
                 insightDetail: Strings.Home.mockInsightDetail,
-                weeklyChartData: WeeklyChartData(dataSet: [
+                weeklyChartData: ChartData(dataSet: [
                     ChartGroup(
                         legendTitle: Strings.Home.poops,
                         data: points([1, 1, 0, 1, 1, 1, 1]), color: .green),
@@ -181,7 +181,7 @@ class HomeView: UIView {
 
     private let insightCard = HomeInsightCardView()
     private let weeklyChartCard = UIView()
-    private let weeklyChartView = WeeklyChartUIView()
+    private let weeklyChartView = ChartUIView()
     private let weeklyChartTitleLabel = HomeView.makeLabel(
         text: Strings.Home.weeklyOverview,
         font: .themedFont(.cardTitle),
